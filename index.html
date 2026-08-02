@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WLDN Technical Suite — Diorama Training Terminasi MV</title>
+  <meta name="description" content="Portal Aplikasi Teknik Ketenagalistrikan: Medium Voltage Termination Selector & Cable Specification Calculator. Standar IEC, SNI & PLN.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1a2333 0%, #0b0f17 75%);
+      --card-bg: rgba(18, 26, 38, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover-border: rgba(56, 189, 248, 0.4);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-cyan-glow: rgba(56, 189, 248, 0.2);
+      --accent-orange: #ff8a3d;
+      --accent-orange-glow: rgba(255, 138, 61, 0.2);
+      --green-ok: #34d399;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem 1.5rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding-top: 1rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 999px;
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green-ok);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green-ok);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* Tools Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.25rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card-orange::before {
+      background: linear-gradient(90deg, var(--accent-orange), #f59e0b);
+    }
+
+    .card-cyan::before {
+      background: linear-gradient(90deg, var(--accent-cyan), #6366f1);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--card-hover-border);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    }
+
+    .tool-card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      font-size: 1.6rem;
+    }
+
+    .card-orange .card-icon {
+      background: var(--accent-orange-glow);
+      color: var(--accent-orange);
+      border: 1px solid rgba(255, 138, 61, 0.3);
+    }
+
+    .card-cyan .card-icon {
+      background: var(--accent-cyan-glow);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .card-orange .btn-action {
+      background: rgba(255, 138, 61, 0.15);
+      color: #ff9d5c;
+      border: 1px solid rgba(255, 138, 61, 0.3);
+    }
+
+    .card-cyan .btn-action {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .tool-card:hover .btn-action {
+      background: var(--text-main);
+      color: #0f172a;
+      border-color: var(--text-main);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer code {
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Diorama Training — Teknik Ketenagalistrikan
+      </div>
+      <h1>WLDN Engineering Tool Suite</h1>
+      <p class="subtitle">Aplikasi interaktif pemilihan aksesoris kabel Tegangan Menengah (TM) & kalkulator perhitungan teknis penampang kabel listrik.</p>
+    </header>
+
+    <main class="grid">
+      <!-- Tool 1: MV Termination Selector -->
+      <a href="mv-termination-selector.html" class="tool-card card-orange">
+        <div>
+          <div class="card-icon">⚡</div>
+          <h2 class="card-title">MV Termination Selector</h2>
+          <p class="card-desc">Panduan teknis & pemilihan spesifikasi kit terminasi kabel Tegangan Menengah (Cold Shrink & Heat Shrink 12kV, 20kV, 24kV, 36kV).</p>
+          
+          <div class="feature-tags">
+            <span class="tag">3M</span>
+            <span class="tag">Raychem</span>
+            <span class="tag">Prysmian</span>
+            <span class="tag">Instruksi Potong</span>
+            <span class="tag">Brosur Visual</span>
+          </div>
+        </div>
+
+        <div class="btn-action">
+          <span>Buka Selector Terminasi</span>
+          <span style="font-size: 1.2rem;">→</span>
+        </div>
+      </a>
+
+      <!-- Tool 2: Cable Calculator -->
+      <a href="cable-calc.html" class="tool-card card-cyan">
+        <div>
+          <div class="card-icon">📐</div>
+          <h2 class="card-title">Cable Specs & Sizing Calculator</h2>
+          <p class="card-desc">Kalkulator kalkulasi teknik kabel: Kuat Hantar Arus (KHA/Ampacity), Voltage Drop (% Susut Tegangan), Resistansi AC/DC, dan Sizing Advisor.</p>
+          
+          <div class="feature-tags">
+            <span class="tag">Standar IEC 60502</span>
+            <span class="tag">SNI / SPLN</span>
+            <span class="tag">Voltage Drop</span>
+            <span class="tag">KHA Sizing</span>
+          </div>
+        </div>
+
+        <div class="btn-action">
+          <span>Buka Kalkulator Kabel</span>
+          <span style="font-size: 1.2rem;">→</span>
+        </div>
+      </a>
+    </main>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Diorama Training Ketenagalistrikan. Deployed via <code>Vercel</code>.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

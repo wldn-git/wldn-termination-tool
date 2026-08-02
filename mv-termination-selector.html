@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MV Termination Selector & Field Technical Guide — Diorama Training</title>
+<style>
+  :root {
+    --bg: #090c10;
+    --panel: #11161d;
+    --panel2: #171e27;
+    --panel3: #1e2633;
+    --line: #263140;
+    --line-bright: #38475c;
+    --accent: #ff8a3d;
+    --accent-glow: rgba(255, 138, 61, 0.15);
+    --accent-dim: #7a4321;
+    --cyan: #38bdf8;
+    --cyan-glow: rgba(56, 189, 248, 0.15);
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --ok: #3ddc84;
+    --ok-glow: rgba(61, 220, 132, 0.15);
+    --warn: #ffb547;
+    --danger: #ff5252;
+    --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 24px 32px;
+    line-height: 1.6;
+  }
+
+  .wrap { width: 100%; max-width: 100%; margin: 0 auto; }
+
+  header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 20px;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .brand-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+  h1 { font-size: 26px; font-weight: 800; letter-spacing: -.02em; color: var(--text); }
+  .sub { color: var(--text-dim); font-size: 14px; margin-top: 6px; }
+
+  /* Navigation Tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 24px;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+  }
+
+  .tab-btn {
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-btn:hover { border-color: var(--line-bright); color: var(--text); background: var(--panel3); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #120b05;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn .25s ease-in-out; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Cards & Components */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+
+  .card-title .icon {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--accent-glow); color: var(--accent);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800;
+  }
+
+  /* Progress & Selector Wizard */
+  .progress { display: flex; gap: 4px; margin: 18px 0; }
+  .progress .seg { flex: 1; height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .progress .seg.done { background: var(--accent); }
+  .progress .seg.current { background: var(--accent-dim); position: relative; }
+  .progress .seg.current::after {
+    content: ''; position: absolute; inset: 0; background: var(--accent);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+
+  .step-label {
+    font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+  }
+  .step-title { font-size: 18px; font-weight: 700; margin-bottom: 18px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .opt {
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 14px; cursor: pointer; text-align: left; color: var(--text);
+    font-size: 14px; transition: all .15s;
+  }
+  .opt:hover { border-color: var(--accent); background: var(--panel3); transform: translateY(-1px); }
+  .opt.selected { border-color: var(--accent); background: rgba(255, 138, 61, 0.1); box-shadow: 0 0 0 1px var(--accent); }
+  .opt .opt-desc { font-size: 11px; color: var(--text-dim); display: block; margin-top: 4px; line-height: 1.3; }
+
+  .numinput {
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 16px; color: var(--text); font-family: var(--mono); font-size: 16px;
+    width: 100%; max-width: 240px;
+  }
+  .numinput:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .field-hint { font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.4; }
+
+  .navrow { display: flex; justify-content: space-between; margin-top: 24px; }
+  .btn {
+    font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 10px 20px;
+    border-radius: 8px; border: 1px solid var(--line); background: var(--panel2);
+    color: var(--text); cursor: pointer; transition: .15s; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn:hover { border-color: var(--line-bright); background: var(--panel3); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #1a0f06; }
+  .btn.primary:hover { filter: brightness(1.1); box-shadow: 0 4px 12px var(--accent-glow); }
+  .btn:disabled { opacity: .35; cursor: not-allowed; filter: none; }
+  .btn.ghost { background: transparent; }
+
+  .summary-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .chip {
+    font-family: var(--mono); font-size: 11px; padding: 6px 12px; border-radius: 20px;
+    background: var(--panel2); border: 1px solid var(--line); color: var(--text-dim);
+  }
+  .chip b { color: var(--text); }
+
+  .result-card {
+    border: 1px solid var(--ok); background: linear-gradient(180deg, #0e1a13, #0b140f);
+    border-radius: 12px; padding: 24px; margin-top: 16px;
+  }
+  .result-card.empty { border-color: var(--warn); background: linear-gradient(180deg, #1f1b13, #17140e); }
+  .result-title { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ok); margin-bottom: 10px; }
+  .result-card.empty .result-title { color: var(--warn); }
+  .kit-code { font-family: var(--mono); font-size: 26px; font-weight: 800; color: #fff; word-break: break-all; margin-bottom: 12px; }
+  
+  .meta-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+    background: rgba(0,0,0,0.25); padding: 14px; border-radius: 8px; border: 1px solid var(--line); margin-top: 12px;
+  }
+  .meta-item { font-size: 12px; }
+  .meta-item .lbl { color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+  .meta-item .val { font-weight: 600; color: var(--text); font-family: var(--mono); }
+
+  /* Cable Layer & Cutback Visualiser */
+  .cable-visual {
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .layer-diagram {
+    display: flex;
+    align-items: stretch;
+    height: 70px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 16px 0;
+    border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 11px; text-align: center;
+  }
+  .layer-diagram .seg {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 4px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.8); transition: flex .3s ease;
+  }
+  .seg-jacket { background: #2d3748; flex: 2; }
+  .seg-armour { background: #4a5568; flex: 1.2; }
+  .seg-screen { background: #b7791f; flex: 1.2; }
+  .seg-semicon { background: #1a202c; border-right: 2px dashed var(--accent); flex: 1.5; }
+  .seg-insulation { background: #d69e2e; color: #1a202c; text-shadow: none; flex: 2.5; }
+  .seg-conductor { background: #dd6b20; flex: 1.5; }
+
+  /* Tables */
+  .styled-table {
+    width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px;
+  }
+  .styled-table th {
+    background: var(--panel2); color: var(--text-dim); text-align: left;
+    padding: 12px 14px; font-family: var(--mono); font-size: 11px; text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+  }
+  .styled-table td { padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--text); }
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600;
+  }
+  .badge.ok { background: var(--ok-glow); color: var(--ok); border: 1px solid var(--ok); }
+  .badge.warn { background: rgba(255, 181, 71, 0.15); color: var(--warn); border: 1px solid var(--warn); }
+  .badge.cyan { background: var(--cyan-glow); color: var(--cyan); border: 1px solid var(--cyan); }
+
+  /* Accordion & Checklist */
+  .accordion-item {
+    border: 1px solid var(--line); border-radius: 8px; background: var(--panel2);
+    margin-bottom: 10px; overflow: hidden;
+  }
+  .accordion-header {
+    padding: 14px 18px; font-weight: 600; cursor: pointer; display: flex;
+    justify-content: space-between; align-items: center; font-size: 14px;
+  }
+  .accordion-header:hover { background: var(--panel3); }
+  .accordion-body { padding: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--text-dim); display: none; }
+  .accordion-item.active .accordion-body { display: block; }
+  .accordion-item.active .accordion-header { color: var(--accent); }
+
+  .checklist { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+  .checklist-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--panel2); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--line);
+  }
+  .checklist-item input[type="checkbox"] { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+  .checklist-item label { font-size: 13px; cursor: pointer; line-height: 1.4; color: var(--text); }
+
+  /* Quiz Module */
+  .quiz-q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .quiz-opt-btn {
+    background: var(--panel2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 16px; text-align: left; color: var(--text); font-size: 13px; cursor: pointer; transition: .15s;
+  }
+  .quiz-opt-btn:hover { border-color: var(--accent); background: var(--panel3); }
+  .quiz-opt-btn.correct { background: rgba(61, 220, 132, 0.2); border-color: var(--ok); color: #fff; }
+  .quiz-opt-btn.wrong { background: rgba(255, 82, 82, 0.2); border-color: var(--danger); color: #fff; }
+
+  footer {
+    margin-top: 40px; border-top: 1px solid var(--line); padding-top: 20px;
+    text-align: center; font-size: 12px; color: var(--text-dim); font-family: var(--mono);
+  }
+
+  /* Utility Grid 2-col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr 1fr; }
+    .kit-code { font-size: 20px; }
+  }
+  /* Header Flex Layout & Theme Switcher Button */
+  .header-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line-bright);
+    background: var(--panel2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all .2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+  .theme-toggle-btn:hover {
+    border-color: var(--accent);
+    background: var(--panel3);
+    transform: translateY(-1px);
+  }
+
+  /* Win11 Light Theme Variable Overrides */
+  [data-theme="light"] {
+    --bg: #F3F3F5;
+    --panel: #FFFFFF;
+    --panel2: #F8F9FA;
+    --panel3: #EDF0F5;
+    --line: #E2E8F0;
+    --line-bright: #CBD5E1;
+    --accent: #0067C0;
+    --accent-glow: rgba(0, 103, 192, 0.12);
+    --accent-dim: #003E92;
+    --cyan: #0284C7;
+    --cyan-glow: rgba(2, 132, 199, 0.12);
+    --text: #1E293B;
+    --text-dim: #64748B;
+    --ok: #107C10;
+    --ok-glow: rgba(16, 124, 16, 0.12);
+    --warn: #D97706;
+    --danger: #DC2626;
+  }
+
+  [data-theme="light"] .btn.primary {
+    color: #FFFFFF;
+  }
+  [data-theme="light"] .tab-btn.active {
+    color: #FFFFFF;
+  }
+  [data-theme="light"] .result-card {
+    background: linear-gradient(180deg, #F0FDF4, #DCFCE7);
+    border-color: #166534;
+  }
+  [data-theme="light"] .result-card.empty {
+    background: linear-gradient(180deg, #FFFBEB, #FEF3C7);
+    border-color: #D97706;
+  }
+  [data-theme="light"] .kit-code {
+    color: #0F172A;
+  }
+  [data-theme="light"] .result-title {
+    color: #15803D;
+  }
+  [data-theme="light"] .meta-grid {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  [data-theme="light"] .styled-table tr:hover td {
+    background: rgba(0, 103, 192, 0.04);
+  }
+  [data-theme="light"] .quiz-opt-btn.correct {
+    background: rgba(16, 124, 16, 0.12);
+    border-color: #107C10;
+    color: #15803D;
+  }
+  [data-theme="light"] .quiz-opt-btn.wrong {
+    background: rgba(220, 38, 38, 0.12);
+    border-color: #DC2626;
+    color: #B91C1C;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="header-wrap">
+      <div>
+        <div class="brand-badge"><span></span> Diorama Training · Technical Reference</div>
+        <h1>MV Cable Termination Guide &amp; Selector</h1>
+        <div class="sub">Pemilih Kit Terminasi (12–42 kV), Panduan SOP, Pengujian &amp; Modul Quiz Interaktif</div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <a href="index.html" class="theme-toggle-btn" style="text-decoration: none; color: var(--text); font-weight: 600;">
+          <span>🏠</span>
+          <span>Portal Suite</span>
+        </a>
+        <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()">
+          <span id="themeIcon">☀️</span>
+          <span id="themeLabel">Win11 Light Mode</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-selector')">🧮 Kit Selector</button>
+    <button class="tab-btn" onclick="switchTab('tab-sop')">📋 SOP & Cutback Z</button>
+    <button class="tab-btn" onclick="switchTab('tab-testing')">🛡️ Pengujian & K3</button>
+    <button class="tab-btn" onclick="switchTab('tab-lug')">📐 Skun, Torsi &amp; Clearance</button>
+    <button class="tab-btn" onclick="switchTab('tab-quiz')">📝 Evaluation Quiz</button>
+    <button class="tab-btn" onclick="switchTab('tab-ref')">📚 Referensi Modul</button>
+  </nav>
+
+  <!-- TAB 1: KIT SELECTOR WIZARD -->
+  <div id="tab-selector" class="tab-content active">
+    <div class="summary-bar" id="summaryBar"></div>
+    <div class="progress" id="progress"></div>
+    <div id="stepArea"></div>
+  </div>
+
+  <!-- TAB 2: SOP 5-LANGKAH & KALKULATOR CUTBACK Z -->
+  <div id="tab-sop" class="tab-content">
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">1</span> 5 Langkah Wajib Sebelum Memotong Kabel (Field Checklist)
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
+        Panduan praktis lapangan berdasarkan <i>Quick Start Guide Terminasi MV</i>. Lakukan identifikasi secara berurutan:
+      </p>
+      
+      <div class="checklist">
+        <div class="checklist-item">
+          <input type="checkbox" id="chk1">
+          <label for="chk1"><b>Langkah 1 — Identifikasi Kabel & Marking (IEC 60502):</b> Baca notasi cetak pada jacket kabel (misal <code>12/20(24) kV CU/XLPE/CWS/PVC 3x150 mm²</code>). Ukur outer diameter (O.D.) jacket dan insulasi.</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk2">
+          <label for="chk2"><b>Langkah 2 — Tentukan Lokasi (Indoor / Outdoor) & Pilih Kit:</b> Pastikan kit sesuai lokasi. Kit Indoor tidak memiliki skirt/weathershed yang cukup untuk paparan hujan & polusi outdoor.</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk3">
+          <label for="chk3"><b>Langkah 3 — Sesuaikan Skun / Lug:</b> Pastikan ukuran barrel lug cocok dengan luas penampang konduktor (mm²), diameter hole lug cocok dengan baut busbar/peralatan, dan material (Cu, Al, Bimetal) mencegah korosi galvanis.</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk4">
+          <label for="chk4"><b>Langkah 4 — Cek Area Koneksi & Ruang Kerja:</b> Ukur clearance antar-fasa, panjang kompartemen kubikel, serta tekukan kabel (Bending Radius XLPE minimal 12 kali Diameter Luar Kabel / O.D.).</label>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="chk5">
+          <label for="chk5"><b>Langkah 5 — Hitung Jarak Kupasan (Jacket Cutback Z):</b> Hitung titik potong setiap lapisan kabel berdasarkan spesifikasi lug dan instruction sheet (IIS) kit.</label>
+        </div>
+      </div>
+
+      <!-- Accordion: Maintenance & Troubleshooting -->
+      <div class="accordion-item" style="margin-top:16px;">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          2. Maintenance &amp; Pembersihan Permukaan Silikon (3M QT-III Guide)
+        </div>
+        <div class="accordion-body">
+          <ul style="margin-left:20px; line-height:1.6;">
+            <li><b>Debu Ringan:</b> Gunakan udara bertekanan (*compressed air*) bersuhu normal.</li>
+            <li><b>Kontaminasi Minyak/Polusi:</b> Seka dengan *cable cleaning solvent pad* (3M CC Series) atau larutan sabun lembut + air murni (*deionized water*).</li>
+            <li><b>Perubahan Warna (*Tan Color Outgassing*):</b> Diskolorasi kecoklatan antar-skirt pada kabel EPR adalah normal akibat outgassing minyak isolasi — tidak menurunkan kekuatan elektrik.</li>
+            <li><b>DILARANG:</b> Mengabrasi permukaan, menggunakan amplas, atau semprotan tekanan tinggi berbahan abrasif karena merusak sifat *hydrophobic*.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          3. Penanganan Gangguan Umum (Troubleshooting Lapangan)
+        </div>
+        <div class="accordion-body">
+          <table class="styled-table" style="margin:0;">
+            <thead>
+              <tr><th>Gejala / Kegagalan</th><th>Kemungkinan Penyebab Utama</th><th>Tindakan Perbaikan</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Overheating pada Lug</b></td>
+                <td>Baut kurang kencang (torsi rendah) atau reaksi bimetal Cu-Al tanpa skun bimetal.</td>
+                <td>Ganti skun bimetal dan kencangkan baut sesuai rekomendasi torsi (N·m).</td>
+              </tr>
+              <tr>
+                <td><b>Tracking / Arus Bocor</b></td>
+                <td>Kontaminasi permukaan silikon / jarak *creepage* outdoor kurang.</td>
+                <td>Bersihkan permukaan dengan *solvent pad*, pasang *weathershed/skirt* tambahan.</td>
+              </tr>
+              <tr>
+                <td><b>Breakdown di Potongan Semi-con</b></td>
+                <td>Ada takikan (*score mark*) pada insulasi XLPE atau void udara tanpa *SRM mastic*.</td>
+                <td>Potong kabel ulang, ampelas insulasi dengan 180-grit abrasive cloth hingga mulus tanpa void.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cable Stripping Diagram & Cutback Calculator -->
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">📐</span> Interactive Cutback Z Calculator
+      </div>
+      <p style="font-size:13px; color:var(--text-dim);">
+        Panjang jacket cutback (Z) dihitung berdasarkan rumus: 
+        <br>
+        <code style="color:var(--accent); font-size:14px;">Z = Panjang Tubing Stress/Insulasi + Kedalaman Barrel Lug + Clearance Gap (5–10 mm)</code>
+      </p>
+
+      <div class="cable-visual">
+        <div style="font-family:var(--mono); font-size:11px; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px;">Diagram Lapisan Kabel Stripping:</div>
+        <div class="layer-diagram">
+          <div class="seg seg-jacket">Outer Sheath<br>(Jacket)</div>
+          <div class="seg seg-armour">Armour / Braid</div>
+          <div class="seg seg-screen">Copper Tape / Screen</div>
+          <div class="seg seg-semicon">Semi-con Step</div>
+          <div class="seg seg-insulation">XLPE Insulation</div>
+          <div class="seg seg-conductor">Conductor</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top:16px;">
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-dim); display:block; margin-bottom:4px;">Kedalaman Barrel Lug (L_lug) mm:</label>
+          <input type="number" id="calcLug" class="numinput" value="65" oninput="calculateCutback()">
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600; color:var(--text-dim); display:block; margin-bottom:4px;">Kelas Tegangan Kit:</label>
+          <select id="calcVolt" class="numinput" onchange="calculateCutback()" style="max-width:100%;">
+            <option value="12">12 kV (Panjang stress tube ±180 mm)</option>
+            <option value="24" selected>24 kV (Panjang stress tube ±240 mm)</option>
+            <option value="36">36 kV (Panjang stress tube ±320 mm)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="calcResult" style="margin-top:16px; background:var(--panel3); padding:16px; border-radius:8px; border:1px solid var(--line-bright);">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+  <!-- TAB 4: PENGUJIAN & K3 LAPANGAN -->
+  <div id="tab-testing" class="tab-content">
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">🛡️</span> Uji Kualifikasi Terminasi (IEEE Std 48 Class 1 Guide)
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
+        Berikut adalah panduan lengkap nilai tegangan uji laboratorium standar <b>IEEE Std 48</b> untuk membuktikan keandalan terminasi sebelum dipasang di lapangan:
+      </p>
+
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Jenis Pengujian (Test Type)</th>
+            <th>Maksud & Tujuan Pengujian</th>
+            <th>Sistem 12 kV</th>
+            <th>Sistem 20/24 kV</th>
+            <th>Sistem 35 kV</th>
+            <th>Hasil Syarat Lulus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>1. Power Frequency 1-Min Dry Withstand</b></td>
+            <td>Uji tegangan AC tinggi kondisi kering selama 1 menit untuk memastikan ketahanan isolasi utama.</td>
+            <td>35 kV</td>
+            <td>65 kV</td>
+            <td><b>90 kV</b></td>
+            <td><span class="badge ok">LULUS (Tanpa Spark/Breakdown)</span></td>
+          </tr>
+          <tr>
+            <td><b>2. Power Frequency 10-Sec Wet Withstand</b></td>
+            <td>Uji tegangan AC kondisi hujan/embun lebat selama 10 detik untuk menguji keandalan *weathershed/skirt*.</td>
+            <td>30 kV</td>
+            <td>60 kV</td>
+            <td><b>80 kV</b></td>
+            <td><span class="badge ok">LULUS (Tanpa Flashover)</span></td>
+          </tr>
+          <tr>
+            <td><b>3. Direct Voltage 15-Min Dry Withstand</b></td>
+            <td>Uji tegangan searah (DC Hi-Pot) selama 15 menit untuk mengukur arus bocor insulasi.</td>
+            <td>65 kV</td>
+            <td>105 kV</td>
+            <td><b>140 kV</b></td>
+            <td><span class="badge ok">LULUS (Arus Bocor Stabil)</span></td>
+          </tr>
+          <tr>
+            <td><b>4. Lightning Impulse Voltage (BIL)</b></td>
+            <td>Uji gelombang impuls petir $1.2/50\ \mu\text{s}$ (10 kali gelombang positif & negatif).</td>
+            <td>95 kV BIL</td>
+            <td>150 kV BIL</td>
+            <td><b>200 kV BIL</b></td>
+            <td><span class="badge ok">LULUS (Tahan Impuls Petir)</span></td>
+          </tr>
+          <tr>
+            <td><b>5. Partial Discharge Extinction (@ 3 pC)</b></td>
+            <td>Mengukur tegangan saat peluahan parsial (PD) padam di bawah tingkat $3\text{ pC}$.</td>
+            <td>7.5 kV</td>
+            <td>21.5 kV</td>
+            <td><b>30 kV</b></td>
+            <td><span class="badge ok">LULUS (Bebas Void PD)</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="accordion-item active" style="margin-top:20px;">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          1. Uji Tahanan Isolasi Lapangan (Megger Test) — Kabel MV XLPE
+        </div>
+        <div class="accordion-body">
+
+          <!-- Source verified badge -->
+          <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:14px; padding:10px 14px; background:rgba(56,189,248,0.08); border:1px solid var(--cyan); border-radius:8px;">
+            <span style="font-size:15px; margin-top:1px;">✅</span>
+            <div>
+              <div style="font-size:11px; font-weight:700; color:var(--cyan); font-family:var(--mono); text-transform:uppercase; letter-spacing:.06em;">Terverifikasi — IEEE 400 · NETA MTS-2023 · IEEE 43-2013 · IEC 60502-1</div>
+              <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">Nilai di bawah ini telah diklarifikasi dari kutipan standar resmi. Beberapa nilai sebelumnya yang beredar di industri telah dikoreksi.</div>
+            </div>
+          </div>
+
+          <p style="font-size:13px; margin-bottom:12px;">Pengujian dilakukan antara Fasa ke Fasa dan Fasa ke Ground (Earth Braid) <b>sebelum dan sesudah terminasi dipasang</b>. Untuk kabel XLPE baru, IR test adalah verifikasi awal — bukan satu-satunya metode acceptance test.</p>
+
+          <!-- Tegangan Uji DC -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent); margin-bottom:6px; font-family:var(--mono); text-transform:uppercase;">① Tegangan Uji DC (Megger) — NETA MTS-2023 §7.3.3</div>
+            <table class="styled-table" style="margin:0; font-size:12px;">
+              <thead><tr><th>Kelas Kabel</th><th>Tegangan Uji IR</th><th>Durasi</th></tr></thead>
+              <tbody>
+                <tr><td>5 kV class</td><td>1.000 – 2.500 V DC</td><td>Catat menit ke-1 (IR₁) &amp; ke-10 (IR₁₀)<span style="font-size:10px; color:var(--text-dim); display:block;">(Total injeksi 10 menit kontinyu)</span></td></tr>
+                <tr><td><b>15 kV class (12/20 kV)</b></td><td><span class="badge ok">2.500 V DC</span></td><td>Catat menit ke-1 &amp; ke-10<span style="font-size:10px; color:var(--text-dim); display:block;">(Total injeksi 10 menit kontinyu)</span></td></tr>
+                <tr><td>25 kV class</td><td>2.500 – 5.000 V DC</td><td>Catat menit ke-1 &amp; ke-10<span style="font-size:10px; color:var(--text-dim); display:block;">(Total injeksi 10 menit kontinyu)</span></td></tr>
+                <tr><td><b>35 kV class (&gt;25 kV)</b></td><td><span class="badge ok">5.000 V DC</span></td><td>Catat menit ke-1 &amp; ke-10<span style="font-size:10px; color:var(--text-dim); display:block;">(Total injeksi 10 menit kontinyu)</span></td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10px; color:var(--warn); margin-top:5px;">⚠️ <b>Koreksi:</b> Nilai 5 kV dan 10 kV DC yang sebelumnya tercantum adalah tegangan Hi-Pot/Withstand — bukan Megger test. NETA MTS-2023 §7.3.3 menetapkan 2.500 V untuk ≤25 kV dan 5.000 V untuk &gt;25 kV.</div>
+          </div>
+
+          <!-- Minimum IR NETA Table 100.1 -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent); margin-bottom:6px; font-family:var(--mono); text-transform:uppercase;">② Minimum IR — NETA MTS-2023 Table 100.1</div>
+            <table class="styled-table" style="margin:0; font-size:12px;">
+              <thead><tr><th>Tegangan Pengenal Peralatan</th><th>Minimum IR (1 menit, 20°C)</th></tr></thead>
+              <tbody>
+                <tr><td>601 V – 2.500 V</td><td>100 MΩ</td></tr>
+                <tr><td>2.501 V – 5.000 V</td><td>1.000 MΩ (1 GΩ)</td></tr>
+                <tr><td><b>5.001 V – 15.000 V (12–15 kV class)</b></td><td><span class="badge ok">5.000 MΩ (5 GΩ)</span></td></tr>
+                <tr><td><b>Di atas 15.000 V (35 kV class)</b></td><td><span class="badge ok">10.000 MΩ (10 GΩ)</span></td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10px; color:var(--text-dim); margin-top:5px;">📌 NETA menyatakan ini adalah <i>"representative values"</i> — untuk kabel shielded, data trending historis lebih bermakna dari nilai tunggal.</div>
+            <div style="font-size:10px; color:var(--warn); margin-top:3px;">⚠️ <b>Koreksi:</b> Formula "<i>R_iso ≥ 1 MΩ/kV + 1 MΩ</i>" adalah <i>rule of thumb</i> industri umum — bukan ketentuan resmi NETA MTS-2023 §7.3.3 untuk kabel MV bershielded.</div>
+          </div>
+
+          <!-- PI -->
+          <div style="margin-bottom:12px;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent); margin-bottom:6px; font-family:var(--mono); text-transform:uppercase;">③ Polarization Index (PI) — IEEE 43-2013 Clause 5</div>
+            <div style="font-size:12px; font-family:var(--mono); background:var(--panel3); padding:8px 12px; border-radius:6px; margin-bottom:8px; color:var(--text);">
+              PI = IR<sub>10 menit</sub> / IR<sub>1 menit</sub>
+            </div>
+            <table class="styled-table" style="margin:0; font-size:12px;">
+              <thead><tr><th>Nilai PI</th><th>Kondisi Isolasi</th></tr></thead>
+              <tbody>
+                <tr><td>&lt; 1,0</td><td><span class="badge" style="background:rgba(255,82,82,0.2);color:var(--danger);border:1px solid var(--danger);">Berbahaya</span></td></tr>
+                <tr><td>1,0 – 1,9</td><td><span class="badge warn">Meragukan</span></td></tr>
+                <tr><td><b>2,0 – 3,9</b></td><td><span class="badge ok">✅ Baik / Good</span></td></tr>
+                <tr><td>≥ 4,0</td><td><span class="badge ok">⭐ Sangat Baik</span></td></tr>
+              </tbody>
+            </table>
+            <div style="font-size:10px; color:var(--text-dim); margin-top:5px;">📌 IEEE 43-2013 <i>Clause 5.2</i>: Jika IR₁ &gt; 5.000 MΩ, PI tidak perlu dihitung — isolasi dianggap dalam kondisi sangat baik.<br>⚠️ <b>Catatan:</b> IEEE 43-2013 dirancang untuk mesin listrik (motor/generator). Penerapan untuk kabel MV bersifat adopsi industri, bukan ketentuan standar aslinya.</div>
+          </div>
+
+          <!-- Rekomendasi VLF untuk kabel baru -->
+          <div style="padding:10px 14px; background:rgba(61,220,132,0.07); border:1px solid var(--ok); border-radius:8px; margin-bottom:10px;">
+            <div style="font-size:11px; font-weight:700; color:var(--ok); font-family:var(--mono); text-transform:uppercase; margin-bottom:6px;">✅ Metode yang Direkomendasikan untuk Kabel XLPE Baru (IEEE 400.2)</div>
+            <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
+              Untuk <b>acceptance test kabel XLPE setelah terminasi dipasang</b>, IEEE 400.2 merekomendasikan <b>VLF AC Withstand Test (0,1 Hz)</b>:
+              <ul style="margin-left:16px; margin-top:6px;">
+                <li><b>15 kV class (U₀ = 8,7 kV):</b> 1,5 × U₀ = ~13 kV VLF selama 60 menit</li>
+                <li><b>35 kV class (U₀ = 20,8 kV):</b> 1,5 × U₀ = ~31 kV VLF selama 60 menit</li>
+              </ul>
+              <div style="margin-top:6px; font-size:10px;">Ref: IEEE 400.2-2013, Table 1 — "Recommended VLF test voltages for new cable systems"</div>
+            </div>
+          </div>
+
+          <!-- IEC 60502-1 correction -->
+          <div style="font-size:10px; color:var(--warn); padding:8px 12px; background:rgba(255,181,71,0.07); border-radius:6px; border:1px solid rgba(255,181,71,0.3);">
+            ⚠️ <b>Koreksi referensi IEC 60502-1:</b> Annex B bukan tentang IR test — berisi ketentuan pembulatan angka. IR test untuk kabel XLPE terdapat di <b>Clause 17.2</b> (Type Test). Nilai Kᵢ minimum XLPE: ≥ 3.500 MΩ·km pada 20°C.
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- TAB 5: SKUN, TORSI & MATERIAL CHECKLIST -->
+  <div id="tab-lug" class="tab-content">
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">🔧</span> Spesifikasi Skun & Torsi Pengencangan Baut Terminal
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
+        Pengencangan baut busbar/terminal kubikel wajib menggunakan **Kunci Torsi (Torque Wrench)** untuk mencegah overheating maupun kerusakan mekanis lug.
+      </p>
+
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Ukuran Baut (Metric)</th>
+            <th>Diameter Lubang Lug</th>
+            <th>Torsi Pengencangan (Steel Bolt Class 8.8)</th>
+            <th>Torsi Pengencangan (Brass / Stainless)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><b>M8</b></td><td>8.5 mm</td><td><span class="badge ok">22–25 N·m</span></td><td>15 N·m</td></tr>
+          <tr><td><b>M10</b></td><td>10.5 mm</td><td><span class="badge ok">45–50 N·m</span></td><td>30 N·m</td></tr>
+          <tr><td><b>M12</b></td><td>13.0 mm</td><td><span class="badge ok">75–85 N·m</span></td><td>55 N·m</td></tr>
+          <tr><td><b>M16</b></td><td>17.0 mm</td><td><span class="badge ok">190–210 N·m</span></td><td>130 N·m</td></tr>
+        </tbody>
+      </table>
+
+      <div class="two-col" style="margin-top:20px;">
+        <div style="background:var(--panel2); padding:16px; border-radius:8px; border:1px solid var(--line);">
+          <h4 style="font-size:14px; color:var(--accent); margin-bottom:6px;">Pilihan Jenis Skun (Cable Lug):</h4>
+          <ul style="font-size:12px; color:var(--text-dim); margin-left:18px; line-height:1.6;">
+            <li><b>Crimp Lug:</b> Memerlukan tang press hidrolik dengan *dies* yang persis sama dengan ukuran penampang konduktor (mm²).</li>
+            <li><b>Shear-bolt Lug (3M QL2 / Prysmian ALSB):</b> Memiliki baut pengunci mekanis yang patah otomatis (*shear off*) saat mencapai torsi terkalibrasi pabrikan.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--panel2); padding:16px; border-radius:8px; border:1px solid var(--line);">
+          <h4 style="font-size:14px; color:var(--cyan); margin-bottom:6px;">Checklist Material & Alat Praktik Training:</h4>
+          <ul style="font-size:12px; color:var(--text-dim); margin-left:18px; line-height:1.6;">
+            <li>1 Set Raychem / 3M Kit 35kV (Indoor & Outdoor)</li>
+            <li>Kabel Latihan 35kV 3 × 50 mm² (2 meter) & Skun Lug (6 pcs)</li>
+            <li>Heat Gun / Torch Set & Tang Crimping Hidrolik + Dies</li>
+            <li>Megger 10kV Tester & High Voltage Hi-Pot Test Set</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD: STANDAR JARAK CLEARANCE ANTAR FASA & FASA KE TANAH -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title">
+        <span class="icon">📐</span> Standar Jarak Clearance Antar-Fasa &amp; Fasa-ke-Tanah (IEC 61936-1 / PUIL 2011)
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
+        Jarak bebas di udara (<i>clearance in air</i>) terstandar berdasarkan ketahanan impuls petir (BIL) untuk mencegah loncatan bunga api (<i>flashover</i>) pada instalasi kubikel/terminasi MV:
+      </p>
+
+      <table class="styled-table" style="font-size:12px;">
+        <thead>
+          <tr>
+            <th>Kelas Tegangan Sistem (U<sub>m</sub>)</th>
+            <th>Ketahanan Impuls Petir (BIL)</th>
+            <th>Clearance Min. Fasa-ke-Tanah</th>
+            <th>Clearance Min. Fasa-ke-Fasa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>12 kV</b> (Sistem 6–11 kV)</td>
+            <td>75 – 95 kV BIL</td>
+            <td><span class="badge ok">≥ 120 mm</span> <span style="font-size:10px; color:var(--text-dim);">(75–120 mm)</span></td>
+            <td><span class="badge ok">≥ 160 mm</span> <span style="font-size:10px; color:var(--text-dim);">(100–160 mm)</span></td>
+          </tr>
+          <tr>
+            <td><b>24 / 20 kV</b> (Standar PLN 20 kV)</td>
+            <td>125 – 150 kV BIL</td>
+            <td><span class="badge ok">≥ 160 mm</span> <span style="font-size:10px; color:var(--text-dim);">(160–200 mm)</span></td>
+            <td><span class="badge ok">≥ 220 mm</span> <span style="font-size:10px; color:var(--text-dim);">(180–220 mm)</span></td>
+          </tr>
+          <tr>
+            <td><b>36 kV</b> (Sistem 33–35 kV)</td>
+            <td>170 – 200 kV BIL</td>
+            <td><span class="badge ok">≥ 270 mm</span></td>
+            <td><span class="badge ok">≥ 320 mm</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Grid Informasi Acuan Standar -->
+      <div class="two-col" style="margin-top:16px;">
+        <div style="background:var(--panel2); padding:14px; border-radius:8px; border:1px solid var(--line);">
+          <h4 style="font-size:13px; color:var(--cyan); margin-bottom:6px;">📚 Dokumen Acuan Standar Resmi:</h4>
+          <ul style="font-size:11px; color:var(--text-dim); margin-left:16px; line-height:1.6;">
+            <li><b>IEC 60071-1 &amp; 60071-2:</b> <i>Insulation Coordination</i> — Acuan hubungan BIL &amp; jarak isolasi udara.</li>
+            <li><b>IEC 61936-1 / DIN VDE 0101:</b> <i>Power Installations Exceeding 1 kV AC</i> — Standar clearance udara.</li>
+            <li><b>IEC 62271-200 / SPLN S3.001:</b> Standar switchgear/kubikel MV &amp; verifikasi Type Test pabrikan.</li>
+            <li><b>PUIL 2011 (SNI 04-0225:2011):</b> Persyaratan Umum Instalasi Listrik Indonesia.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--panel2); padding:14px; border-radius:8px; border:1px solid var(--line);">
+          <h4 style="font-size:13px; color:var(--warn); margin-bottom:6px;">⚠️ Catatan Penting Aplikasi Lapangan:</h4>
+          <ul style="font-size:11px; color:var(--text-dim); margin-left:16px; line-height:1.6;">
+            <li><b>AIS vs GIS/SF6:</b> Nilai tabel berlaku untuk udara terbuka (AIS). Pada kubikel GIS/SF6, jarak jauh lebih rapat karena dielektrik SF6 jauh lebih kuat.</li>
+            <li><b>Jarak Aman Manusia (PUIL 2011 Tabel 9.9-1):</b> Jarak aman teknisi bekerja di dekat peralatan 20 kV bertegangan adalah <b>75 cm (0.75 m)</b>.</li>
+            <li><b>Barrier Penyekat:</b> Jika clearance di kompartemen sempit, wajib memasang papan insulasi penyekat fasa (<i>phase barrier</i>).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 6: INTERACTIVE EVALUATION QUIZ (PRE/POST TEST) -->
+  <div id="tab-quiz" class="tab-content">
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">📝</span> Modul Evaluasi: Quiz Pre-Test & Post-Test
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">
+        Alur Evaluasi Kompetensi: Anda <b>wajib mengerjakan Pre-Test</b> terlebih dahulu. Akses Post-Test baru akan <b>terbuka (unlocked)</b> apabila skor Pre-Test Anda mencapai nilai minimal <b>70%</b> (14 dari 20 benar). Jika belum lulus Pre-Test, Anda wajib mengulanginya.
+      </p>
+
+      <!-- Status Progress Flow Grid -->
+      <div class="two-col" style="margin-bottom:20px;">
+        <div id="statusPreCard" style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line);">
+          <div style="font-size:12px; font-family:var(--mono); color:var(--text-dim); margin-bottom:4px;">TAHAP 1: PRE-TEST (20 SOAL)</div>
+          <div id="statusPreBadge" class="badge warn" style="font-size:12px; padding:4px 10px;">🔒 Wajib Dikerjakan Pertama</div>
+          <div id="statusPreDetail" style="font-size:12px; color:var(--text-dim); margin-top:8px;">Batas minimal kelulusan: 70/100</div>
+        </div>
+
+        <div id="statusPostCard" style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line); opacity:0.6;">
+          <div style="font-size:12px; font-family:var(--mono); color:var(--text-dim); margin-bottom:4px;">TAHAP 2: POST-TEST (20 SOAL)</div>
+          <div id="statusPostBadge" class="badge warn" style="font-size:12px; padding:4px 10px;">🔒 Terkunci</div>
+          <div id="statusPostDetail" style="font-size:12px; color:var(--text-dim); margin-top:8px;">Syarat: Lulus Pre-Test (Skor ≥ 70)</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+        <button id="btnStartPre" class="btn primary" onclick="loadQuiz('pre')">Mulai Pre-Test (20 Soal)</button>
+        <button id="btnStartPost" class="btn" disabled style="opacity:0.5; cursor:not-allowed;" onclick="loadQuiz('post')">🔒 Post-Test (Terkunci)</button>
+      </div>
+
+      <div id="quizContainer" style="display:none; background:var(--panel2); padding:20px; border-radius:10px; border:1px solid var(--line);">
+        <div id="quizHeader" style="font-family:var(--mono); font-size:12px; color:var(--accent); margin-bottom:12px;"></div>
+        <div id="quizQuestion" class="quiz-q"></div>
+        <div id="quizOptions" class="quiz-opts"></div>
+        <div id="quizFeedback" style="font-size:13px; margin-top:12px; font-weight:600;"></div>
+        
+        <div class="navrow" style="margin-top:16px;">
+          <button id="btnPrevQ" class="btn ghost" onclick="navQuiz(-1)">← Soal Sebelumnya</button>
+          <button id="btnNextQ" class="btn primary" onclick="navQuiz(1)">Soal Berikutnya →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 7: REFERENSI MODUL & DAFTAR PUSTAKA -->
+  <div id="tab-ref" class="tab-content">
+    <div class="card">
+      <div class="card-title">
+        <span class="icon">📚</span> Referensi Teknis & Dokumen Acuan Valid (Folder Referensi PDF)
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
+        Seluruh data teknis, tabel kualifikasi, dimensi creepage, dan formula dalam aplikasi ini disusun berdasarkan 15 berkas resmi pada folder <code>referensi pdf</code>:
+      </p>
+
+      <ul style="font-size:13px; color:var(--text); line-height:1.8; margin-left:20px;">
+        <li><b>3M Cold Shrink QT-III Datasheet 7620-S / 7680-S / 7690-S (5–35 kV)</b> — 3M Data Sheet 78-8126-6167-2-E.</li>
+        <li><b>3M Cold Shrink QT-III Tubular Datasheet 7620-T / 7690-T (5–35 kV)</b> — 3M Data Sheet 78-8126-0936-6-F.</li>
+        <li><b>3M EMD Cold Shrink QT-III Indoor and Outdoor Terminations Brochure</b> — 3M EMD BR-8007270.</li>
+        <li><b>3M Quick Term II Series 5640 & 5650 Data Sheet (15–34.5 kV)</b> — 3M Data Sheet 80-6108-5257-8-A.</li>
+        <li><b>3M Medium Voltage Terminations Catalog (5 kV–46 kV)</b> — 3M Electrical Markets Division Catalog.</li>
+        <li><b>Prysmian ColdFit™ Medium Voltage Cold Shrink Terminations (5–35 kV)</b> — Prysmian Group ACS-DS-0008-1224.</li>
+        <li><b>Prysmian Brosur Jointing Termination 150–300 mm²</b> — Prysmian Group.</li>
+        <li><b>Raychem Heat-Shrinkable MV Terminations IXSU-F/OXSU-F (11–33 kV)</b> — TE Connectivity / Tyco Electronics.</li>
+        <li><b>TE Raychem HVT-Z Series 15kV Termination Installation Instructions</b> — TE PII 55533 / PCN C78423-000.</li>
+        <li><b>Tyco Raychem Cable Termination PADS Approved Network Rail</b> — Tyco Electronics SMOE61934 / ESD-1426-GB.</li>
+        <li><b>Handbook & Quick Start Guides Pelatihan Terminasi MV</b> — Diorama Training Department (Wildan Maradona, S.T.).</li>
+        <li><b>IEC 60502-2 / IEEE Std 48 Class 1 / SPLN 43-5</b> — Standar Internasional dan PLN untuk Aksesoris Kabel MV.</li>
+      </ul>
+    </div>
+
+    <!-- Card Glosarium Istilah Teknis -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title">
+        <span class="icon">📖</span> Glosarium Istilah Teknis Terminasi Kabel MV
+      </div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:18px;">
+        Kamus ringkas istilah standar kelistrikan, material kabel, parameter uji, dan aksesoris lapangan yang digunakan dalam aplikasi dan modul pelatihan:
+      </p>
+
+      <div class="two-col" style="gap:16px;">
+        <!-- Kategori 1: Material & Konstruksi Kabel -->
+        <div style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line);">
+          <div style="font-size:12px; font-weight:700; color:var(--accent); font-family:var(--mono); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+            <span>⚡</span> Material &amp; Konstruksi Kabel
+          </div>
+          <dl style="font-size:12px; line-height:1.6;">
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">XLPE (Cross-linked Polyethylene)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Isolasi padat polietilena berikat silang dengan ketahanan suhu kerja kontinyu 90°C dan suhu hubung singkat 250°C.</dd>
+            
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">EPR (Ethylene Propylene Rubber)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Isolasi karet elastomerek sintetis bernilai fleksibilitas tinggi dan sangat tahan kelembaban lingkungan ekstrim.</dd>
+            
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">CWS / CTS (Copper Wire / Tape Shield)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Lapisan pelindung tembaga (kawat/pita) perata medan listrik radial sekaligus jalur pembumian arus gangguan.</dd>
+            
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Semi-conductive Layer (Semi-con)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Lapisan semi-konduktif penghilang void udara dan perata medan tegangan listrik pada permukaan insulasi kabel.</dd>
+          </dl>
+        </div>
+
+        <!-- Kategori 2: Teknologi & Mekanisme Terminasi -->
+        <div style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line);">
+          <div style="font-size:12px; font-weight:700; color:var(--cyan); font-family:var(--mono); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+            <span>🛠️</span> Teknologi &amp; Mekanisme Terminasi
+          </div>
+          <dl style="font-size:12px; line-height:1.6;">
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Cold Shrink (Menciut Dingin)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Teknologi insulasi silikon siap menciut tanpa pemanasan, dipasang dengan menarik inti pendukung plastik (core).</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Heat Shrink (Menciut Panas)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Teknologi insulasi berbahan polimer elastomerek yang diciutkan menggunakan pemanasan nyala api (torch/heat gun).</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Stress Control &amp; High-K Material</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Metode pembiasan medan listrik di potongan semi-con menggunakan material berkonsentrasi dielektrik tinggi (K &gt; 15).</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">SRM Mastic (Stress Relief Mastic)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Mastic pereda tegangan listrik pengisi void udara di batas kupasan semi-con untuk mencegah discharge.</dd>
+          </dl>
+        </div>
+
+        <!-- Kategori 3: Pengujian & Parameter Kinerja -->
+        <div style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line);">
+          <div style="font-size:12px; font-weight:700; color:var(--ok); font-family:var(--mono); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+            <span>🔬</span> Parameter Kinerja &amp; Pengujian
+          </div>
+          <dl style="font-size:12px; line-height:1.6;">
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Creepage Distance (Jarak Merambat)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Panjang lintasan terpendek sepanjang permukaan insulasi luar antara terminal fasa bertegangan dan bumi (ground).</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">BIL (Basic Impulse Level)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Batas tegangan puncak impuls petir (1.2/50 µs) yang sanggup ditahan oleh insulasi tanpa mengalami keluahan/flashover.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Partial Discharge (PD)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Peluahan listrik parsial di celah udara (void) insulasi yang jika dibiarkan dapat merusak molekul insulasi secara bertahap.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Polarization Index (PI)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Rasio perbandingan tahanan isolasi menit ke-10 dibagi menit ke-1 (IR₁₀/IR₁) untuk menilai kebersihan dan kekeringan insulasi.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">VLF (Very Low Frequency)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Pengujian withstand AC frekuensi rendah (0.1 Hz) yang direkomendasikan standar IEEE 400.2 untuk kabel XLPE baru.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Hydrophobicity &amp; Outgassing</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Sifat silikon menolak air hujan (hydrophobic) dan perubahan warna kecoklatan alami (outgassing) tanpa menurunkan keandalan dielektrik.</dd>
+          </dl>
+        </div>
+
+        <!-- Kategori 4: Aksesoris & Istilah Lapangan -->
+        <div style="background:var(--panel2); padding:16px; border-radius:10px; border:1px solid var(--line);">
+          <div style="font-size:12px; font-weight:700; color:var(--warn); font-family:var(--mono); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+            <span>📐</span> Aksesoris &amp; Istilah Lapangan
+          </div>
+          <dl style="font-size:12px; line-height:1.6;">
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Shear-bolt Lug (Skun Baut Patah)</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Skun terminal mekanis ber-baut khusus yang terpotong otomatis saat mencapai torsi kencang standar pabrikan.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Jacket Cutback Z</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Jarak spesifik kupasan selubung luar kabel (outer sheath) dihitung dari ujung konduktor sesuai petunjuk instalasi (IIS).</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Weathershed / Skirt</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Sirip-sirip payung silikon pada kit outdoor untuk memperpanjang jarak merambat (creepage) dan memecah alur tetesan air hujan.</dd>
+
+            <dt style="font-weight:700; color:var(--text); margin-top:8px;">Earth Braid / Ground Wire</dt>
+            <dd style="color:var(--text-dim); margin-left:12px;">Kabel fleksibel anyaman tembaga terkonduksi untuk menyambung metallic screen/armour kabel ke sistem pembumian (grounding).</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Diorama Training Department · Data bersumber dari 15 berkas resmi folder referensi pdf (Raychem, 3M, Prysmian) · Selalu verifikasi ke vendor untuk spesifikasi final order
+  </footer>
+</div>
+
+<script>
+// ============================================================
+// MV CABLE TERMINATION SELECTOR & TECHNICAL DATABASE
+// ============================================================
+
+const STEPS = ["voltage", "cableType", "core", "env", "conductor", "brand"];
+let state = { voltage: null, cableType: null, core: null, env: null, conductorMM2: null, brand: null, mm3InputMode: "mm2", mm3OD: null };
+let stepIndex = 0;
+
+const VOLTAGE_CLASSES = [
+  { id: "12", label: "12 kV", bil: "75 / 95 kV BIL" },
+  { id: "17.5", label: "17.5 / 15 kV", bil: "95 / 110 kV BIL" },
+  { id: "24", label: "24 / 20 kV", bil: "125 / 150 kV BIL" },
+  { id: "36", label: "36 / 35 kV", bil: "170 / 200 kV BIL" },
+  { id: "42", label: "42 kV", bil: "200 kV BIL" },
+];
+
+const RAYCHEM_DATA = {
+  crimp_lug: {
+    "12": {
+      single: [
+        { range: [10, 35], indoor: "IXSU-F 3111", outdoor: "OXSU-F 3111", od: "13.7–16.3" },
+        { range: [25, 95], indoor: "IXSU-F 3121", outdoor: "OXSU-F 3121", od: "13.7–20.8" },
+        { range: [95, 240], indoor: "IXSU-F 3131", outdoor: "OXSU-F 3131", od: "18.6–28.4" },
+        { range: [240, 500], indoor: "IXSU-F 3141", outdoor: "OXSU-F 3141", od: "25.7–36.2" },
+        { range: [500, 800], indoor: "IXSU-F 3151", outdoor: "OXSU-F 3151", od: "34.0–42.2" },
+        { range: [800, 1200], indoor: "IXSU-F 3161", outdoor: "OXSU-F 3161", od: "39.5–50.0" },
+      ],
+      three: [
+        { range: [10, 16], tail: [450, 1200], indoor: ["IXSU-F 3301", "IXSU-F 3304"], outdoor: ["OXSU-F 3301", "OXSU-F 3304"] },
+        { range: [16, 35], tail: [450, 1200], indoor: ["IXSU-F 3311", "IXSU-F 3314"], outdoor: ["OXSU-F 3311", "OXSU-F 3314"] },
+        { range: [25, 70], tail: [450, 1200], indoor: ["IXSU-F 3321", "IXSU-F 3324"], outdoor: ["OXSU-F 3321", "OXSU-F 3324"] },
+        { range: [95, 240], tail: [450, 1200], indoor: ["IXSU-F 3331", "IXSU-F 3334"], outdoor: ["OXSU-F 3331", "OXSU-F 3334"] },
+        { range: [240, 500], tail: [450, 1200], indoor: ["IXSU-F 3341", "IXSU-F 3344"], outdoor: ["OXSU-F 3341", "OXSU-F 3344"] },
+      ],
+    },
+    "17.5": {
+      single: [
+        { range: [25, 25], indoor: "IXSU-F 4111", outdoor: "OXSU-F 4111", od: "15.7" },
+        { range: [35, 95], indoor: "IXSU-F 4121", outdoor: "OXSU-F 4121", od: "16.8–22.8" },
+        { range: [95, 240], indoor: "IXSU-F 4131", outdoor: "OXSU-F 4131", od: "20.7–30.4" },
+        { range: [240, 400], indoor: "IXSU-F 4141", outdoor: "OXSU-F 4141", od: "27.7–35.6" },
+        { range: [400, 800], indoor: "IXSU-F 4151", outdoor: "OXSU-F 4151", od: "33.1–44.5" },
+      ],
+      three: [
+        { range: [25, 50], tail: [450, 1200], indoor: ["IXSU-F 4321", "IXSU-F 4324"], outdoor: ["OXSU-F 4321", "OXSU-F 4324"] },
+        { range: [70, 185], tail: [450, 1200], indoor: ["IXSU-F 4331", "IXSU-F 4334"], outdoor: ["OXSU-F 4331", "OXSU-F 4334"] },
+        { range: [185, 400], tail: [450, 1200], indoor: ["IXSU-F 4341", "IXSU-F 4344"], outdoor: ["OXSU-F 4341", "OXSU-F 4344"] },
+      ],
+    },
+    "24": {
+      single: [
+        { range: [25, 70], indoor: "IXSU-F 5121", outdoor: "OXSU-F 5121", od: "17.9–23.4" },
+        { range: [70, 240], indoor: "IXSU-F 5131", outdoor: "OXSU-F 5131", od: "21.9–32.6" },
+        { range: [185, 400], indoor: "IXSU-F 5141", outdoor: "OXSU-F 5141", od: "27.4–37.8" },
+        { range: [400, 800], indoor: "IXSU-F 5151", outdoor: "OXSU-F 5151", od: "35.1–46.9" },
+        { range: [1000, 1200], indoor: "IXSU-F 5161", outdoor: "OXSU-F 5161", od: "49.4–56.0" },
+      ],
+      three: [
+        { range: [10, 25], tail: [450, 1200], indoor: ["IXSU-F 5311", "IXSU-F 5314"], outdoor: ["OXSU-F 5311", "OXSU-F 5314"] },
+        { range: [25, 50], tail: [450, 1200], indoor: ["IXSU-F 5321", "IXSU-F 5324"], outdoor: ["OXSU-F 5321", "OXSU-F 5324"] },
+        { range: [70, 185], tail: [450, 1200], indoor: ["IXSU-F 5331", "IXSU-F 5334"], outdoor: ["OXSU-F 5331", "OXSU-F 5334"] },
+        { range: [185, 400], tail: [450, 1200], indoor: ["IXSU-F 5341", "IXSU-F 5344"], outdoor: ["OXSU-F 5341", "OXSU-F 5344"] },
+      ],
+    },
+    "36": {
+      single: [
+        { range: [50, 120], indoor: "IXSU-F 6131", outdoor: "OXSU-F 6131", od: "24.5–32.0" },
+        { range: [150, 400], indoor: "IXSU-F 6141", outdoor: "OXSU-F 6141", od: "30.8–42.8" },
+        { range: [500, 800], indoor: "IXSU-F 6151", outdoor: "OXSU-F 6151", od: "42.6–53.4" },
+      ],
+      three: [
+        { range: [50, 120], tail: [650, 1200], indoor: ["IXSU-F 6332", "IXSU-F 6334"], outdoor: ["OXSU-F 6332", "OXSU-F 6334"] },
+        { range: [150, 300], tail: [650, 1200], indoor: ["IXSU-F 6342", "IXSU-F 6344"], outdoor: ["OXSU-F 6342", "OXSU-F 6344"] },
+        { range: [400, 500], tail: [650, 1200], indoor: ["IXSU-F 6352", "IXSU-F 6354"], outdoor: ["OXSU-F 6352", "OXSU-F 6354"] },
+      ],
+    },
+    "42": {
+      single: [
+        { range: [35, 35], indoor: "IXSU-F 7121", outdoor: null, od: "26.0–27.5" },
+        { range: [50, 120], indoor: "IXSU-F 7131", outdoor: "OXSU-F 7131", od: "27.2–34.0" },
+        { range: [150, 300], indoor: "IXSU-F 7141", outdoor: "OXSU-F 7141", od: "33.5–41.6" },
+        { range: [400, 500], indoor: "IXSU-F 7151", outdoor: "OXSU-F 7151", od: "42.8–47.6" },
+      ],
+      three: [
+        { range: [50, 120], tail: [1200], indoor: ["IXSU-F 7334"], outdoor: ["OXSU-F 7334"] },
+        { range: [150, 300], tail: [1200], indoor: ["IXSU-F 7344"], outdoor: ["OXSU-F 7344"] },
+      ],
+    },
+  },
+  earthing_accessories: {
+    solderless_single: [
+      { tapeShieldOD: [12, 18], kit: "EAKT-1655", mod: "G55" },
+      { tapeShieldOD: [19, 24], kit: "EAKT-1656", mod: "G56" },
+      { tapeShieldOD: [25, 30], kit: "EAKT-1657", mod: "G57" },
+      { tapeShieldOD: [31, 44], kit: "EAKT-1658", mod: "G58" },
+      { tapeShieldOD: [41, 65], kit: "EAKT-1659", mod: "G59" },
+    ],
+  }
+};
+
+const PRYSMIAN_DATA = {
+  single_core: {
+    "12": [
+      { od: [14.5, 25], mm2: [35, 150], indoor: "CDTI-1C-12-A", outdoor: "CDTO-1C-12-A" },
+      { od: [17, 28], mm2: [70, 185], indoor: "CDTI-1C-12-B", outdoor: "CDTO-1C-12-B" },
+      { od: [19, 33], mm2: [95, 300], indoor: "CDTI-1C-12-C", outdoor: "CDTO-1C-12-C" },
+      { od: [21.5, 38], mm2: [150, 500], indoor: "CDTI-1C-12-E", outdoor: "CDTO-1C-12-E" },
+      { od: [27.5, 50], mm2: [300, 630], indoor: "CDTI-1C-12-G", outdoor: "CDTO-1C-12-G" },
+    ],
+    "24": [
+      { od: [17, 28], mm2: [25, 120], indoor: "CDTI-1C-24-B", outdoor: "CDTO-1C-24-B" },
+      { od: [19, 33], mm2: [50, 240], indoor: "CDTI-1C-24-C", outdoor: "CDTO-1C-24-C" },
+      { od: [23, 42], mm2: [150, 500], indoor: "CDTI-1C-24-F", outdoor: "CDTO-1C-24-F" },
+      { od: [27.5, 50], mm2: [185, 630], indoor: "CDTI-1C-24-G", outdoor: "CDTO-1C-24-G" },
+    ],
+    "36": [
+      { od: [21.5, 38], mm2: [25, 185], indoor: "PICT35 / CDTI-1C-36-E", outdoor: "PCT35 / CDTO-1C-36-E" },
+      { od: [23, 42], mm2: [35, 300], indoor: "PICT35 / CDTI-1C-36-F", outdoor: "PCT35 / CDTO-1C-36-F" },
+      { od: [27.5, 50], mm2: [95, 500], indoor: "PICT35 / CDTI-1C-36-G", outdoor: "PCT35 / CDTO-1C-36-G" },
+    ]
+  }
+};
+
+// ============================================================
+// 3M MEDIUM VOLTAGE TERMINATION DATABASE
+// Sumber: 3M Medium Voltage Terminations Catalog, 5kV-46kV
+// Lookup basis: Insulation O.D. range (inch/mm) -- BUKAN mm2 langsung.
+// Setiap row: odRange dalam mm [min,max], plus conductor size per voltage class.
+// ============================================================
+
+const MM3_DATA = {
+
+  // ==========================================================
+  // JCN & CN CABLE, 5-35 kV
+  // ==========================================================
+  jcn_cn: {
+
+    qt3_indoor: { // 7640-T & 7650-T Series -- non-skirted, indoor
+      label: "QT-III 7640-T/7650-T (Indoor, Non-Skirted)",
+      env: "indoor",
+      rows: [
+        { order:"7642-T-110", bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7644-T-110", bil:110, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)"} },
+        { order:"7645-T-110", bil:110, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)"} },
+        { order:"7646-T-110", bil:110, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)"} },
+        { order:"7653-T-150", bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7655-T-150", bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1250 kcmil (240-625 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7656-T-150", bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor: { // 7640-S, 7650-S, 7660-S -- skirted, outdoor
+      label: "QT-III 7640-S/7650-S/7660-S (Outdoor, Skirted)",
+      env: "outdoor",
+      rows: [
+        { order:"7642-S-2", skirts:2, bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7652-S-4", skirts:4, bil:150, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"7653-S-4", skirts:4, bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7654-S-4", skirts:4, bil:150, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)"} },
+        { order:"7655-S-4", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"} },
+        { order:"7656-S-4", skirts:4, bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)"} },
+        { order:"7663-S-8", skirts:8, bil:200, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7664-S-8", skirts:8, bil:200, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)","35":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7665-S-8", skirts:8, bil:200, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7666-S-8", skirts:8, bil:200, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor_jumperwire: { // 7640-S/7650-S with Jumper Wire Top Insulator
+      label: "QT-III w/ Jumper Wire Top Insulator 7640-S/7650-S (Outdoor)",
+      env: "outdoor",
+      note: "Top insulator melindungi dari gangguan hewan (tupai) & korosi lingkungan.",
+      rows: [
+        { order:"7642-S-2-TI", skirts:2, bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7652-S-4-TI", skirts:4, bil:150, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"7653-S-4-TI", skirts:4, bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7654-S-4-TI", skirts:4, bil:150, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)"} },
+        { order:"7655-S-4-TI", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"} },
+        { order:"7656-S-4-TI", skirts:4, bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (630-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor_inverted: { // 7640-S-INV & 7650-S-INV
+      label: "QT-III Inverted 7640-S-INV/7650-S-INV (Outdoor, cable pointing down)",
+      env: "outdoor",
+      rows: [
+        { order:"7642-S-INV-2", skirts:2, bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7653-S-INV-4", skirts:4, bil:200, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7655-S-INV-4", skirts:4, bil:200, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7656-S-INV-4", skirts:4, bil:200, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt2_indoor: { // 5670 Series -- 15kV only
+      label: "QT-II 5670 Series (Indoor, 15 kV only)",
+      env: "indoor",
+      rows: [
+        { order:"5671", bil:110, odMM:[16.2,28.4], cond:{15:"2 AWG-250 kcmil (35-120 mm²)"} },
+        { order:"5672", bil:110, odMM:[23.8,46.0], cond:{15:"250-1000 kcmil (150-500 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_4skirt: { // 5640/5650 -- 4 skirt, 15kV
+      label: "QT-II 5640/5650 - 4 Skirt (Outdoor, 15 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5641", bil:110, odMM:[16.3,28.4], cond:{15:"2-2/0 AWG (35-60 mm²)"} },
+        { order:"5642", bil:110, odMM:[21.3,35.1], cond:{15:"3/0 AWG-350 kcmil (95-180 mm²)"} },
+        { order:"5643", bil:110, odMM:[27.4,45.7], cond:{15:"400-600 kcmil (240-325 mm²)"} },
+        { order:"5644", bil:110, odMM:[33.3,53.3], cond:{15:"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_6skirt: { // 5640/5650 -- 6 skirt, 15-25/28kV
+      label: "QT-II 5640/5650 - 6 Skirt (Outdoor, 15-25/28 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5651", bil:150, odMM:[16.3,28.4], cond:{15:"2-2/0 AWG (35-60 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"5652", bil:150, odMM:[21.3,35.1], cond:{15:"3/0 AWG-350 kcmil (95-150 mm²)","25/28":"1/0 AWG-250 kcmil (60-120 mm²)"} },
+        { order:"5653", bil:150, odMM:[27.4,45.7], cond:{15:"400-700 kcmil (240-325 mm²)","25/28":"250-500 kcmil (150-250 mm²)"} },
+        { order:"5654", bil:150, odMM:[33.3,53.3], cond:{15:"750-1500 kcmil (400-725 mm²)","25/28":"500-1250 kcmil (300-625 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_8skirt: { // 5640/5650 -- 8 skirt, 15-35kV (5649 = tape shield)
+      label: "QT-II 5640/5650 - 8 Skirt (Outdoor, 15-35 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5646", bil:200, odMM:[21.3,35.1], cond:{15:"3/0 AWG-350 kcmil (95-150 mm²)","25/28":"1/0 AWG-250 kcmil (60-120 mm²)","35":"1-3/0 AWG (50-80 mm²)"} },
+        { order:"5647", bil:200, odMM:[27.4,45.7], cond:{15:"400-700 kcmil (240-325 mm²)","25/28":"250-500 kcmil (150-250 mm²)","35":"4/0 AWG-300 kcmil (120-150 mm²)"} },
+        { order:"5648", bil:200, odMM:[33.3,53.3], cond:{15:"750-1500 kcmil (400-725 mm²)","25/28":"500-1250 kcmil (300-625 mm²)","35":"350-1000 kcmil (185-500 mm²)"} },
+        { order:"5649", bil:200, odMM:[45.7,58.4], shielding:"Tape Shield", cond:{35:"1000-1500 kcmil (600-725 mm²)"} },
+      ]
+    },
+
+    qt2_cn_4skirt: { // 5600/5680 non-jacketed CN -- 4 skirt, 5-15kV
+      label: "QT-II 5600/5680 Non-Jacketed CN - 4 Skirt (Outdoor, 5-15 kV)",
+      env: "outdoor",
+      shielding: "Concentric Neutral (CN)",
+      rows: [
+        { order:"5601", bil:110, odMM:[16.3,28.4], cond:{"5-100":"3/0 AWG-500 kcmil (95-250 mm²)","5-133/8-100":"2/0 AWG-500 kcmil (70-250 mm²)","8-133":"1/0 AWG-350 kcmil (60-150 mm²)",15:"2-4/0 AWG (35-100 mm²)"} },
+        { order:"5602", bil:110, odMM:[21.3,35.1], cond:{"5-100":"350-750 kcmil (185-325 mm²)","5-133/8-100":"350-750 kcmil (185-325 mm²)","8-133":"250-750 kcmil (150-325 mm²)",15:"250-500 kcmil (150-250 mm²)"} },
+        { order:"5603", bil:110, odMM:[27.4,45.7], cond:{"5-100":"750-1000 kcmil (400-500 mm²)","5-133/8-100":"750-1500 kcmil (400-725 mm²)","8-133":"500-1250 kcmil (300-625 mm²)",15:"500-1250 kcmil (300-625 mm²)"} },
+      ]
+    },
+
+    qt2_cn_6skirt: { // 5600/5680 -- 6 skirt, 5-35kV
+      label: "QT-II 5600/5680 Non-Jacketed CN - 6 Skirt (Outdoor, 5-35 kV)",
+      env: "outdoor",
+      shielding: "Concentric Neutral (CN)",
+      rows: [
+        { order:"5681", bil:150, odMM:[16.3,28.4], cond:{"5-100":"3/0 AWG-500 kcmil (95-250 mm²)","5-133/8-100":"2/0 AWG-500 kcmil (70-250 mm²)","8-133":"1/0 AWG-350 kcmil (60-150 mm²)",15:"4-4/0 AWG (22-100 mm²)","25/28":"4-2/0 AWG (22-60 mm²)"} },
+        { order:"5682", bil:150, odMM:[21.3,35.1], cond:{"5-100":"350-750 kcmil (185-325 mm²)","5-133/8-100":"350-750 kcmil (185-325 mm²)","8-133":"250-750 kcmil (150-325 mm²)",15:"250-500 kcmil (150-250 mm²)","25/28":"1/0 AWG-350 kcmil (60-150 mm²)","35":"1-4/0 AWG (50-100 mm²)"} },
+        { order:"5683", bil:150, odMM:[27.4,45.7], cond:{"5-100":"750-1000 kcmil (400-500 mm²)","5-133/8-100":"750-1500 kcmil (400-725 mm²)","8-133":"500-1250 kcmil (300-625 mm²)",15:"500-1250 kcmil (300-625 mm²)","25/28":"350-750 kcmil (185-325 mm²)","35":"4/0 AWG-500 kcmil (120-250 mm²)"} },
+        { order:"5684", bil:150, odMM:[33.3,53.3], cond:{15:"1000-1750 kcmil (500-850 mm²)","25/28":"750-1500 kcmil (400-725 mm²)","35":"500-1250 kcmil (300-625 mm²)"} },
+      ]
+    },
+
+    qt2_cn_8skirt: { // 5600/5680 -- 8 skirt, 5-35kV
+      label: "QT-II 5600/5680 Non-Jacketed CN - 8 Skirt (Outdoor, 5-35 kV)",
+      env: "outdoor",
+      shielding: "Concentric Neutral (CN)",
+      rows: [
+        { order:"5604", bil:200, odMM:[16.3,28.4], cond:{"5-100":"3/0 AWG-500 kcmil (95-250 mm²)","5-133/8-100":"2/0 AWG-500 kcmil (70-250 mm²)","8-133":"1/0 AWG-350 kcmil (60-150 mm²)",15:"4-4/0 AWG (22-100 mm²)","25/28":"4-2/0 AWG (22-60 mm²)","35":"2-1/0 AWG (30-50 mm²)"} },
+        { order:"5605", bil:200, odMM:[21.3,35.1], cond:{"5-100":"350-750 kcmil (185-325 mm²)","5-133/8-100":"350-750 kcmil (185-325 mm²)","8-133":"250-750 kcmil (150-325 mm²)",15:"250-500 kcmil (150-250 mm²)","25/28":"1/0 AWG-350 kcmil (60-150 mm²)","35":"1-4/0 AWG (50-100 mm²)"} },
+        { order:"5606", bil:200, odMM:[27.4,45.7], cond:{"5-100":"750-1000 kcmil (400-500 mm²)","5-133/8-100":"750-1500 kcmil (400-725 mm²)","8-133":"500-1250 kcmil (300-625 mm²)",15:"500-1250 kcmil (300-625 mm²)","25/28":"350-750 kcmil (185-325 mm²)","35":"4/0 AWG-500 kcmil (120-250 mm²)"} },
+        { order:"5607", bil:200, odMM:[33.3,53.3], cond:{15:"1000-1750 kcmil (600-850 mm²)","25/28":"750-1500 kcmil (325-725 mm²)","35":"500-1250 kcmil (300-625 mm²)"} },
+        { order:"5608", bil:200, odMM:[45.7,69.8], cond:{15:"1500-2000 kcmil (800-1000 mm²)","25/28":"1250-2000 kcmil (725-1000 mm²)","35":"1000-2000 kcmil (600-1000 mm²)"} },
+      ]
+    },
+  },
+
+  // ==========================================================
+  // PILC CABLE, 15-25/28 kV
+  // ==========================================================
+  pilc: {
+    qt2_4skirt: {
+      label: "QT-II PILC 5800-Pb - 4 Skirt (15 kV)",
+      env: "outdoor (usable indoor)",
+      note: "Wajib pakai sealed terminal lug/connector untuk positive oil seal.",
+      rows: [
+        { order:"5801-Pb", bil:110, odMM:[14.9,22.9], cond:{15:"4-2/0 AWG (22-60 mm²)"} },
+        { order:"5802-Pb", bil:110, odMM:[18.0,25.6], cond:{15:"2/0 AWG-250 kcmil (70-120 mm²)"} },
+        { order:"5803-Pb", bil:110, odMM:[23.9,34.5], cond:{15:"350-600 kcmil (185-300 mm²)"} },
+        { order:"5804-Pb", bil:110, odMM:[30.5,48.2], cond:{15:"750-1250 kcmil (400-625 mm²)"} },
+      ]
+    },
+    qt2_6skirt: {
+      label: "QT-II PILC 5800-Pb - 6 Skirt (15-25/28 kV)",
+      env: "outdoor (usable indoor)",
+      note: "Wajib pakai sealed terminal lug/connector. Untuk 3-conductor, konsultasi 3M sales.",
+      rows: [
+        { order:"5806-Pb", bil:150, odMM:[18.0,25.6], cond:{15:"2/0 AWG-250 kcmil (70-120 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"5807-Pb", bil:150, odMM:[23.9,34.5], cond:{15:"350-600 kcmil (185-300 mm²)","25/28":"2/0 AWG-250 kcmil (70-120 mm²)"} },
+        { order:"5808-Pb", bil:150, odMM:[30.5,48.2], cond:{15:"750-1250 kcmil (400-625 mm²)","25/28":"350-1000 kcmil (185-500 mm²)"} },
+      ]
+    }
+  },
+
+  // ==========================================================
+  // SINGLE CORE TAPE SHIELD, WIRE SHIELD & UNISHIELD, 5-46 kV
+  // ==========================================================
+  single_core: {
+    qt3_indoor: { // 7620-T & 7690-T
+      label: "QT-III 7620-T/7690-T (Indoor, Non-Skirted)",
+      env: "indoor",
+      rows: [
+        { order:"7620-T-95", bil:95, odMM:[8.1,15.0], cond:{5:"8-4 AWG",8:"8-6 AWG"} },
+        { order:"7621-T-95", bil:95, odMM:[11.2,22.6], cond:{5:"2-3/0 AWG",8:"4-2/0 AWG"} },
+        { order:"7622-T-95", bil:95, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil"} },
+        { order:"7622-T-110", bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7624-T-95", bil:95, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil"} },
+        { order:"7624-T-110", bil:110, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)"} },
+        { order:"7625-T-95", bil:95, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil"} },
+        { order:"7625-T-110", bil:110, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)"} },
+        { order:"7626-T-110", bil:110, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (500-1000 mm²)"} },
+        { order:"7693-T-150", bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7695-T-150", bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7696-T-150", bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor: { // 7620-S, 7680-S, 7690-S
+      label: "QT-III 7620-S/7680-S/7690-S (Outdoor, Skirted)",
+      env: "outdoor",
+      rows: [
+        { order:"7620-S-2", skirts:2, bil:95, odMM:[8.1,15.0], cond:{5:"8-4 AWG",8:"8-6 AWG"} },
+        { order:"7621-S-2", skirts:2, bil:95, odMM:[11.2,22.6], cond:{5:"2-3/0 AWG",8:"4-2/0 AWG"} },
+        { order:"7622-S-2", skirts:2, bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7692-S-4", skirts:4, bil:150, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"7693-S-4", skirts:4, bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7694-S-4", skirts:4, bil:150, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)"} },
+        { order:"7695-S-4", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"} },
+        { order:"7696-S-4", skirts:4, bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)"} },
+        { order:"7683-S-8", skirts:8, bil:200, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7684-S-8", skirts:8, bil:200, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)","35":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7685-S-8", skirts:8, bil:200, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (125-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7686-S-8", skirts:8, bil:200, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor_inverted: { // 7620-S-INV & 7690-S-INV
+      label: "QT-III Inverted 7620-S-INV/7690-S-INV (Outdoor)",
+      env: "outdoor",
+      rows: [
+        { order:"7622-S-INV-2", skirts:2, bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7693-S-INV-4", skirts:4, bil:200, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7695-S-INV-4", skirts:4, bil:200, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"350-1000 kcmil (185-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7696-S-INV-4", skirts:4, bil:200, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt2_indoor_5620k: { // 5620K -- 5-15kV
+      label: "QT-II 5620K (Indoor, 5-15 kV)",
+      env: "indoor",
+      rows: [
+        { order:"5621K", bil:110, odMM:[8.1,11.7], cond:{"5-100":"8-4 AWG (10-16 mm²)","5-133/8-100":"8-6 AWG (10-14 mm²)","8-133":"8 AWG (10 mm²)"} },
+        { order:"5622K", bil:110, odMM:[11.2,16.5], cond:{"5-100":"2-2/0 AWG (35-60 mm²)","5-133/8-100":"4-1/0 AWG (22-50 mm²)","8-133":"6-1 AWG (14-38 mm²)"} },
+        { order:"5623K", bil:110, odMM:[14.2,22.1], cond:{"5-100":"2/0 AWG-250 kcmil (70-120 mm²)","5-133/8-100":"1/0-4/0 AWG (60-100 mm²)","8-133":"1-3/0 AWG (50-80 mm²)","15-100":"4-2/0 AWG (22-60 mm²)","15-133":"4-1 AWG (22-38 mm²)"} },
+        { order:"5624K", bil:110, odMM:[19.8,33.0], cond:{"5-100":"300-750 kcmil (185-325 mm²)","5-133/8-100":"250-750 kcmil (150-325 mm²)","8-133":"4/0 AWG-600 kcmil (120-300 mm²)","15-100":"2/0 AWG-500 kcmil (70-250 mm²)","15-133":"1 AWG-350 kcmil (50-150 mm²)"} },
+        { order:"5625K", bil:110, odMM:[27.7,45.7], cond:{"5-100":"600-1500 kcmil (325-725 mm²)","5-133/8-100":"600-1500 kcmil (325-725 mm²)","8-133":"500-1250 kcmil (300-625 mm²)","15-100":"500-1250 kcmil (300-625 mm²)","15-133":"350-1000 kcmil (185-500 mm²)"} },
+      ]
+    },
+
+    qt2_indoor_6020k: { // 6020K -- 15-25/28kV
+      label: "QT-II 6020K (Indoor, 15-25/28 kV)",
+      env: "indoor",
+      rows: [
+        { order:"6022K", bil:125, odMM:[16.3,22.9], cond:{"15-100":"2-3/0 AWG (35-80 mm²)","15-133":"4-2/0 AWG (22-60 mm²)","25/28":"2-1 AWG (35-38 mm²)"} },
+        { order:"6023K", bil:125, odMM:[21.3,33.8], cond:{"15-100":"3/0 AWG-500 kcmil (95-250 mm²)","15-133":"2/0 AWG-350 kcmil (70-150 mm²)","25/28":"1 AWG-250 kcmil (38-125 mm²)"} },
+        { order:"6024K", bil:125, odMM:[27.9,41.9], cond:{"15-100":"500-750 kcmil (300-325 mm²)","15-133":"350-700 kcmil (180-325 mm²)","25/28":"250-600 kcmil (125-300 mm²)"} },
+        { order:"6025K", bil:125, odMM:[33.0,49.5], cond:{"15-100":"750-1750 kcmil (400-850 mm²)","15-133":"700-1500 kcmil (400-750 mm²)","25/28":"600-1250 kcmil (325-625 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_4skirt: { // 5630K -- 4 skirt, 5-15kV
+      label: "QT-II 5630K - 4 Skirt (Outdoor, 5-15 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5632K", bil:110, odMM:[8.4,17.5], cond:{"5-100":"8-2/0 AWG (10-60 mm²)","5-133/8-100":"8-1/0 AWG (10-50 mm²)","8-133":"8-1 AWG (10-38 mm²)","15-100":"8-4 AWG (10-16 mm²)","15-133":"8-6 AWG (10-14 mm²)"} },
+        { order:"5633K", bil:110, odMM:[16.3,22.9], cond:{"5-100":"3/0 AWG-300 kcmil (95-150 mm²)","5-133/8-100":"2/0 AWG-250 kcmil (70-120 mm²)","8-133":"1/0-4/0 AWG (60-100 mm²)","15-100":"2-3/0 AWG (35-80 mm²)","15-133":"4-1/0 AWG (22-50 mm²)"} },
+        { order:"5635K", bil:110, odMM:[21.3,33.8], cond:{"5-100":"350-750 kcmil (185-325 mm²)","5-133/8-100":"300-750 kcmil (185-325 mm²)","8-133":"250-600 kcmil (150-300 mm²)","15-100":"3/0 AWG-500 kcmil (95-250 mm²)","15-133":"2/0 AWG-350 kcmil (70-150 mm²)"} },
+        { order:"5636K", bil:110, odMM:[27.9,41.9], cond:{"5-100":"750-1500 kcmil (400-725 mm²)","5-133/8-100":"750-1250 kcmil (400-625 mm²)","8-133":"600-1000 kcmil (325-500 mm²)","15-100":"500-1000 kcmil (300-500 mm²)","15-133":"350-750 kcmil (185-325 mm²)"} },
+        { order:"5637K", bil:110, odMM:[33.0,49.5], cond:{"5-100":"1000-2000 kcmil (600-1000 mm²)","5-133/8-100":"1000-2000 kcmil (600-1000 mm²)","8-133":"800-1750 kcmil (500-850 mm²)","15-100":"750-1750 kcmil (400-850 mm²)","15-133":"600-1500 kcmil (325-725 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_6skirt: { // 5690K -- 6 skirt, 15-25/28kV
+      label: "QT-II 5690K - 6 Skirt (Outdoor, 15-25/28 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5691K", bil:150, odMM:[16.3,22.9], cond:{"15-100":"2-3/0 AWG (35-80 mm²)","15-133":"2-1/0 AWG (35-50 mm²)","25/28":"2-1 AWG (35-38 mm²)"} },
+        { order:"5692K", bil:150, odMM:[21.3,33.8], cond:{"15-100":"3/0 AWG-400 kcmil (95-200 mm²)","15-133":"2/0 AWG-350 kcmil (70-150 mm²)","25/28":"1/0 AWG-250 kcmil (60-120 mm²)"} },
+        { order:"5693K", bil:150, odMM:[27.9,41.9], cond:{"15-100":"500-750 kcmil (300-325 mm²)","15-133":"400-750 kcmil (240-325 mm²)","25/28":"300-500 kcmil (185-250 mm²)"} },
+        { order:"5694K", bil:150, odMM:[33.0,49.5], cond:{"15-100":"800-1750 kcmil (500-850 mm²)","15-133":"800-1500 kcmil (500-725 mm²)","25/28":"600-1250 kcmil (325-625 mm²)"} },
+      ]
+    },
+
+    qt2_outdoor_8skirt: { // 5690K -- 8 skirt, 15-35kV
+      label: "QT-II 5690K - 8 Skirt (Outdoor, 15-35 kV)",
+      env: "outdoor",
+      rows: [
+        { order:"5696K", bil:200, odMM:[21.3,33.8], cond:{"15-100":"3/0 AWG-400 kcmil (95-200 mm²)","15-133":"2/0 AWG-350 kcmil (70-150 mm²)","25/28":"1/0 AWG-250 kcmil (60-120 mm²)","35":"2-3/0 AWG (35-80 mm²)"} },
+        { order:"5697K", bil:200, odMM:[27.9,41.9], cond:{"15-100":"500-750 kcmil (300-325 mm²)","15-133":"400-750 kcmil (240-325 mm²)","25/28":"300-500 kcmil (185-250 mm²)","35":"4/0 AWG-400 kcmil (120-200 mm²)"} },
+        { order:"5698K", bil:200, odMM:[33.0,49.5], cond:{"15-100":"800-1750 kcmil (500-850 mm²)","15-133":"800-1500 kcmil (500-725 mm²)","25/28":"600-1250 kcmil (325-625 mm²)","35":"500-1000 kcmil (300-500 mm²)"} },
+      ]
+    },
+
+    qt2_46kv: { // 4604 & 4605 -- 46kV, 3-piece, 12-skirt
+      label: "QT-II 4604/4605 (46 kV, Outdoor, 3-Piece 12-Skirt)",
+      env: "outdoor",
+      note: "Termination 3-piece: base assembly + 4-skirt extension insulator + jacket-sealing tube.",
+      rows: [
+        { order:"4604", bil:250, odMM:[33.2,53.4], cond:{"46":"4/0 AWG-600 kcmil (120-300 mm²)"} },
+        { order:"4605", bil:250, odMM:[45.7,66.1], cond:{"46":"600-1500 kcmil (325-725 mm²)"} },
+      ]
+    },
+  },
+
+  // ==========================================================
+  // SINGLE CORE TAPE/WIRE-OVER-TAPE/LC SHIELD -- HSG (High-Ampacity Ground), 5-35 kV
+  // ==========================================================
+  hsg: {
+    qt3_indoor: { // 7640-T-HSG & 7650-T-HSG
+      label: "QT-III 7640-T-HSG/7650-T-HSG (Indoor, High-Ampacity Ground)",
+      env: "indoor",
+      rows: [
+        { order:"7642-T-HSG-110", bil:110, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7644-T-HSG-110", bil:110, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)"} },
+        { order:"7645-T-HSG-110", bil:110, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)"} },
+        { order:"7646-T-HSG-110", bil:110, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)"} },
+        { order:"7653-T-HSG-150", bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7655-T-HSG-150", bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7656-T-HSG-150", bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor: { // 7650-S-HSG & 7660-S-HSG (tanpa connector)
+      label: "QT-III High Fault Current 7650-S-HSG/7660-S-HSG (Outdoor)",
+      env: "outdoor",
+      rows: [
+        { order:"7652-S-HSG-4", skirts:4, bil:150, odMM:[16.3,27.4], cond:{5:"4/0 AWG-400 kcmil",8:"3/0 AWG-300 kcmil",15:"2-4/0 AWG (35-120 mm²)","25/28":"2-1/0 AWG (35-50 mm²)"} },
+        { order:"7653-S-HSG-4", skirts:4, bil:150, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7654-S-HSG-4", skirts:4, bil:150, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)"} },
+        { order:"7655-S-HSG-4", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"} },
+        { order:"7656-S-HSG-4", skirts:4, bil:150, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)"} },
+        { order:"7663-S-HSG-8", skirts:8, bil:200, odMM:[18.3,32.8], cond:{5:"300-500 kcmil",8:"250-500 kcmil",15:"2/0 AWG-300 kcmil (70-150 mm²)","25/28":"2-4/0 AWG (35-120 mm²)","35":"2-2/0 AWG (35-70 mm²)"} },
+        { order:"7664-S-HSG-8", skirts:8, bil:200, odMM:[21.1,38.9], cond:{5:"500-750 kcmil",8:"350-700 kcmil",15:"4/0 AWG-500 kcmil (120-240 mm²)","25/28":"2/0 AWG-250 kcmil (70-150 mm²)","35":"2-4/0 AWG (35-120 mm²)"} },
+        { order:"7665-S-HSG-8", skirts:8, bil:200, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (125-400 mm²)","35":"3/0 AWG-600 kcmil (95-325 mm²)"} },
+        { order:"7666-S-HSG-8", skirts:8, bil:200, odMM:[38.9,58.9], cond:{5:"1750-2000 kcmil",8:"1500-2000 kcmil",15:"1250-2000 kcmil (625-1000 mm²)","25/28":"900-1750 kcmil (500-800 mm²)","35":"700-1500 kcmil (400-725 mm²)"} },
+      ]
+    },
+
+    qt3_outdoor_connector: { // 7650-S-HSG & 7660-S-HSG (w/ Connector -- lug/stem included)
+      label: "QT-III High Fault Current 7650-S-HSG/7660-S-HSG (w/ Connector, Outdoor)",
+      env: "outdoor",
+      note: "Sudah termasuk lug/stem connector (Scotchlok/Stem Connector SC series) atau mounting bracket.",
+      rows: [
+        { order:"7652-S-HSG-4-1/0", skirts:4, bil:150, odMM:[16.3,27.4], cond:{15:"1/0 AWG (50 mm²)","25/28":"1/0 AWG (50 mm²)"}, kit:"(1) SC0010 Stem Connector" },
+        { order:"7652-S-HSG-4-2", skirts:4, bil:150, odMM:[16.3,27.4], cond:{15:"2 AWG (35 mm²)","25/28":"2 AWG (35 mm²)"}, kit:"(1) SC0001 Stem Connector" },
+        { order:"7652-S-HSG-4-2/0", skirts:4, bil:150, odMM:[16.3,27.4], cond:{15:"2/0 AWG (70 mm²)"}, kit:"(1) SC0020 Stem Connector" },
+        { order:"7652-S-HSG-4-3/0", skirts:4, bil:150, odMM:[16.3,27.4], cond:{8:"3/0 AWG (95 mm²)",15:"3/0 AWG (95 mm²)"}, kit:"(1) SC0030 Stem Connector" },
+        { order:"7652-S-HSG-4-4/0", skirts:4, bil:150, odMM:[16.3,27.4], cond:{5:"4/0 AWG",8:"4/0 AWG",15:"4/0 AWG (120 mm²)"}, kit:"(1) SC0040 Stem Connector" },
+        { order:"7653-S-HSG-4-4/0", skirts:4, bil:150, odMM:[18.3,32.8], cond:{15:"4/0 AWG (120 mm²)","25/28":"4/0 AWG (120 mm²)"}, kit:"(1) SC0040 Stem Connector" },
+        { order:"7654-S-HSG-4-4/0", skirts:4, bil:150, odMM:[21.1,38.9], cond:{15:"4/0 AWG (120 mm²)","25/28":"4/0 AWG (120 mm²)"}, kit:"(1) SC0040 Stem Connector" },
+        { order:"7655-S-HSG-4-MB5", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"}, kit:"(1) MB5 Mounting Bracket" },
+        { order:"7655-S-HSG-4-MB6", skirts:4, bil:150, odMM:[26.7,45.7], cond:{5:"700-1500 kcmil",8:"600-1250 kcmil",15:"500-1000 kcmil (240-500 mm²)","25/28":"250-800 kcmil (150-400 mm²)"}, kit:"(1) MB6 Mounting Bracket" },
+        { order:"7663-S-HSG-8-1/0", skirts:8, bil:200, odMM:[18.3,32.8], cond:{"25/28":"1/0 AWG (50 mm²)","35":"1/0 AWG (50 mm²)"}, kit:"(1) SC0010 Stem Connector" },
+      ]
+    },
+  },
+
+  // ==========================================================
+  // THREE CORE TAPE SHIELD, WIRE SHIELD & UNISHIELD, 5-35 kV (7600 Series)
+  // Catatan: conductor size mengikuti standar IEC(JIS)/AEIC bercampur --
+  // ditampilkan per baris agar mengikuti katalog asli.
+  // ==========================================================
+  three_core: {
+    qt3_indoor_3rjs: { // 7600-T-3-RJS -- cabinet mount, wire/UniShield perlu kontak 3M
+      label: "QT-III 7600-T-3-RJS (Indoor, Cabinet-Mount, No Breakout Boot)",
+      env: "indoor",
+      note: "Untuk Wire atau UniShield shielding, hubungi 3M untuk technical assistance.",
+      rows: [
+        { order:"7620-T-95-3-RJS", bil:95, odMM:[8.4,12.7], cond:{"5-AEIC":"8-2 AWG","8-AEIC":"6-4 AWG"} },
+        { order:"7621-T-95-3-RJS", bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG","10-IEC":"10-50 mm²"} },
+        { order:"7623-T-95-3-RJS", bil:95, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","10-IEC":"70-150 mm²","15-IEC":"35-95 mm²"} },
+        { order:"7624-T-95-3-RJS", bil:95, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","10-IEC":"185-300 mm²","15-IEC":"120-185 mm²"} },
+        { order:"7621-T-110-3-RJS", bil:110, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG","10-IEC":"10-50 mm²","15-IEC(AEIC)":"16-25 mm² (2-1 AWG)"} },
+        { order:"7622-T-110-3-RJS", bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","10-IEC":"70-150 mm²","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7624-T-110-3-RJS", bil:110, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","10-IEC":"185-300 mm²","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)"} },
+        { order:"7625-T-110-3-RJS", bil:110, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)"} },
+        { order:"7622-T-125-3-RJS", bil:125, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","10-IEC":"70-150 mm²","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)","20-IEC":"25-70 mm²"} },
+        { order:"7624-T-125-3-RJS", bil:125, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","10-IEC":"185-300 mm²","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","20-IEC":"95-185 mm²"} },
+        { order:"7625-T-125-3-RJS", bil:125, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","20-IEC":"240-300 mm²"} },
+        { order:"7693-T-150-3-RJS", bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","10-IEC":"70-150 mm²","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)","20-IEC":"25-70 mm²","25/28-AEIC":"2-1/0 AWG"} },
+        { order:"7694-T-150-3-RJS", bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","10-IEC":"185-300 mm²","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","20-IEC":"95-185 mm²","25/28-AEIC":"2/0 AWG-250 kcmil"} },
+        { order:"7695-T-150-3-RJS", bil:150, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","20-IEC":"240-300 mm²","25/28-AEIC":"300-500 kcmil"} },
+        { order:"7696-T-150-3-RJS", bil:150, odMM:[38.4,46.0], cond:{"25/28-AEIC":"750 kcmil","35-AEIC":"500-750 kcmil"} },
+      ]
+    },
+
+    qt3_indoor_3g: { // 7600-T-3G -- indoor, WITH ground wires, breakout boot
+      label: "QT-III 7600-T-3G (Indoor, With Ground Wires)",
+      env: "indoor",
+      note: "Untuk Wire atau UniShield shielding, hubungi 3M untuk technical assistance.",
+      rows: [
+        { order:"7620-T-95-3G", bil:95, odMM:[8.4,12.7], cond:{"5-AEIC":"8-2 AWG (6-4 AWG)","8-AEIC":"6-4 AWG (6-4 AWG)"} },
+        { order:"7621-T-95-3G", bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG (2-2/0 AWG)","8-AEIC":"2-2/0 AWG (2-2/0 AWG)"} },
+        { order:"7623-T-95-3G", bil:95, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-350 kcmil (3/0 AWG-350 kcmil)","8-AEIC":"3/0 AWG-350 kcmil (3/0 AWG-350 kcmil)"} },
+        { order:"7624-T-95-3G", bil:95, odMM:[23.4,30.0], cond:{"5-AEIC":"400-500 kcmil (400-500 kcmil)","8-AEIC":"400-500 kcmil (400-500 kcmil)"} },
+        { order:"7625-T-95-3G", bil:95, odMM:[30.0,38.4], cond:{"5-AEIC":"700-1000 kcmil (700-1000 kcmil)","8-AEIC":"700-1000 kcmil (700-1000 kcmil)"} },
+        { order:"7621-T-110-3G", bil:110, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG (2-2/0 AWG)","8-AEIC":"2-2/0 AWG (2-2/0 AWG)","15-AEIC":"2-1 AWG"} },
+        { order:"7622-T-110-3G", bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-350 kcmil (3/0 AWG-350 kcmil)","8-AEIC":"3/0 AWG-350 kcmil (3/0 AWG-350 kcmil)","15-AEIC":"1/0-4/0 AWG (2-3/0 AWG)"} },
+        { order:"7624-T-110-3G", bil:110, odMM:[23.4,30.0], cond:{"5-AEIC":"400-500 kcmil","8-AEIC":"400-500 kcmil","15-AEIC":"250-350 kcmil (4/0 AWG-350 kcmil)"} },
+        { order:"7625-T-110-3G", bil:110, odMM:[30.0,38.4], cond:{"5-AEIC":"700-1000 kcmil","8-AEIC":"700-1000 kcmil","15-AEIC":"500-750 kcmil"} },
+        { order:"7693-T-150-3G", bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-350 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-AEIC":"1/0-4/0 AWG (2-3/0 AWG)","25/28-AEIC":"1-1/0 AWG"} },
+        { order:"7694-T-150-3G", bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"400-500 kcmil","8-AEIC":"400-500 kcmil","15-AEIC":"250-350 kcmil (4/0 AWG-350 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil (1-4/0 AWG)","35-AEIC":"1/0-3/0 AWG"} },
+        { order:"7695-T-150-3G", bil:150, odMM:[30.0,38.4], cond:{"5-AEIC":"700-1000 kcmil","8-AEIC":"700-1000 kcmil","15-AEIC":"500-750 kcmil","25/28-AEIC":"350-500 kcmil (250-500 kcmil)","35-AEIC":"4/0 AWG-500 kcmil (1/0 AWG-350 kcmil)"} },
+        { order:"7696-T-150-3G", bil:150, odMM:[38.8,46.0], cond:{"25/28-AEIC":"750 kcmil (500-750 kcmil)","35-AEIC":"500-750 kcmil (350-750 kcmil)"} },
+      ]
+    },
+
+    qt3_indoor_3w: { // 7600-T-3W -- indoor, WITHOUT ground wires
+      label: "QT-III 7600-T-3W (Indoor, Without Ground Wires)",
+      env: "indoor",
+      note: "Untuk instalasi terbatas (motor, starter, switchgear, VSD, transformer). Untuk Wire/UniShield hubungi 3M.",
+      rows: [
+        { order:"7620-T-95-3W", bil:95, odMM:[8.4,12.7], cond:{"5-AEIC":"8-2 AWG","8-AEIC":"6-4 AWG"} },
+        { order:"7621-T-95-3W", bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG"} },
+        { order:"7623-T-95-3W", bil:95, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil"} },
+        { order:"7624-T-95-3W", bil:95, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil"} },
+        { order:"7625-T-95-3W", bil:95, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil"} },
+        { order:"7621-T-110-3W", bil:110, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG","15-AEIC":"16-25 mm² (2-1 AWG)"} },
+        { order:"7622-T-110-3W", bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-AEIC":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7624-T-110-3W", bil:110, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-AEIC":"120-185 mm² (250-450 kcmil)"} },
+        { order:"7625-T-110-3W", bil:110, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-AEIC":"200-325 mm² (500-750 kcmil)"} },
+        { order:"7625-T-125-3W", bil:125, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-AEIC":"200-325 mm² (500-750 kcmil)","20-IEC":"240-300 mm²"} },
+        { order:"7693-T-150-3W", bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-AEIC":"35-95 mm² (1/0-4/0 AWG)","20-IEC":"25-70 mm²","25/28-AEIC":"2-1/0 AWG"} },
+        { order:"7694-T-150-3W", bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-AEIC":"120-185 mm² (250-450 kcmil)","20-IEC":"95-185 mm²","25/28-AEIC":"2/0 AWG-250 kcmil","35-AEIC":"1/0-3/0 AWG"} },
+        { order:"7695-T-150-3W", bil:150, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-AEIC":"200-325 mm² (500-750 kcmil)","20-IEC":"240-300 mm²","25/28-AEIC":"300-500 kcmil","35-AEIC":"4/0 AWG-500 kcmil"} },
+      ]
+    },
+
+    qt3_outdoor_3w: { // 7600-S-3W -- outdoor, WITHOUT ground wires
+      label: "QT-III 7600-S-3W (Outdoor, Without Ground Wires)",
+      env: "outdoor",
+      note: "Untuk Wire/UniShield shielding, hubungi 3M.",
+      rows: [
+        { order:"7620-S-2-3W", skirts:2, bil:95, odMM:[8.40,12.7], cond:{"5-AEIC":"8-2 AWG","8-AEIC":"6-4 AWG"} },
+        { order:"7621-S-2-3W", skirts:2, bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG"} },
+        { order:"7622-S-2-3W", skirts:2, bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7691-S-4-3W", skirts:4, bil:150, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG"} },
+        { order:"7692-S-4-3W", skirts:4, bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7693-S-4-3W", skirts:4, bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil"} },
+        { order:"7695-S-4-3W", skirts:4, bil:150, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil"} },
+        { order:"7685-S-8-3W", skirts:8, bil:200, odMM:[30.0,38.6], cond:{"15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil","30-IEC":"95-240 mm²","35-AEIC":"4/0 AWG-500 kcmil"} },
+      ]
+    },
+
+    qt3_outdoor_3g: { // 7600-S-3G -- outdoor, WITH ground wires
+      label: "QT-III 7600-S-3G (Outdoor, With Ground Wires)",
+      env: "outdoor",
+      note: "Untuk Wire/UniShield shielding, hubungi 3M.",
+      rows: [
+        { order:"7620-S-2-3G", skirts:2, bil:95, odMM:[8.4,12.7], cond:{"5-AEIC":"8-2 (6-4)","8-AEIC":"6-4 (6-4)"} },
+        { order:"7621-S-2-3G", skirts:2, bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 (2-2/0)","8-AEIC":"2-2/0 (2-2/0)","15-AEIC":"2-1 ( - )"} },
+        { order:"7622-S-2-3G", skirts:2, bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0-350 (3/0-350)","8-AEIC":"3/0-350 (3/0-350)","15-AEIC":"1/0-4/0 (2-3/0)"} },
+        { order:"7691-S-4-3G", skirts:4, bil:150, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 (2-2/0)","8-AEIC":"2-2/0 (2-2/0)","15-AEIC":"2-1 ( - )"} },
+        { order:"7692-S-4-3G", skirts:4, bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0-350 (3/0-350)","8-AEIC":"3/0-350 (3/0-350)","15-AEIC":"1/0-4/0 (2-3/0)"} },
+        { order:"7693-S-4-3G", skirts:4, bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"400-500 (400-500)","8-AEIC":"400-500 (400-500)","15-AEIC":"250-350 (4/0-350)","25/28-AEIC":"2/0-250 (1-4/0)"} },
+        { order:"7695-S-4-3G", skirts:4, bil:150, odMM:[30.0,38.6], cond:{"5-AEIC":"700-1000 (700-1000)","8-AEIC":"700-1000 (700-1000)","15-AEIC":"500-750 (500-750)","25/28-AEIC":"350-500 (250-500)"} },
+        { order:"7684-S-8-3G", skirts:8, bil:200, odMM:[23.4,30.0], cond:{"15-AEIC":"250-350 (4/0-350)","25/28-AEIC":"2/0-250 (1-4/0)","35-AEIC":"1/0-3/0 ( - )"} },
+        { order:"7685-S-8-3G", skirts:8, bil:200, odMM:[30.0,38.6], cond:{"15-AEIC":"500-750 (500-750)","25/28-AEIC":"350-500 (250-500)","35-AEIC":"4/0-500 (1/0-350)"} },
+        { order:"7686-S-8-3G", skirts:8, bil:200, odMM:[38.8,46.0], cond:{"15-AEIC":" - (1000)","25/28-AEIC":"750 (500-750)","35-AEIC":"500-750 (350-750)"} },
+      ]
+    },
+
+    qt3_outdoor_3rjs: { // 7600-S-3RJS -- outdoor cabinet-mount
+      label: "QT-III 7600-S-3RJS (Outdoor, Cabinet-Mount, No Breakout Boot)",
+      env: "outdoor",
+      note: "Untuk Wire/UniShield shielding, hubungi 3M.",
+      rows: [
+        { order:"7620-S-2-3-RJS", skirts:2, bil:95, odMM:[8.4,12.7], cond:{"5-AEIC":"8-2 AWG","8-AEIC":"6-4 AWG"} },
+        { order:"7621-S-2-3-RJS", skirts:2, bil:95, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG"} },
+        { order:"7622-S-2-3-RJS", skirts:2, bil:110, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7691-S-4-3-RJS", skirts:4, bil:150, odMM:[12.7,17.8], cond:{"5-AEIC":"1-3/0 AWG","8-AEIC":"2-2/0 AWG"} },
+        { order:"7692-S-4-3-RJS", skirts:4, bil:150, odMM:[17.8,23.4], cond:{"5-AEIC":"4/0 AWG-400 kcmil","8-AEIC":"3/0 AWG-350 kcmil","15-IEC(AEIC)":"35-95 mm² (1/0-4/0 AWG)"} },
+        { order:"7693-S-4-3-RJS", skirts:4, bil:150, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil"} },
+        { order:"7695-S-4-3-RJS", skirts:4, bil:150, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil"} },
+        { order:"7684-S-8-3-RJS", skirts:8, bil:200, odMM:[23.4,30.0], cond:{"15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil","30-IEC":"35-70 mm²","35-AEIC":"1/0-3/0 AWG"} },
+        { order:"7685-S-8-3-RJS", skirts:8, bil:200, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil","30-IEC":"95-240 mm²","35-AEIC":"4/0 AWG-500 kcmil"} },
+        { order:"7686-S-8-3-RJS", skirts:8, bil:200, odMM:[38.8,46.0], cond:{"25/28-AEIC":"750 kcmil","30-IEC":"240-325 mm²","35-AEIC":"500-750 kcmil"} },
+      ]
+    },
+
+    qt3_outdoor_inv_3w: { // 7600-S-INV-3W -- 4 skirt, 5-25/28kV
+      label: "QT-III Inverted 7600-S-INV-3W - 4 Skirt (Outdoor, Without Ground Wires)",
+      env: "outdoor",
+      rows: [
+        { order:"7693-S-4-INV-3W", skirts:4, bil:200, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil"} },
+        { order:"7695-S-4-INV-3W", skirts:4, bil:200, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil"} },
+      ]
+    },
+
+    qt3_outdoor_inv_3rjs: { // 7600-S-INV-3RJS
+      label: "QT-III Inverted 7600-S-INV-3RJS (Outdoor, Cabinet-Mount)",
+      env: "outdoor",
+      rows: [
+        { order:"7693-S-4-INV-3-RJS", skirts:4, bil:200, odMM:[23.4,30.0], cond:{"5-AEIC":"500-750 kcmil","8-AEIC":"400-600 kcmil","15-IEC(AEIC)":"120-185 mm² (250-450 kcmil)","25/28-AEIC":"2/0 AWG-250 kcmil"} },
+        { order:"7695-S-4-INV-3-RJS", skirts:4, bil:200, odMM:[30.0,38.6], cond:{"5-AEIC":"800-1000 kcmil","8-AEIC":"750-1000 kcmil","15-IEC(AEIC)":"200-325 mm² (500-750 kcmil)","25/28-AEIC":"300-500 kcmil"} },
+      ]
+    },
+
+    qt3_outdoor_inv_3g: { // 7600-S-4-INV-3G -- 5-25kV, with ground wires
+      label: "QT-III Inverted 7600-S-4-INV-3G (Outdoor, With Ground Wires)",
+      env: "outdoor",
+      rows: [
+        { order:"7693-S-4-INV-3G", bil:200, odMM:[23.4,30.0], cond:{"5-100(133)":"400-500 kcmil (400-500 kcmil)","8-100(133)":"400-500 kcmil (400-500 kcmil)","15-100(133)":"250-350 kcmil (4/0 AWG-350 kcmil)","25/28-100(133)":"2/0 AWG-250 kcmil (1-4/0 AWG)"} },
+        { order:"7695-S-4-INV-3G", bil:200, odMM:[30.0,38.4], cond:{"5-100(133)":"700-1000 kcmil (700-1000 kcmil)","8-100(133)":"700-1000 kcmil (700-1000 kcmil)","15-100(133)":"500-750 kcmil (500-750 kcmil)","25/28-100(133)":"350-500 kcmil (250-500 kcmil)"} },
+      ]
+    },
+  },
+
+  // ==========================================================
+  // TAPE TERMINATION KITS (Scotch 5700), 5-25/28 kV
+  // ==========================================================
+  tape_kit: {
+    scotch_5700: {
+      label: "Scotch Tape Termination Kit 5700 Series (Indoor/Weather-Protected)",
+      env: "indoor (upgradeable to Class 1 dengan Scotch Silicone Rubber Tape 70)",
+      note: "Lugs tidak termasuk. Basis lookup berbeda: langsung per shielding type & voltage, bukan OD range tunggal.",
+      rows: [
+        { order:"5701", shielding:"Wire Shield / UniShield / CN", cond:{5:"8-4/0 AWG (10-100 mm²)",8:"8-4/0 AWG (10-100 mm²)",15:"8-4/0 AWG (10-100 mm²)"} },
+        { order:"5702", shielding:"Wire Shield / UniShield / CN", cond:{5:"250-1000 kcmil (150-500 mm²)",8:"250-1000 kcmil (150-500 mm²)",15:"250-750 kcmil (150-325 mm²)"} },
+        { order:"5703", shielding:"Wire Shield / UniShield / CN / Tape Shield", note:"25/28kV perlu tambahan: 2x Scotch 130C, 5x Scotch 70, 1x Scotch Super 33+", cond:{15:"800-1000 kcmil (400-500 mm²)","25/28":"800-1000 kcmil (400-500 mm²)"} },
+      ]
+    }
+  },
+
+  // ==========================================================
+  // NON-SHIELDED CABLE, 5 & 8 kV
+  // ==========================================================
+  non_shielded: {
+    cs_5610a: {
+      label: "Cold Shrink Termination Kit 5610-A (5 & 8 kV Non-Shielded)",
+      env: "indoor & outdoor (both)",
+      note: "Seal lingkungan area lug saja. Terminal lug dipesan terpisah. 1 kit = 3 cable ends.",
+      rows: [
+        { order:"5611A", odMM:[7.9,18.3], cond:{"5/8":"8-4 AWG (10-16 mm²)"} },
+        { order:"5612A", odMM:[11.2,24.1], cond:{"5/8":"2-2/0 AWG (35-60 mm²)"} },
+        { order:"5613A", odMM:[14.2,30.0], cond:{"5/8":"3/0 AWG-300 kcmil (95-150 mm²)"} },
+        { order:"5614A", odMM:[24.1,49.3], cond:{"5/8":"350-1000 kcmil (185-500 mm²)"} },
+      ]
+    }
+  },
+
+};
+
+
+// PRE/POST TEST QUIZ QUESTIONS DATABASE
+const QUIZ_QUESTIONS = {
+  pre: [
+    { q: "1. Rentang tegangan kabel Medium Voltage (MV) / Tegangan Menengah (TM) adalah...", opts: ["A. ≤ 1 kV", "B. 1 kV – 35 kV", "C. 35 kV – 230 kV", "D. > 230 kV"], ans: 1 },
+    { q: "2. Jaringan distribusi TM PLN di Indonesia yang paling umum berada pada level...", opts: ["A. 6 kV", "B. 11 kV", "C. 20 kV", "D. 33 kV"], ans: 2 },
+    { q: "3. Kegagalan (fault) terbanyak pada sistem kabel MV secara historis terjadi pada...", opts: ["A. Badan kabel di tengah jalur", "B. Titik sambungan atau terminasi", "C. Ujung kabel yang tidak terpakai", "D. Gulungan kabel di gudang"], ans: 1 },
+    { q: "4. Lapisan kabel MV yang berfungsi meratakan medan listrik pada permukaan konduktor adalah...", opts: ["A. Bedding/filler", "B. Semikonduktif konduktor (conductor screen)", "C. Armour", "D. Sheath luar"], ans: 1 },
+    { q: "5. Material isolasi kabel MV yang paling umum digunakan saat ini adalah...", opts: ["A. PVC murni", "B. Kertas berminyak (PILC)", "C. XLPE (Cross-Linked Polyethylene)", "D. Karet alam"], ans: 2 },
+    { q: "6. Metallic screen pada kabel MV berfungsi utama sebagai...", opts: ["A. Penghantar arus listrik utama", "B. Jalur pembumian dan pembawa arus gangguan hubung tanah", "C. Pelindung sinar matahari", "D. Penambah kekuatan mekanis"], ans: 1 },
+    { q: "7. Pada notasi kabel 12/20(24) kV, angka 20 menunjukkan...", opts: ["A. Tegangan fasa-tanah (Uo)", "B. Tegangan fasa-fasa (U)", "C. Tegangan maksimum sistem (Um)", "D. Diameter kabel"], ans: 1 },
+    { q: "8. Konsentrasi medan listrik tinggi pada titik potong semikonduktif isolasi disebut...", opts: ["A. Water treeing effect", "B. Stress cone effect", "C. Skin effect", "D. Corona ring effect"], ans: 1 },
+    { q: "9. Creepage distance adalah...", opts: ["A. Jarak bebas di udara antar fasa", "B. Jarak terpendek sepanjang permukaan isolator antar-titik beda potensial", "C. Panjang total kabel", "D. Jarak antar tiang Listrik"], ans: 1 },
+    { q: "10. Teknologi terminasi tanpa api dengan ditariknya support core plastik spiral adalah...", opts: ["A. Heat shrink", "B. Cold shrink", "C. Tape-wrapped", "D. Push-on premoulded"], ans: 1 },
+    { q: "11. Perbedaan utama terminasi outdoor dibanding indoor adalah...", opts: ["A. Tidak perlu ground braid", "B. Membutuhkan weathershed/skirt tambahan", "C. Tidak memerlukan stress control", "D. Lebih murah"], ans: 1 },
+    { q: "12. Alat khusus mengupas lapisan semikonduktif tanpa merusak isolasi XLPE adalah...", opts: ["A. Pisau kabel biasa", "B. Cable cutter", "C. Semicon stripping tool", "D. Hydraulic crimping tool"], ans: 2 },
+    { q: "13. Langkah pertama dari 5 langkah aman bekerja pada instalasi listrik adalah...", opts: ["A. LOTO (Lock out tag out)", "B. Membebaskan instalasi dari tegangan (switching off)", "C. Memasang pentanahan sementara", "D. Menguji tegangan"], ans: 1 },
+    { q: "14. APD utama mencegah aliran arus listrik melalui tubuh ke tanah adalah...", opts: ["A. Helm keselamatan", "B. Kacamata pelindung", "C. Sepatu safety ber-sol isolasi (dielectric boots)", "D. Sarung tangan mekanis"], ans: 2 },
+    { q: "15. Alat ukur yang digunakan untuk menguji tahanan isolasi kabel MV adalah...", opts: ["A. Multimeter", "B. Insulation resistance tester (Megger)", "C. Phase sequence tester", "D. Clamp meter"], ans: 1 },
+    { q: "16. Metode pengujian HV yang aman dan representatif untuk insulasi XLPE modern adalah...", opts: ["A. VLF (Very Low Frequency) test", "B. AC 50 Hz test standar", "C. Tes visual sederhana", "D. Tes multimeter"], ans: 0 },
+    { q: "17. Indikasi fisik terjadinya tracking / flashover pada permukaan terminasi adalah...", opts: ["A. Kabel menjadi lebih ringan", "B. Jejak hitam / karbon pada permukaan isolasi", "C. Warna kabel menjadi terang", "D. Kabel lebih fleksibel"], ans: 1 },
+    { q: "18. Fenomena degradasi isolasi XLPE akibat paparan kelembaban jangka panjang adalah...", opts: ["A. Water treeing", "B. Cold shrinking", "C. Stress relief", "D. Insulation curing"], ans: 0 },
+    { q: "19. Kesalahan pemilihan lug yang paling sering menyebabkan overheating pada sambungan adalah...", opts: ["A. Warna lug tidak sesuai", "B. Ukuran cross-section lug tidak sesuai penampang konduktor", "C. Lug terbuat dari plastik", "D. Lug terlalu jauh dari panel"], ans: 1 },
+    { q: "20. Ketika thermal imaging menemukan hot spot pada cable lug, langkah pertama adalah...", opts: ["A. Mengganti seluruh kabel", "B. Mengabaikannya", "C. Investigasi lanjutan sesuai prosedur K3 yang aman", "D. Menaikkan beban kabel"], ans: 2 }
+  ],
+  post: [
+    { q: "1. Interpretasi notasi kabel 12/20(24) kV pada jaringan 20 kV PLN yang tepat adalah...", opts: ["A. Hanya boleh dipakai dibawah 12kV", "B. Sesuai untuk tegangan fasa-fasa 20 kV & menahan maks 24 kV", "C. Disalahlabeli", "D. Angka diameter"], ans: 1 },
+    { q: "2. Residu semikonduktif yang tertinggal di permukaan isolasi berbahaya karena...", opts: ["A. Mengubah warna kabel", "B. Menjadi sumber konsentrasi medan listrik lokal memicu partial discharge", "C. Menambah berat", "D. Mempercepat heat shrink"], ans: 1 },
+    { q: "3. Memakai kit indoor untuk lokasi outdoor berisiko tinggi menyebabkan...", opts: ["A. Kabel lebih awet", "B. Flashover permukaan akibat creepage distance tidak mencukupi", "C. Tanpa risiko", "D. Menyesuaikan sendiri"], ans: 1 },
+    { q: "4. Void udara terbentuk pada heat shrink stress tube apabila...", opts: ["A. Pemanasan merata dari tengah ke ujung", "B. Pemanasan tidak merata atau terlalu cepat pada satu titik", "C. Disimpan sesuai aturan", "D. Pakai sarung tangan"], ans: 1 },
+    { q: "5. Ground braid dari metallic screen kabel MV wajib disambungkan ke...", opts: ["A. Konduktor fasa lain", "B. Sistem pembumian (grounding bar/system)", "C. Cable lug fasa sama", "D. Dibiarkan melayang"], ans: 1 },
+    { q: "6. Sebelum memegang kabel, verifikasi bebas tegangan HARUS dilakukan dengan...", opts: ["A. Perkiraan visual", "B. Voltage detector yang terkalibrasi", "C. Menyentuh langsung", "D. Bertanya ke teman"], ans: 1 },
+    { q: "7. Urutan 5 langkah aman bekerja pada instalasi listrik adalah...", opts: ["A. Grounding → LOTO → Verifikasi", "B. Switching off → LOTO → Verifikasi bebas tegangan → Grounding → Barrier", "C. Verifikasi → Barrier → Switching", "D. LOTO → Barrier → Switching"], ans: 1 },
+    { q: "8. Jika hasil uji tahanan isolasi di atas minimum namun menurun signifikan dari tahun lalu...", opts: ["A. Abaikan", "B. Tetap waspada tren penurunan & investigasi lanjutan", "C. Langsung potong kabel", "D. Naikkan beban"], ans: 1 },
+    { q: "9. Setelah pengujian HV DC selesai, kabel WAJIB...", opts: ["A. Langsung disentuh", "B. Di-discharge dan digroundkan dengan benar sebelum disentuh", "C. Langsung di-energize", "D. Dibiarkan"], ans: 1 },
+    { q: "10. Thermal imaging menunjukkan Delta T > 40°C pada salah satu lug. Mengindikasikan...", opts: ["A. Kondisi sangat normal", "B. Indikasi awal potensi masalah pada sambungan/crimping yang harus ditindaklanjuti", "C. Kabel paling bagus", "D. Alat ukur rusak"], ans: 1 }
+  ]
+};
+
+// QUIZ PROGRESSION STATE
+let quizState = {
+  prePassed: false,
+  preScore: null,
+  postPassed: false,
+  postScore: null
+};
+
+let currentQuizType = 'pre';
+let quizIndex = 0;
+let quizAnswers = {};
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  const selectedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+  if (selectedBtn) selectedBtn.classList.add('active');
+  
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
+}
+
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  item.classList.toggle('active');
+}
+
+function calculateCutback() {
+  const lugL = Number(document.getElementById('calcLug').value) || 65;
+  const volt = document.getElementById('calcVolt').value;
+  
+  let tubeL = 240;
+  if (volt === "12") tubeL = 180;
+  if (volt === "36") tubeL = 320;
+  
+  const gap = 10;
+  const totalZ = tubeL + lugL + gap;
+  
+  document.getElementById('calcResult').innerHTML = `
+    <div style="font-family:var(--mono); font-size:12px; color:var(--accent); font-weight:700;">HASIL ESTIMASI CUTBACK (Z):</div>
+    <div style="font-size:22px; font-weight:800; color:#fff; font-family:var(--mono); margin:4px 0;">Z = ${totalZ} mm</div>
+    <div style="font-size:12px; color:var(--text-dim);">
+      • Stripping Sheath Luar (Z): <b>${totalZ} mm</b><br>
+      • Kupas Semi-con Step: biarkan sisa <b>25–30 mm</b> di atas metallic shield.<br>
+      • Kupas Insulasi XLPE Ujung: setara panjang barrel lug (<b>${lugL} mm</b>) + clearance 5 mm.
+    </div>
+  `;
+}
+
+// Selector Wizard Render Functions
+function renderProgress() {
+  const el = document.getElementById("progress");
+  if(!el) return;
+  el.innerHTML = STEPS.map((s,i)=>{
+    const cls = i < stepIndex ? "done" : (i===stepIndex ? "current" : "");
+    return `<div class="seg ${cls}"></div>`;
+  }).join("");
+}
+
+function renderSummary() {
+  const el = document.getElementById("summaryBar");
+  if(!el) return;
+  const chips = [];
+  if(state.voltage) chips.push(`<span class="chip">Voltage: <b>${VOLTAGE_CLASSES.find(v=>v.id===state.voltage).label}</b></span>`);
+  if(state.cableType) chips.push(`<span class="chip">Shield: <b>${state.cableType==='concentric'?'Concentric Neutral':'Tape/Wire Shield'}</b></span>`);
+  if(state.core) chips.push(`<span class="chip">Core: <b>${state.core==='single'?'Single Core':'3 Core'}</b></span>`);
+  if(state.env) chips.push(`<span class="chip">Env: <b>${state.env==='indoor'?'Indoor':'Outdoor'}</b></span>`);
+  if(state.conductorMM2) chips.push(`<span class="chip">Size: <b>${state.conductorMM2} mm²</b></span>`);
+  if(state.brand) chips.push(`<span class="chip">Brand: <b>${state.brand}</b></span>`);
+  el.innerHTML = chips.join("");
+}
+
+function goNext(){ stepIndex++; render(); }
+function goBack(){ stepIndex--; render(); }
+
+function optionCard(html, desc, selected, onClick){
+  const div = document.createElement("div");
+  div.className = "opt" + (selected ? " selected" : "");
+  div.innerHTML = `<div>${html}</div>${desc ? `<span class="opt-desc">${desc}</span>` : ''}`;
+  div.onclick = onClick;
+  return div;
+}
+
+function render(){
+  renderProgress();
+  renderSummary();
+  const area = document.getElementById("stepArea");
+  if(!area) return;
+  area.innerHTML = "";
+  const step = STEPS[stepIndex];
+
+  if(step === "voltage") return renderVoltageStep(area);
+  if(step === "cableType") return renderCableTypeStep(area);
+  if(step === "core") return renderCoreStep(area);
+  if(step === "env") return renderEnvStep(area);
+  if(step === "conductor") return renderConductorStep(area);
+  if(step === "brand") return renderBrandStep(area);
+}
+
+function stepShell(area, label, title){
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `<div class="step-label">Langkah ${stepIndex+1} dari ${STEPS.length}</div><div class="step-title">${title}</div>`;
+  area.appendChild(card);
+  return card;
+}
+
+function navRow(card, canNext, nextFn){
+  const row = document.createElement("div");
+  row.className = "navrow";
+  const back = document.createElement("button");
+  back.className = "btn ghost";
+  back.textContent = "← Kembali";
+  back.disabled = stepIndex === 0;
+  back.onclick = goBack;
+  const next = document.createElement("button");
+  next.className = "btn primary";
+  next.textContent = stepIndex === STEPS.length-1 ? "Cari Kit" : "Lanjut →";
+  next.disabled = !canNext;
+  next.onclick = nextFn || goNext;
+  row.appendChild(back);
+  row.appendChild(next);
+  card.appendChild(row);
+}
+
+function renderVoltageStep(area){
+  const card = stepShell(area, "", "Pilih kelas tegangan kabel (kV)");
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  VOLTAGE_CLASSES.forEach(v=>{
+    grid.appendChild(optionCard(v.label, v.bil, state.voltage===v.id, ()=>{
+      state.voltage = v.id; render();
+    }));
+  });
+  card.appendChild(grid);
+  navRow(card, !!state.voltage);
+}
+
+function renderCableTypeStep(area){
+  const card = stepShell(area, "", "Tipe Metallic Shield / Screen Kabel");
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  [
+    {id:"tape_wire_unishield", label:"Tape / Wire Shield", desc:"Pita tembaga atau kawat tembaga spiral"},
+    {id:"concentric", label:"Concentric Neutral", desc:"Kawat netral konsentris luar"}
+  ].forEach(c=>{
+    grid.appendChild(optionCard(c.label, c.desc, state.cableType===c.id, ()=>{
+      state.cableType = c.id; render();
+    }));
+  });
+  card.appendChild(grid);
+  navRow(card, !!state.cableType);
+}
+
+function renderCoreStep(area){
+  const card = stepShell(area, "", "Jumlah Inti Kabel (Core)");
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  [["single","Single Core","1 fasa per kabel"],["three","3 Core","3 fasa dalam 1 kabel (armoured)"]].forEach(([id,label,desc])=>{
+    grid.appendChild(optionCard(label, desc, state.core===id, ()=>{
+      state.core = id; render();
+    }));
+  });
+  card.appendChild(grid);
+  navRow(card, !!state.core);
+}
+
+function renderEnvStep(area){
+  const card = stepShell(area, "", "Lokasi Pemasangan (Environment)");
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  [["indoor","Indoor","Dalam kubikel/panel (tanpa paparan cuaca)"],["outdoor","Outdoor","Terbuka (dilengkapi skirt/weathershed)"]].forEach(([id,label,desc])=>{
+    grid.appendChild(optionCard(label, desc, state.env===id, ()=>{
+      state.env = id; render();
+    }));
+  });
+  card.appendChild(grid);
+  navRow(card, !!state.env);
+}
+
+function renderConductorStep(area){
+  const card = stepShell(area, "", "Ukuran Penampang Konduktor (mm²)");
+  const input = document.createElement("input");
+  input.type = "number";
+  input.className = "numinput";
+  input.placeholder = "Contoh: 150";
+  input.value = state.conductorMM2 || "";
+  input.oninput = (e)=>{ state.conductorMM2 = e.target.value ? Number(e.target.value) : null; updateNextBtn(); };
+  card.appendChild(input);
+  const hint = document.createElement("div");
+  hint.className = "field-hint";
+  hint.textContent = "Masukkan luas penampang konduktor dalam mm² (misal 50, 70, 95, 120, 150, 185, 240, 300). Konversi otomatis ke AWG/kcmil dilakukan untuk katalog 3M.";
+  card.appendChild(hint);
+  
+  function updateNextBtn(){
+    const btn = card.querySelector(".btn.primary");
+    if(btn) btn.disabled = !state.conductorMM2;
+  }
+  
+  navRow(card, !!state.conductorMM2);
+}
+
+function renderBrandStep(area){
+  const card = stepShell(area, "", "Pilih Brand Kit Terminasi");
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  [
+    {b:"Raychem", desc:"Heat Shrink Technology (IXSU/OXSU)"},
+    {b:"3M", desc:"Cold Shrink Silicone (QT-III 7600)"},
+    {b:"Prysmian", desc:"ColdFit Silicone Polymer (PCT/PICT)"}
+  ].forEach(({b,desc})=>{
+    grid.appendChild(optionCard(b, desc, state.brand===b, ()=>{
+      state.brand = b; render();
+    }));
+  });
+  card.appendChild(grid);
+
+  const brandOptionsWrap = document.createElement("div");
+  card.appendChild(brandOptionsWrap);
+
+  const resultWrap = document.createElement("div");
+  card.appendChild(resultWrap);
+
+  function refreshResultOnly(){
+    resultWrap.innerHTML = "";
+    if(state.brand){
+      const result = lookupKit(state);
+      resultWrap.appendChild(renderResult(result));
+    }
+  }
+
+  if(state.brand === "3M"){
+    brandOptionsWrap.appendChild(render3MInputModeUI(refreshResultOnly));
+  }
+
+  refreshResultOnly();
+
+  const row = document.createElement("div");
+  row.className = "navrow";
+  const back = document.createElement("button");
+  back.className = "btn ghost";
+  back.textContent = "← Kembali";
+  back.onclick = goBack;
+  const restart = document.createElement("button");
+  restart.className = "btn primary";
+  restart.textContent = "Mulai Ulang Wizard";
+  restart.onclick = ()=>{
+    state = { voltage:null, cableType:null, core:null, env:null, conductorMM2:null, brand:null, mm3InputMode:"mm2", mm3OD:null };
+    stepIndex = 0; render();
+  };
+  row.appendChild(back);
+  row.appendChild(restart);
+  card.appendChild(row);
+}
+
+function render3MInputModeUI(onODChange){
+  const wrap = document.createElement("div");
+  wrap.className = "card";
+  wrap.style.margin = "12px 0";
+  wrap.style.background = "var(--panel2)";
+  wrap.style.padding = "14px";
+  wrap.style.borderRadius = "10px";
+
+  const title = document.createElement("div");
+  title.style.fontWeight = "600";
+  title.style.marginBottom = "8px";
+  title.style.fontSize = "13px";
+  title.textContent = "3M menggunakan basis lookup Insulation O.D., bukan mm² langsung. Pilih mode input:";
+  wrap.appendChild(title);
+
+  const modeGrid = document.createElement("div");
+  modeGrid.className = "grid";
+  [
+    ["mm2", "Estimasi via mm²", "Cepat, hasil perkiraan"],
+    ["od", "Insulation O.D. (mm)", "Akurat sesuai katalog"],
+  ].forEach(([id,label,desc])=>{
+    modeGrid.appendChild(optionCard(label, desc, state.mm3InputMode===id, ()=>{
+      state.mm3InputMode = id; render();
+    }));
+  });
+  wrap.appendChild(modeGrid);
+
+  if(state.mm3InputMode === "od"){
+    const odInput = document.createElement("input");
+    odInput.type = "number";
+    odInput.step = "0.1";
+    odInput.className = "numinput";
+    odInput.placeholder = "mis. 27.4";
+    odInput.value = state.mm3OD || "";
+    odInput.style.marginTop = "10px";
+    odInput.style.width = "100%";
+    odInput.oninput = (e)=>{
+      state.mm3OD = e.target.value ? Number(e.target.value) : null;
+      if(onODChange) onODChange();
+    };
+    wrap.appendChild(odInput);
+
+    const hint = document.createElement("div");
+    hint.style.fontSize = "12px";
+    hint.style.color = "var(--text-dim)";
+    hint.style.marginTop = "6px";
+    hint.textContent = "Masukkan Insulation O.D. (diameter luar insulasi) aktual kabel dalam mm — ukur langsung atau cek datasheet kabel.";
+    wrap.appendChild(hint);
+  } else {
+    const hint = document.createElement("div");
+    hint.style.fontSize = "12px";
+    hint.style.color = "var(--text-dim)";
+    hint.style.marginTop = "8px";
+    hint.textContent = `Mode estimasi: mm² (${state.conductorMM2 || "-"} mm²) dikonversi ke perkiraan Insulation O.D., lalu dicocokkan ke kit. Untuk hasil presisi gunakan mode Insulation O.D.`;
+    wrap.appendChild(hint);
+  }
+
+  return wrap;
+}
+
+// LOOKUP ENGINE
+function inRange(val, range){
+  if(!range) return false;
+  return val >= range[0] && val <= range[1];
+}
+
+function lookupKit(s){
+  const mm2 = s.conductorMM2;
+  if(s.brand === "Raychem") return lookupRaychem(s, mm2);
+  if(s.brand === "Prysmian") return lookupPrysmian(s, mm2);
+  if(s.brand === "3M") return lookup3M(s, mm2);
+  return null;
+}
+
+function lookupRaychem(s, mm2){
+  const vBlock = RAYCHEM_DATA.crimp_lug[s.voltage];
+  if(!vBlock) return { found:false, reason:`Raychem tidak memiliki data katalog resmi untuk ${s.voltage} kV pada brosur ini.` };
+  const arr = s.core === "single" ? vBlock.single : vBlock.three;
+  if(!arr) return { found:false, reason:"Data core type tidak tersedia." };
+  const match = arr.find(row => inRange(mm2, row.range));
+  if(!match) return { found:false, reason:`Tidak ada kit Raychem untuk ${mm2} mm² pada ${s.voltage} kV.` };
+  
+  const code = s.core === "single" ? (s.env === "indoor" ? match.indoor : match.outdoor) : (s.env === "indoor" ? match.indoor.join(" atau ") : match.outdoor.join(" atau "));
+
+  return {
+    found: true,
+    code: code,
+    tech: "Heat Shrink Polyolefin",
+    meta: [
+      { lbl: "Diameter Over Insulation", val: match.od ? `${match.od} mm` : "Sesuai standar" },
+      { lbl: "Rekomendasi Earthing Kit", val: "EAKT-1656 / EAKT-1657 (Solderless Grounding)" },
+      { lbl: "Teknologi Stress Relief", val: "High-K Stress Control Tube + SRM Mastic" }
+    ]
+  };
+}
+
+function lookupPrysmian(s, mm2){
+  const arr = PRYSMIAN_DATA.single_core[s.voltage] || PRYSMIAN_DATA.single_core["24"];
+  const match = arr.find(row => inRange(mm2, row.mm2));
+  if(!match) return { found:false, reason:`Tidak ada kit Prysmian ColdFit untuk ${mm2} mm² pada ${s.voltage} kV.` };
+  
+  const code = s.env === "indoor" ? match.indoor : match.outdoor;
+  return {
+    found: true,
+    code: code,
+    tech: "Cold Shrink Silicone Polymer",
+    meta: [
+      { lbl: "Diameter Over Insulation", val: `${match.od[0]}–${match.od[1]} mm` },
+      { lbl: "Opsi Grounding Device", val: "T1 (Polylam) / T2 (Copper Tape) / T3 (Wires)" },
+      { lbl: "Connector / Lug", val: "ALSB2L Series Shear-bolt Connector" }
+    ]
+  };
+}
+
+// Mapping kelas tegangan wizard (IEC-style, kV Um) -> kelas tegangan katalog 3M (kV AEIC, sistem Amerika)
+const MM3_VOLTAGE_MAP = {
+  "12":  { label: "15 kV (AEIC)", keys: ["15","15-100","15-133","15-AEIC","15-IEC","15-IEC(AEIC)","15-100(133)"] },
+  "17.5":{ label: "25/28 kV (AEIC)", keys: ["25/28","25/28-AEIC","25/28-100(133)"] },
+  "24":  { label: "25/28 kV (AEIC)", keys: ["25/28","25/28-AEIC","25/28-100(133)"] },
+  "36":  { label: "35 kV (AEIC)", keys: ["35","35-AEIC"] },
+  "42":  { label: "46 kV", keys: ["46"] },
+};
+
+// Perkiraan konversi mm2 -> insulation OD (mm) kasar per kelas tegangan. Dipakai HANYA pada mode estimasi mm2.
+function estimateODFromMM2(mm2, voltage){
+  const wallOffset = { "12":10, "17.5":13, "24":13, "36":16, "42":20 }[voltage] || 13;
+  const condDiameter = 2 * Math.sqrt(mm2 / Math.PI);
+  return condDiameter + wallOffset;
+}
+
+function parseMM2Range(str) {
+  if (!str) return null;
+  const mm2Match = str.match(/(\d+)\s*(?:-|to|\s)\s*(\d+)\s*mm²/i) || str.match(/\((\d+)\s*mm²\)/i);
+  if (mm2Match) {
+    if (mm2Match[2]) return [parseInt(mm2Match[1], 10), parseInt(mm2Match[2], 10)];
+    const val = parseInt(mm2Match[1], 10); return [val, val];
+  }
+  const map = {
+    '8': 10, '6': 14, '4': 22, '2': 35, '1': 38,
+    '1/0': 50, '2/0': 70, '3/0': 95, '4/0': 120,
+    '250': 150, '300': 150, '350': 185, '400': 240, '500': 240,
+    '600': 300, '700': 350, '750': 400, '800': 400, '900': 500,
+    '1000': 500, '1250': 630, '1500': 800, '1750': 850, '2000': 1000
+  };
+  const terms = str.match(/(\d+\/\d+|\d+)/g);
+  if (terms && terms.length >= 1) {
+    const vals = terms.map(t => map[t] || null).filter(v => v !== null);
+    if (vals.length === 1) return [vals[0], vals[0]];
+    if (vals.length >= 2) return [Math.min(...vals), Math.max(...vals)];
+  }
+  return null;
+}
+
+function pickMM3CondValue(cond, voltageKeys){
+  for(const k of voltageKeys){
+    if(cond[k] !== undefined) return { key:k, value:cond[k] };
+  }
+  return null;
+}
+
+function lookup3M(s, mm2){
+  const vMap = MM3_VOLTAGE_MAP[s.voltage];
+  if(!vMap) return { found:false, reason:`3M tidak memiliki mapping kelas tegangan untuk ${s.voltage} kV pada wizard ini.` };
+
+  let odMM, odIsEstimate = false;
+  if(s.mm3InputMode === "od"){
+    if(!s.mm3OD) return { found:false, reason:"Masukkan nilai Insulation O.D. (mm) terlebih dahulu." };
+    odMM = s.mm3OD;
+  } else {
+    odMM = estimateODFromMM2(mm2, s.voltage);
+    odIsEstimate = true;
+  }
+
+  let familyKey, subKeys;
+  const isCN = s.cableType === "concentric";
+
+  if(s.core === "three"){
+    familyKey = "three_core";
+    subKeys = s.env === "indoor"
+      ? ["qt3_indoor_3g","qt3_indoor_3w","qt3_indoor_3rjs"]
+      : ["qt3_outdoor_3g","qt3_outdoor_3w","qt3_outdoor_3rjs","qt3_outdoor_inv_3w","qt3_outdoor_inv_3g"];
+  } else if(isCN){
+    familyKey = "jcn_cn";
+    subKeys = s.env === "indoor"
+      ? ["qt3_indoor","qt2_indoor"]
+      : ["qt3_outdoor","qt2_outdoor_4skirt","qt2_outdoor_6skirt","qt2_outdoor_8skirt","qt2_cn_4skirt","qt2_cn_6skirt","qt2_cn_8skirt"];
+  } else {
+    familyKey = "single_core";
+    subKeys = s.env === "indoor"
+      ? ["qt3_indoor","qt2_indoor_5620k","qt2_indoor_6020k"]
+      : ["qt3_outdoor","qt3_outdoor_inverted","qt2_outdoor_4skirt","qt2_outdoor_6skirt","qt2_outdoor_8skirt","qt2_46kv"];
+  }
+
+  const family = MM3_DATA[familyKey];
+  if(!family) return { found:false, reason:"Kategori data 3M tidak ditemukan." };
+
+  const matches = [];
+  for(const subKey of subKeys){
+    const sub = family[subKey];
+    if(!sub) continue;
+    for(const row of sub.rows){
+      if(!row.odMM) continue;
+      if(odMM < row.odMM[0] || odMM > row.odMM[1]) continue;
+      const condMatch = pickMM3CondValue(row.cond, vMap.keys);
+      if(!condMatch) continue;
+
+      // Verification of conductor size range matching
+      if(s.mm3InputMode !== "od" && mm2) {
+        const cRange = parseMM2Range(condMatch.value);
+        if(cRange && (mm2 < cRange[0] * 0.85 || mm2 > cRange[1] * 1.15)) {
+          continue;
+        }
+      }
+
+      matches.push({ subLabel: sub.label, note: sub.note, row, condMatch });
+    }
+  }
+
+  if(matches.length === 0){
+    return { found:false, reason:`Tidak ditemukan kit 3M yang cocok untuk ${mm2 ? mm2+' mm² / ' : ''}Insulation O.D. ≈ ${odMM.toFixed(1)} mm pada kelas tegangan ${vMap.label}, kombinasi ${s.core==='three'?'3-core':'single-core'} / ${isCN?'Concentric Neutral':'Tape-Wire-UniShield'} / ${s.env}. Coba periksa kembali OD kabel atau gunakan mode Insulation O.D.` };
+  }
+
+  const bySub = {};
+  matches.forEach(m=>{
+    const key = m.subLabel;
+    const width = m.row.odMM[1] - m.row.odMM[0];
+    if(!bySub[key] || width < bySub[key]._width){
+      bySub[key] = Object.assign({}, m, { _width: width });
+    }
+  });
+  const groupedMatches = Object.values(bySub);
+
+  const metaItems = [];
+  metaItems.push({
+    lbl: odIsEstimate ? "Insulation O.D. (estimasi dari mm²)" : "Insulation O.D. (input akurat)",
+    val: odIsEstimate ? `≈ ${odMM.toFixed(1)} mm ⚠ estimasi` : `${odMM.toFixed(1)} mm`
+  });
+  metaItems.push({ lbl: "Kelas Tegangan Katalog 3M", val: vMap.label });
+  metaItems.push({ lbl: "Jumlah Varian Kit Cocok", val: `${groupedMatches.length} (1 per sub-kategori BIL/skirt)` });
+
+  groupedMatches.forEach(m=>{
+    const odDisp = `${m.row.odMM[0]}-${m.row.odMM[1]} mm`;
+    const bilDisp = m.row.bil ? `BIL ${m.row.bil} kV` : "";
+    const skirtsDisp = m.row.skirts ? `${m.row.skirts} skirt` : "";
+    const detailBits = [odDisp, bilDisp, skirtsDisp].filter(Boolean).join(" | ");
+    metaItems.push({
+      lbl: `${m.row.order} -- ${m.subLabel}`,
+      val: `${detailBits}<br>Conductor (${m.condMatch.key}): ${m.condMatch.value}${m.row.kit ? ' | Termasuk: '+m.row.kit : ''}`
+    });
+  });
+
+  const notesSeen = new Set();
+  groupedMatches.forEach(m=>{ if(m.note && !notesSeen.has(m.note)){ notesSeen.add(m.note); metaItems.push({ lbl: `Catatan (${m.subLabel})`, val: m.note }); } });
+
+  return {
+    found: true,
+    code: groupedMatches.map(m=>m.row.order).join(" / "),
+    tech: "Cold Shrink Silicone Rubber (QT-II / QT-III)",
+    meta: metaItems
+  };
+}
+
+function renderResult(res){
+  const div = document.createElement("div");
+  if(res.found){
+    div.className = "result-card";
+    div.innerHTML = `
+      <div class="result-title">✓ Kode Kit Terminasi Ditemukan</div>
+      <div class="kit-code">${res.code}</div>
+      <div class="badge ok" style="display:inline-block; margin-bottom:12px;">Teknologi: ${res.tech}</div>
+      
+      <div class="meta-grid">
+        ${res.meta.map(m => `
+          <div class="meta-item">
+            <div class="lbl">${m.lbl}</div>
+            <div class="val">${m.val}</div>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  } else {
+    div.className = "result-card empty";
+    div.innerHTML = `
+      <div class="result-title">⚠ Data Tidak Ditemukan</div>
+      <div style="font-size:13px; color:var(--text-dim);">${res.reason}</div>
+    `;
+  }
+  return div;
+}
+
+// QUIZ LOGIC
+function updateQuizUIStatus() {
+  const statusPreBadge = document.getElementById('statusPreBadge');
+  const statusPreDetail = document.getElementById('statusPreDetail');
+  const statusPostBadge = document.getElementById('statusPostBadge');
+  const statusPostDetail = document.getElementById('statusPostDetail');
+  const statusPostCard = document.getElementById('statusPostCard');
+  const btnStartPost = document.getElementById('btnStartPost');
+  const btnStartPre = document.getElementById('btnStartPre');
+
+  if (!statusPreBadge) return;
+
+  if (!quizState.prePassed) {
+    if (quizState.preScore === null) {
+      statusPreBadge.className = "badge warn";
+      statusPreBadge.textContent = "🔒 Wajib Dikerjakan Pertama";
+      statusPreDetail.textContent = "Batas minimal kelulusan: 70/100";
+    } else {
+      statusPreBadge.className = "badge warn";
+      statusPreBadge.textContent = `⚠ Belum Lulus (Skor: ${quizState.preScore}/100)`;
+      statusPreDetail.textContent = "Wajib ulangi Pre-Test hingga skor ≥ 70";
+    }
+
+    statusPostBadge.className = "badge warn";
+    statusPostBadge.textContent = "🔒 Terkunci";
+    statusPostDetail.textContent = "Memerlukan Kelulusan Pre-Test (Skor ≥ 70)";
+    statusPostCard.style.opacity = "0.6";
+
+    btnStartPost.disabled = true;
+    btnStartPost.style.opacity = "0.5";
+    btnStartPost.style.cursor = "not-allowed";
+    btnStartPost.className = "btn";
+    btnStartPost.textContent = "🔒 Post-Test (Terkunci)";
+
+    btnStartPre.textContent = quizState.preScore === null ? "Mulai Pre-Test (20 Soal)" : "Ulangi Pre-Test (20 Soal)";
+  } else {
+    statusPreBadge.className = "badge ok";
+    statusPreBadge.textContent = `✓ LULUS PRE-TEST (Skor: ${quizState.preScore}/100)`;
+    statusPreDetail.textContent = "Syarat pembukaan Post-Test terpenuhi!";
+
+    if (quizState.postScore === null) {
+      statusPostBadge.className = "badge cyan";
+      statusPostBadge.textContent = "🔓 Terbuka — Siap Dikerjakan";
+      statusPostDetail.textContent = "Silahkan kerjakan Post-Test sekarang!";
+    } else if (quizState.postPassed) {
+      statusPostBadge.className = "badge ok";
+      statusPostBadge.textContent = `🏆 LULUS POST-TEST (Skor: ${quizState.postScore}/100)`;
+      statusPostDetail.textContent = "Kompetensi Pelatihan Terverifikasi!";
+    } else {
+      statusPostBadge.className = "badge warn";
+      statusPostBadge.textContent = `⚠ Belum Lulus (Skor: ${quizState.postScore}/100)`;
+      statusPostDetail.textContent = "Silahkan ulangi Post-Test";
+    }
+
+    statusPostCard.style.opacity = "1";
+    btnStartPost.disabled = false;
+    btnStartPost.style.opacity = "1";
+    btnStartPost.style.cursor = "pointer";
+    btnStartPost.className = "btn primary";
+    btnStartPost.textContent = quizState.postScore === null ? "🔓 Mulai Post-Test (20 Soal)" : "🔄 Ulangi Post-Test";
+
+    btnStartPre.textContent = "🔄 Ulangi Pre-Test";
+  }
+}
+
+function loadQuiz(type) {
+  if (type === 'post' && !quizState.prePassed) {
+    alert("⚠ AKSES TERKUNCI:\n\nAnda harus mengerjakan dan LULUS Pre-Test terlebih dahulu dengan skor minimal 70% sebelum dapat membuka Post-Test.");
+    return;
+  }
+
+  currentQuizType = type;
+  quizIndex = 0;
+  quizAnswers = {};
+  document.getElementById('quizContainer').style.display = 'block';
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  const list = QUIZ_QUESTIONS[currentQuizType];
+  const item = list[quizIndex];
+  
+  document.getElementById('quizHeader').textContent = `MODUL QUIZ ${currentQuizType.toUpperCase()}-TEST — SOAL ${quizIndex + 1} DARI ${list.length}`;
+  document.getElementById('quizQuestion').textContent = item.q;
+  
+  const optsDiv = document.getElementById('quizOptions');
+  optsDiv.innerHTML = '';
+  
+  const selected = quizAnswers[quizIndex];
+  
+  item.opts.forEach((optText, oIdx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    if (selected !== undefined) {
+      if (oIdx === item.ans) btn.classList.add('correct');
+      else if (oIdx === selected) btn.classList.add('wrong');
+    }
+    btn.textContent = optText;
+    btn.onclick = () => {
+      if (quizAnswers[quizIndex] === undefined) {
+        quizAnswers[quizIndex] = oIdx;
+        renderQuizQuestion();
+      }
+    };
+    optsDiv.appendChild(btn);
+  });
+  
+  const fb = document.getElementById('quizFeedback');
+  if (selected !== undefined) {
+    if (selected === item.ans) {
+      fb.innerHTML = '<span style="color:var(--ok);">✓ Jawaban Benar!</span>';
+    } else {
+      fb.innerHTML = `<span style="color:var(--danger);">✗ Jawaban Kurang Tepat. Jawaban Benar: ${item.opts[item.ans]}</span>`;
+    }
+  } else {
+    fb.innerHTML = '';
+  }
+  
+  document.getElementById('btnPrevQ').disabled = quizIndex === 0;
+  document.getElementById('btnNextQ').textContent = quizIndex === list.length - 1 ? "Selesai & Lihat Skor" : "Soal Berikutnya →";
+}
+
+function navQuiz(dir) {
+  const list = QUIZ_QUESTIONS[currentQuizType];
+  if (quizIndex + dir >= 0 && quizIndex + dir < list.length) {
+    quizIndex += dir;
+    renderQuizQuestion();
+  } else if (quizIndex + dir === list.length) {
+    finishQuiz();
+  }
+}
+
+function finishQuiz() {
+  const list = QUIZ_QUESTIONS[currentQuizType];
+  let correct = 0;
+  list.forEach((q, idx) => {
+    if (quizAnswers[idx] === q.ans) correct++;
+  });
+  const score = Math.round((correct / list.length) * 100);
+  const pass = score >= 70;
+
+  if (currentQuizType === 'pre') {
+    quizState.preScore = score;
+    quizState.prePassed = pass;
+  } else {
+    quizState.postScore = score;
+    quizState.postPassed = pass;
+  }
+
+  updateQuizUIStatus();
+
+  const container = document.getElementById('quizContainer');
+
+  if (currentQuizType === 'pre') {
+    if (pass) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:24px;">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--ok); text-transform:uppercase; letter-spacing:.08em;">🎉 PRE-TEST SELESAI — LULUS!</div>
+          <div style="font-size:42px; font-weight:800; color:#fff; font-family:var(--mono); margin:10px 0;">SKOR: ${score} / 100</div>
+          <div style="margin-bottom:16px;">
+            <span class="badge ok" style="font-size:14px; padding:6px 16px;">
+              ✓ PRE-TEST LULUS (Jawaban Benar: ${correct} dari ${list.length})
+            </span>
+          </div>
+          <p style="font-size:13px; color:var(--text); margin-bottom:20px; line-height:1.6;">
+            Selamat! Anda berhasil melampaui skor minimal Pre-Test (70%).<br>
+            <b style="color:var(--cyan);">Akses Modul Post-Test sekarang telah TERBUKA secara otomatis!</b>
+          </p>
+          <div style="display:flex; justify-content:center; gap:12px;">
+            <button class="btn ghost" onclick="loadQuiz('pre')">🔄 Ulangi Pre-Test</button>
+            <button class="btn primary" onclick="loadQuiz('post')">🔓 Lanjut ke Post-Test (20 Soal) →</button>
+          </div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div style="text-align:center; padding:24px;">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--warn); text-transform:uppercase; letter-spacing:.08em;">⚠ PRE-TEST BELUM LULUS</div>
+          <div style="font-size:42px; font-weight:800; color:var(--warn); font-family:var(--mono); margin:10px 0;">SKOR: ${score} / 100</div>
+          <div style="margin-bottom:16px;">
+            <span class="badge warn" style="font-size:14px; padding:6px 16px;">
+              ⚠ PERLU REMEDIAL PRE-TEST (Jawaban Benar: ${correct} dari ${list.length})
+            </span>
+          </div>
+          <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px; line-height:1.6;">
+            Skor Anda belum mencapai batas minimal kelulusan <b>70%</b>.<br>
+            Sesuai aturan evaluasi, Anda <b>WAJIB mengulangi Pre-Test</b> hingga mencapai skor minimal 70 sebelum modul Post-Test dapat dibuka.
+          </p>
+          <button class="btn primary" onclick="loadQuiz('pre')">🔄 Ulangi Pre-Test</button>
+        </div>
+      `;
+    }
+  } else {
+    // POST-TEST RESULT
+    if (pass) {
+      container.innerHTML = `
+        <div style="text-align:center; padding:24px;">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--ok); text-transform:uppercase; letter-spacing:.08em;">🏆 EVALUASI PELATIHANS LULUS SAKSES!</div>
+          <div style="font-size:42px; font-weight:800; color:#fff; font-family:var(--mono); margin:10px 0;">SKOR POST-TEST: ${score} / 100</div>
+          <div style="margin-bottom:16px;">
+            <span class="badge ok" style="font-size:14px; padding:6px 16px;">
+              ✓ TERVERIFIKASI KOMPETEN (Jawaban Benar: ${correct} dari ${list.length})
+            </span>
+          </div>
+          <p style="font-size:13px; color:var(--text); margin-bottom:20px; line-height:1.6;">
+            Selamat! Anda dinyatakan <b>KOMPETEN</b> dalam Pelatihan Terminasi Kabel Medium Voltage (MV)!<br>
+            <span style="font-family:var(--mono); color:var(--text-dim);">Skor Pre-Test: <b>${quizState.preScore}/100</b> | Skor Post-Test: <b>${score}/100</b></span>
+          </p>
+          <button class="btn primary" onclick="loadQuiz('post')">🔄 Ulangi Post-Test</button>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div style="text-align:center; padding:24px;">
+          <div style="font-family:var(--mono); font-size:12px; color:var(--warn); text-transform:uppercase; letter-spacing:.08em;">⚠ POST-TEST BELUM LULUS</div>
+          <div style="font-size:42px; font-weight:800; color:var(--warn); font-family:var(--mono); margin:10px 0;">SKOR: ${score} / 100</div>
+          <div style="margin-bottom:16px;">
+            <span class="badge warn" style="font-size:14px; padding:6px 16px;">
+              ⚠ PERLU REMEDIAL POST-TEST (Jawaban Benar: ${correct} dari ${list.length})
+            </span>
+          </div>
+          <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px; line-height:1.6;">
+            Skor Post-Test Anda belum mencapai batas minimal kelulusan <b>70%</b>.<br>
+            Silahkan pelajari kembali modul referensi teknis dan ulangi Post-Test.
+          </p>
+          <button class="btn primary" onclick="loadQuiz('post')">🔄 Ulangi Post-Test</button>
+        </div>
+      `;
+    }
+  }
+}
+
+// Initialize Application
+// ============================================================
+// TAB NAVIGATION & ACCORDION FUNCTIONS
+// ============================================================
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  const tab = document.getElementById(tabId);
+  if (tab) tab.classList.add('active');
+  // Activate the matching button
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId)) {
+      btn.classList.add('active');
+    }
+  });
+}
+
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  item.classList.toggle('active');
+}
+
+// ============================================================
+// THEME SWITCHER FUNCTIONS (DARK <-> WIN11 LIGHT)
+// ============================================================
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('mv_selector_theme', newTheme);
+  updateThemeUI(newTheme);
+}
+
+function updateThemeUI(theme) {
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  if (theme === 'light') {
+    if (icon) icon.textContent = '🌙';
+    if (label) label.textContent = 'Dark Mode';
+  } else {
+    if (icon) icon.textContent = '☀️';
+    if (label) label.textContent = 'Win11 Light Mode';
+  }
+}
+
+// Initialize Theme from localStorage
+(function initTheme() {
+  const savedTheme = localStorage.getItem('mv_selector_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeUI(savedTheme);
+})();
+
+calculateCutback();
+updateQuizUIStatus();
+render();
+</script>
+</body>
+</html>

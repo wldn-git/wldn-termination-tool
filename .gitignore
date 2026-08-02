@@ -1,0 +1,16 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files & copies
+*copy*
+*.tmp
+*.bak
+*.log
+__pycache__/
+*.pyc
+
+# Local IDE / Editor settings
+.vscode/
+.idea/
