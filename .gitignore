@@ -1,3 +1,6 @@
+# Extracted assets (not needed in production app)
+extracted_images/
+
 # OS files
 .DS_Store
 Thumbs.db
