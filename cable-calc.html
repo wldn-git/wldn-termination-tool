@@ -304,11 +304,93 @@ canvas { display: block; }
 ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.14); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.28); }
 
-@media (max-width: 680px) {
-  .nav { display: none; }
-  .content { margin-left: 0; padding: 16px; }
-  .two-col { grid-template-columns: 1fr; }
-  .rec-val { font-size: 32px; }
+/* Responsive Mobile & Tablet Layout */
+@media (max-width: 768px) {
+  .titlebar {
+    position: relative;
+    height: auto;
+    min-height: var(--titlebar-h);
+    padding: 8px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .titlebar-sub { display: none; }
+  .titlebar-div { display: none; }
+  
+  .layout {
+    flex-direction: column;
+    padding-top: 0;
+  }
+  
+  .nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 8px 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    z-index: 200;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .nav-section { display: none; }
+  .nav-divider { display: none; }
+  .nav-item {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12.5px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface-alt);
+  }
+  .nav-item.active {
+    border-color: var(--accent-ring);
+    background: var(--accent-light);
+  }
+  .nav-item.active::before { display: none; }
+
+  .content {
+    margin-left: 0;
+    max-width: 100vw;
+    padding: 16px 12px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+  
+  .result-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .rec-val { font-size: 30px; }
+  .page-title { font-size: 19px; }
+  
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 [data-tip] { position: relative; cursor: help; }

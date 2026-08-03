@@ -292,10 +292,36 @@
 
   /* Utility Grid 2-col */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  /* Mobile Responsiveness Improvements */
   @media (max-width: 768px) {
+    body { padding: 14px 12px; }
+    h1 { font-size: 20px; }
+    .sub { font-size: 12.5px; }
     .two-col { grid-template-columns: 1fr; }
-    .grid { grid-template-columns: 1fr 1fr; }
-    .kit-code { font-size: 20px; }
+    .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+    .kit-code { font-size: 18px; word-break: break-word; }
+    .header-wrap { flex-direction: column; align-items: stretch; gap: 12px; }
+    .nav-tabs {
+      padding-bottom: 6px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tab-btn {
+      padding: 8px 12px;
+      font-size: 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .styled-table, table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+    .meta-grid { grid-template-columns: 1fr; }
   }
   /* Header Flex Layout & Theme Switcher Button */
   .header-wrap {
