@@ -410,6 +410,29 @@
     border-color: #DC2626;
     color: #B91C1C;
   }
+  [data-theme="light"] .badge.ok {
+    background: #DCFCE7;
+    color: #15803D;
+    border-color: #86EFAC;
+  }
+  [data-theme="light"] .badge.warn {
+    background: #FEF3C7;
+    color: #B45309;
+    border-color: #FDE68A;
+  }
+  [data-theme="light"] .badge.cyan {
+    background: #E0F2FE;
+    color: #0369A1;
+    border-color: #BAE6FD;
+  }
+  [data-theme="light"] .btn.ghost {
+    color: var(--text);
+    border-color: var(--line-bright);
+    background: var(--panel2);
+  }
+  [data-theme="light"] .btn.ghost:hover {
+    background: var(--panel3);
+  }
 </style>
 </head>
 <body>
@@ -2437,7 +2460,7 @@ function finishQuiz() {
       container.innerHTML = `
         <div style="text-align:center; padding:24px;">
           <div style="font-family:var(--mono); font-size:12px; color:var(--ok); text-transform:uppercase; letter-spacing:.08em;">🎉 PRE-TEST SELESAI — LULUS!</div>
-          <div style="font-size:42px; font-weight:800; color:#fff; font-family:var(--mono); margin:10px 0;">SKOR: ${score} / 100</div>
+          <div style="font-size:42px; font-weight:800; color:var(--ok); font-family:var(--mono); margin:10px 0;">SKOR: ${score} / 100</div>
           <div style="margin-bottom:16px;">
             <span class="badge ok" style="font-size:14px; padding:6px 16px;">
               ✓ PRE-TEST LULUS (Jawaban Benar: ${correct} dari ${list.length})
@@ -2447,7 +2470,7 @@ function finishQuiz() {
             Selamat! Anda berhasil melampaui skor minimal Pre-Test (70%).<br>
             <b style="color:var(--cyan);">Akses Modul Post-Test sekarang telah TERBUKA secara otomatis!</b>
           </p>
-          <div style="display:flex; justify-content:center; gap:12px;">
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
             <button class="btn ghost" onclick="loadQuiz('pre')">🔄 Ulangi Pre-Test</button>
             <button class="btn primary" onclick="loadQuiz('post')">🔓 Lanjut ke Post-Test (20 Soal) →</button>
           </div>
@@ -2476,8 +2499,8 @@ function finishQuiz() {
     if (pass) {
       container.innerHTML = `
         <div style="text-align:center; padding:24px;">
-          <div style="font-family:var(--mono); font-size:12px; color:var(--ok); text-transform:uppercase; letter-spacing:.08em;">🏆 EVALUASI PELATIHANS LULUS SAKSES!</div>
-          <div style="font-size:42px; font-weight:800; color:#fff; font-family:var(--mono); margin:10px 0;">SKOR POST-TEST: ${score} / 100</div>
+          <div style="font-family:var(--mono); font-size:12px; color:var(--ok); text-transform:uppercase; letter-spacing:.08em;">🏆 EVALUASI PELATIHAN LULUS SAKSES!</div>
+          <div style="font-size:42px; font-weight:800; color:var(--ok); font-family:var(--mono); margin:10px 0;">SKOR POST-TEST: ${score} / 100</div>
           <div style="margin-bottom:16px;">
             <span class="badge ok" style="font-size:14px; padding:6px 16px;">
               ✓ TERVERIFIKASI KOMPETEN (Jawaban Benar: ${correct} dari ${list.length})
