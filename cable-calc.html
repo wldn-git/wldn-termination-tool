@@ -1082,37 +1082,57 @@ const MAT = {
   fe: { rho: 10.0e-8,  alpha: 0.00651, name: 'Besi (Fe)' },
 };
 
-const IEC_SIZES = [1,1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500,630];
+const IEC_SIZES = [1,1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500,630,800,1000];
 
 const AWG_DATA = [
-  {awg:'4/0',kcmil:211.6,mm2:107.2,dia:11.68},
-  {awg:'3/0',kcmil:167.8,mm2:85.03,dia:10.40},
-  {awg:'2/0',kcmil:133.1,mm2:67.43,dia:9.27},
-  {awg:'1/0',kcmil:105.6,mm2:53.49,dia:8.25},
-  {awg:'1',  kcmil:83.69,mm2:42.41,dia:7.35},
-  {awg:'2',  kcmil:66.36,mm2:33.63,dia:6.54},
-  {awg:'3',  kcmil:52.62,mm2:26.67,dia:5.83},
-  {awg:'4',  kcmil:41.74,mm2:21.15,dia:5.19},
-  {awg:'5',  kcmil:33.10,mm2:16.77,dia:4.62},
-  {awg:'6',  kcmil:26.25,mm2:13.30,dia:4.11},
-  {awg:'7',  kcmil:20.82,mm2:10.55,dia:3.67},
-  {awg:'8',  kcmil:16.51,mm2:8.367,dia:3.26},
-  {awg:'9',  kcmil:13.09,mm2:6.634,dia:2.91},
-  {awg:'10', kcmil:10.38,mm2:5.261,dia:2.59},
-  {awg:'11', kcmil:8.234,mm2:4.172,dia:2.31},
-  {awg:'12', kcmil:6.530,mm2:3.309,dia:2.05},
-  {awg:'13', kcmil:5.178,mm2:2.624,dia:1.83},
-  {awg:'14', kcmil:4.107,mm2:2.081,dia:1.63},
-  {awg:'15', kcmil:3.257,mm2:1.650,dia:1.45},
-  {awg:'16', kcmil:2.583,mm2:1.309,dia:1.29},
-  {awg:'17', kcmil:2.048,mm2:1.038,dia:1.15},
-  {awg:'18', kcmil:1.624,mm2:0.823,dia:1.02},
-  {awg:'20', kcmil:1.022,mm2:0.518,dia:0.812},
-  {awg:'22', kcmil:0.642,mm2:0.326,dia:0.644},
-  {awg:'24', kcmil:0.404,mm2:0.205,dia:0.511},
-  {awg:'26', kcmil:0.254,mm2:0.129,dia:0.405},
-  {awg:'28', kcmil:0.160,mm2:0.081,dia:0.321},
-  {awg:'30', kcmil:0.101,mm2:0.051,dia:0.255},
+  {awg:'2000 kcmil',kcmil:2000, mm2:1013.4,dia:41.33},
+  {awg:'1750 kcmil',kcmil:1750, mm2:886.7, dia:38.66},
+  {awg:'1500 kcmil',kcmil:1500, mm2:760.1, dia:35.79},
+  {awg:'1250 kcmil',kcmil:1250, mm2:633.4, dia:32.68},
+  {awg:'1000 kcmil',kcmil:1000, mm2:506.7, dia:29.23},
+  {awg:'900 kcmil', kcmil:900,  mm2:456.0, dia:27.73},
+  {awg:'800 kcmil', kcmil:800,  mm2:405.4, dia:26.14},
+  {awg:'750 kcmil', kcmil:750,  mm2:380.0, dia:25.31},
+  {awg:'700 kcmil', kcmil:700,  mm2:354.7, dia:24.45},
+  {awg:'600 kcmil', kcmil:600,  mm2:304.0, dia:22.63},
+  {awg:'500 kcmil', kcmil:500,  mm2:253.4, dia:20.65},
+  {awg:'400 kcmil', kcmil:400,  mm2:202.7, dia:18.48},
+  {awg:'350 kcmil', kcmil:350,  mm2:177.3, dia:17.28},
+  {awg:'300 kcmil', kcmil:300,  mm2:152.0, dia:16.00},
+  {awg:'250 kcmil', kcmil:250,  mm2:126.7, dia:14.61},
+  {awg:'4/0',      kcmil:211.6,mm2:107.2, dia:11.68},
+  {awg:'3/0',      kcmil:167.8,mm2:85.03, dia:10.40},
+  {awg:'2/0',      kcmil:133.1,mm2:67.43, dia:9.27},
+  {awg:'1/0',      kcmil:105.6,mm2:53.49, dia:8.25},
+  {awg:'1',        kcmil:83.69,mm2:42.41, dia:7.35},
+  {awg:'2',        kcmil:66.36,mm2:33.63, dia:6.54},
+  {awg:'3',        kcmil:52.62,mm2:26.67, dia:5.83},
+  {awg:'4',        kcmil:41.74,mm2:21.15, dia:5.19},
+  {awg:'5',        kcmil:33.10,mm2:16.77, dia:4.62},
+  {awg:'6',        kcmil:26.25,mm2:13.30, dia:4.11},
+  {awg:'7',        kcmil:20.82,mm2:10.55, dia:3.67},
+  {awg:'8',        kcmil:16.51,mm2:8.367, dia:3.26},
+  {awg:'9',        kcmil:13.09,mm2:6.634, dia:2.91},
+  {awg:'10',       kcmil:10.38,mm2:5.261, dia:2.59},
+  {awg:'11',       kcmil:8.234,mm2:4.172, dia:2.31},
+  {awg:'12',       kcmil:6.530,mm2:3.309, dia:2.05},
+  {awg:'13',       kcmil:5.178,mm2:2.624, dia:1.83},
+  {awg:'14',       kcmil:4.107,mm2:2.081, dia:1.63},
+  {awg:'15',       kcmil:3.257,mm2:1.650, dia:1.45},
+  {awg:'16',       kcmil:2.583,mm2:1.309, dia:1.29},
+  {awg:'17',       kcmil:2.048,mm2:1.038, dia:1.15},
+  {awg:'18',       kcmil:1.624,mm2:0.823, dia:1.02},
+  {awg:'20',       kcmil:1.022,mm2:0.518, dia:0.812},
+  {awg:'22',       kcmil:0.642,mm2:0.326, dia:0.644},
+  {awg:'24',       kcmil:0.404,mm2:0.205, dia:0.511},
+  {awg:'26',       kcmil:0.254,mm2:0.129, dia:0.405},
+  {awg:'28',       kcmil:0.160,mm2:0.081, dia:0.321},
+  {awg:'30',       kcmil:0.101,mm2:0.051, dia:0.255},
+  {awg:'32',       kcmil:0.079,mm2:0.040, dia:0.202},
+  {awg:'34',       kcmil:0.063,mm2:0.032, dia:0.160},
+  {awg:'36',       kcmil:0.050,mm2:0.025, dia:0.127},
+  {awg:'38',       kcmil:0.039,mm2:0.020, dia:0.101},
+  {awg:'40',       kcmil:0.031,mm2:0.016, dia:0.080},
 ];
 
 const AMP = {
@@ -1650,7 +1670,8 @@ function buildAWG(){
     const rAl=(MAT.al.rho/(a.mm2*1e-6))*1000;
     const iec=nearIEC(a.mm2);
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td><strong>AWG ${a.awg}</strong></td><td>${a.kcmil}</td><td>${a.dia} mm</td><td>${a.mm2} mm²</td><td>${iec} mm²</td><td>${fmt(rCu,3)}</td><td>${fmt(rAl,3)}</td>`;
+    const labelStr = a.awg.includes('kcmil') ? a.awg : 'AWG ' + a.awg;
+    tr.innerHTML=`<td><strong>${labelStr}</strong></td><td>${a.kcmil}</td><td>${a.dia} mm</td><td>${a.mm2} mm²</td><td>${iec} mm²</td><td>${fmt(rCu,3)}</td><td>${fmt(rAl,3)}</td>`;
     tb.appendChild(tr);
   });
 }
