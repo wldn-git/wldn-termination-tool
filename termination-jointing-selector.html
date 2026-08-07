@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MV Cable Termination &amp; Jointing Kit Selector — Diorama Training</title>
-<meta name="description" content="Perkakas Pemilah Kit Aksesoris Kabel TM 12kV-36kV: Kit Selector Terminasi & Jointing Presisi (Katalog Resmi 3M, Raychem, Prysmian), SOP 5-Langkah, Cutback Z Calculator, Torsi & Clearance.">
+<meta name="description" content="Perkakas Pemilah Kit Aksesoris Kabel TM 12kV-36kV: Kit Selector Terminasi & Jointing Presisi (Katalog Resmi 3M QT-III Varian 3G/3W/RJS/INV/TI/HSG, Raychem, Prysmian), SOP 5-Langkah, Cutback Z Calculator, Torsi & Clearance.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -280,7 +280,7 @@
     <div>
       <div class="brand-badge"><span></span> Diorama Training · Datasheet Verified Engine</div>
       <h1>MV Cable Termination &amp; Jointing Kit Selector</h1>
-      <div class="sub">Pemilih Kit Terminasi &amp; Sambungan Kabel TM Presisi Sesuai Katalog Resmi 3M, Raychem &amp; Prysmian</div>
+      <div class="sub">Pemilih Kit Terminasi &amp; Sambungan Kabel TM Presisi Sesuai Katalog Resmi 3M (3G/3W/RJS/INV/TI/HSG), Raychem &amp; Prysmian</div>
     </div>
     <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <a href="index.html" class="theme-toggle-btn">🏠 Portal Suite</a>
@@ -369,15 +369,46 @@
         </div>
       </div>
 
+      <!-- Step 6: 3M Sub-Variant Model -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:12px; font-weight:700; color:var(--cyan); text-transform:uppercase; margin-bottom:8px;">Langkah 6: Varian Khusus 3M Cold Shrink (Konstruksi &amp; Orientasi)</div>
+        <div class="grid-opts" id="optM3Variant">
+          <div class="opt selected" onclick="selectOpt('m3variant', '3g', this)">
+            <b>Seri 3G (With Ground Wires)</b>
+            <span class="opt-desc">Standar 3-core dengan ground wires &amp; breakout boot</span>
+          </div>
+          <div class="opt" onclick="selectOpt('m3variant', '3w', this)">
+            <b>Seri 3W (Without Ground Wires)</b>
+            <span class="opt-desc">Untuk kompartemen kubikel/motor rapat tanpa ground wires</span>
+          </div>
+          <div class="opt" onclick="selectOpt('m3variant', 'rjs', this)">
+            <b>Seri RJS (Cabinet Mount RJS)</b>
+            <span class="opt-desc">Re-jacketing sleeve fleksibel tanpa breakout boot</span>
+          </div>
+          <div class="opt" onclick="selectOpt('m3variant', 'inv', this)">
+            <b>Seri INV (Inverted Installation)</b>
+            <span class="opt-desc">Posisi kabel terbalik/menggantung (pointing down)</span>
+          </div>
+          <div class="opt" onclick="selectOpt('m3variant', 'ti', this)">
+            <b>Seri TI (Top Insulator Protection)</b>
+            <span class="opt-desc">Dilengkapi pelindung top insulator terhadap gangguan binatang</span>
+          </div>
+          <div class="opt" onclick="selectOpt('m3variant', 'hsg', this)">
+            <b>Seri HSG (High Fault Current Ground)</b>
+            <span class="opt-desc">Kapasitas grounding tinggi untuk arus gangguan besar</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Result Card -->
       <div class="result-card" id="resultBox">
-        <div style="font-family:var(--mono); font-size:11px; color:var(--ok); text-transform:uppercase; margin-bottom:6px;">Rekomendasi Kode Kit Aksesoris Presisi (Terverifikasi Datasheet)</div>
-        <div class="kit-code" id="resKitCode">3M Cold Shrink QT-III 7695-S-4-3W</div>
+        <div style="font-family:var(--mono); font-size:11px; color:var(--ok); text-transform:uppercase; margin-bottom:6px;">Rekomendasi Kode Kit Aksesoris Presisi (Terverifikasi Datasheet 3M/Raychem/Prysmian)</div>
+        <div class="kit-code" id="resKitCode">3M Cold Shrink QT-III 7695-S-4-3G</div>
         
         <div class="meta-grid">
           <div class="meta-item">
             <div class="lbl">Merek 3M Cold Shrink</div>
-            <div class="val" id="res3M">QT-III 7695-S-4-3W</div>
+            <div class="val" id="res3M">QT-III 7695-S-4-3G</div>
           </div>
           <div class="meta-item">
             <div class="lbl">Merek Raychem Heat Shrink</div>
@@ -783,7 +814,8 @@
     voltage: '24',
     core: '3',
     size: '150',
-    pollution: 'light'
+    pollution: 'light',
+    m3variant: '3g'
   };
 
   function selectOpt(group, val, el) {
@@ -886,7 +918,7 @@
   };
 
   function updateKitResult() {
-    const { category, voltage, core, size, pollution } = selectionState;
+    const { category, voltage, core, size, pollution, m3variant } = selectionState;
     const szNum = parseInt(size);
     const coreTypeKey = core === '1' ? 'single' : 'three';
 
@@ -915,19 +947,30 @@
         codePrys = `Prysmian ColdFit™ CDTI-${core}C-${voltage}`;
       }
 
-      // 3. 3M Lookup
+      // 3. 3M Exact Sub-Variant Lookup Engine
       const m3V = MM3_DB[voltage] ? MM3_DB[voltage][core] : null;
       if (m3V) {
-        if (isIndoor) {
-          code3M = `3M Cold Shrink QT-III ${m3V.in}`;
-        } else {
-          let sCode = m3V.out_med;
-          if (pollution === 'light') sCode = m3V.out_light;
-          if (pollution === 'heavy') sCode = m3V.out_heavy;
-          code3M = `3M Cold Shrink QT-III ${sCode}`;
+        let baseCode = isIndoor ? m3V.in : (pollution === 'light' ? m3V.out_light : (pollution === 'heavy' ? m3V.out_heavy : m3V.out_med));
+
+        // Apply 3M Sub-Variant Suffix (3G, 3W, RJS, INV, TI, HSG)
+        if (m3variant === 'rjs') {
+          baseCode = baseCode.replace('-3G', '-3-RJS').replace('-3W', '-3-RJS');
+          if (!baseCode.includes('-3-RJS')) baseCode += '-3-RJS';
+        } else if (m3variant === 'inv') {
+          baseCode = baseCode.replace('-S-', '-S-INV-');
+        } else if (m3variant === 'ti') {
+          baseCode = baseCode + '-TI';
+        } else if (m3variant === 'hsg') {
+          baseCode = baseCode.replace('-S-', '-S-HSG-').replace('-T-', '-T-HSG-');
+        } else if (m3variant === '3w' && core === '3') {
+          baseCode = baseCode.replace('-3G', '-3W');
+        } else if (m3variant === '3g' && core === '3') {
+          baseCode = baseCode.replace('-3W', '-3G');
         }
+
+        code3M = `3M Cold Shrink QT-III ${baseCode}`;
       } else {
-        code3M = `3M Cold Shrink QT-III 7695-S-${core}`;
+        code3M = `3M Cold Shrink QT-III 7695-S-${core}-${m3variant.toUpperCase()}`;
       }
 
       cutback = `${szNum > 120 ? '550' : '480'} mm`;
