@@ -280,7 +280,7 @@
     <div>
       <div class="brand-badge"><span></span> Diorama Training · Technical Reference</div>
       <h1>MV Cable Termination &amp; Jointing Kit Selector</h1>
-      <div class="sub">Pemilih Kit Terminasi &amp; Sambungan Kabel TM (12–36 kV), SOP Cutback Z, Torsi Baut &amp; Clearance</div>
+      <div class="sub">Pemilih Kit Terminasi &amp; Sambungan Kabel TM (12–36 kV), SOP Cutback Z, Torsi Baut &amp; Clearance Spacing</div>
     </div>
     <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <a href="index.html" class="theme-toggle-btn">🏠 Portal Suite</a>
@@ -359,6 +359,17 @@
         </div>
       </div>
 
+      <!-- Step 5: Pollution Level (3M Outdoor) -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px;">Langkah 5: Tingkat Polusi Lingkungan (Outdoor)</div>
+        <div class="grid-opts" id="optPollution">
+          <div class="opt selected" onclick="selectOpt('pollution', 'light', this)"><b>Light (Ringan)</b><span class="opt-desc">2 Skirt cukup (Seri 7620-S-2)</span></div>
+          <div class="opt" onclick="selectOpt('pollution', 'medium', this)"><b>Medium (Sedang)</b><span class="opt-desc">2–4 Skirt (Seri 7620 / 7692)</span></div>
+          <div class="opt" onclick="selectOpt('pollution', 'heavy', this)"><b>Heavy (Berat)</b><span class="opt-desc">4–8 Skirt (Seri 7692-S-4)</span></div>
+          <div class="opt" onclick="selectOpt('pollution', 'extreme', this)"><b>Extremely Heavy</b><span class="opt-desc">8–12 Skirt (Seri 7683 / 7695)</span></div>
+        </div>
+      </div>
+
       <!-- Result Card -->
       <div class="result-card" id="resultBox">
         <div style="font-family:var(--mono); font-size:11px; color:var(--ok); text-transform:uppercase; margin-bottom:6px;">Rekomendasi Kode Kit Aksesoris Presisi</div>
@@ -371,7 +382,7 @@
           </div>
           <div class="meta-item">
             <div class="lbl">Merek Raychem Heat Shrink</div>
-            <div class="val" id="resRaychem">TFTO-5141-ID</div>
+            <div class="val" id="resRaychem">HVT-Z-152-SG (Outdoor)</div>
           </div>
           <div class="meta-item">
             <div class="lbl">Merek Prysmian</div>
@@ -518,10 +529,10 @@
   <div id="tab-testing" class="tab-content">
     <div class="card">
       <div class="card-title">
-        <span class="icon-box">🛡️</span> Uji Kualifikasi Terminasi &amp; Jointing (IEEE Std 48 Class 1 Guide)
+        <span class="icon-box">🛡️</span> Uji Kualifikasi Terminasi &amp; Jointing (IEEE Std 48 / IEEE Std 404 Guide)
       </div>
       <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
-        Panduan lengkap nilai tegangan uji laboratorium standar <b>IEEE Std 48</b> untuk membuktikan keandalan aksesoris kabel sebelum dipasang di lapangan:
+        Panduan lengkap nilai tegangan uji laboratorium standar <b>IEEE Std 48</b> &amp; <b>IEEE Std 404</b> untuk membuktikan keandalan aksesoris kabel sebelum dipasang di lapangan:
       </p>
 
       <div style="overflow-x:auto;">
@@ -621,7 +632,7 @@
   <div id="tab-lug" class="tab-content">
     <div class="card">
       <div class="card-title">
-        <span class="icon-box">📐</span> Standar Skun / Lug, Torsi Pengencangan &amp; Clearance
+        <span class="icon-box">📐</span> Standar Skun / Lug, Torsi Pengencangan &amp; Clearance Spacing Table
       </div>
       
       <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
@@ -636,8 +647,6 @@
               <th>Diameter Lubang Lug</th>
               <th>Torsi Pengencangan (Steel Class 8.8)</th>
               <th>Torsi Pengencangan (Brass / Stainless)</th>
-              <th>Clearance Min Fasa-ke-Fasa (20kV)</th>
-              <th>Clearance Min Fasa-ke-Ground (20kV)</th>
             </tr>
           </thead>
           <tbody>
@@ -646,32 +655,67 @@
               <td>8.5 mm</td>
               <td><span class="badge ok">22 – 25 N·m</span></td>
               <td>15 N·m</td>
-              <td>220 mm</td>
-              <td>180 mm</td>
             </tr>
             <tr>
               <td><b>M10</b></td>
               <td>10.5 mm</td>
               <td><span class="badge ok">45 – 50 N·m</span></td>
               <td>30 N·m</td>
-              <td>220 mm</td>
-              <td>180 mm</td>
             </tr>
             <tr>
               <td><b>M12</b></td>
               <td>13.0 mm</td>
               <td><span class="badge ok">75 – 85 N·m</span></td>
               <td>55 N·m</td>
-              <td>220 mm</td>
-              <td>180 mm</td>
             </tr>
             <tr>
               <td><b>M16</b></td>
               <td>17.0 mm</td>
               <td><span class="badge ok">190 – 210 N·m</span></td>
               <td>130 N·m</td>
-              <td>220 mm</td>
-              <td>180 mm</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-title" style="margin-top:24px;">
+        <span class="icon-box">📏</span> Jarak Clearance Minimum Udara Terbuka (IEEE / IEC 60071-1)
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Kelas Tegangan System</th>
+              <th>Clearance Antar-Fasa &amp; Fasa-Ground</th>
+              <th>Jarak Antar-Skirt Outdoor</th>
+              <th>Catatan Aplikasi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>5 / 8 kV Class</b></td>
+              <td>15 mm (0.60 in)</td>
+              <td>10 mm (0.40 in)</td>
+              <td>Kubikel / Panel Tegangan Rendah-Menengah</td>
+            </tr>
+            <tr>
+              <td><b>15 kV Class (12 kV)</b></td>
+              <td>20 mm (0.75 in)</td>
+              <td>15 mm (0.60 in)</td>
+              <td>Kubikel 12kV &amp; Switchgear</td>
+            </tr>
+            <tr>
+              <td><b>25 kV Class (20/24 kV)</b></td>
+              <td><b>25 mm (1.00 in)</b></td>
+              <td><b>20 mm (0.75 in)</b></td>
+              <td><b>Jaringan Utama SKTM PLN 20kV</b></td>
+            </tr>
+            <tr>
+              <td><b>35 kV Class (36 kV)</b></td>
+              <td>35 mm (1.40 in)</td>
+              <td>25 mm (1.00 in)</td>
+              <td>Gardu Induk / Switchyard 35kV</td>
             </tr>
           </tbody>
         </table>
@@ -679,10 +723,12 @@
 
       <div class="two-col" style="margin-top:20px;">
         <div style="background:var(--panel2); padding:16px; border-radius:8px; border:1px solid var(--line);">
-          <h4 style="font-size:14px; color:var(--accent); margin-bottom:6px;">Pilihan Jenis Skun (Cable Lug):</h4>
+          <h4 style="font-size:14px; color:var(--accent); margin-bottom:6px;">Aturan Kombinasi Material Lug (Mencegah Korosi Galvanis):</h4>
           <ul style="font-size:12px; color:var(--text-dim); margin-left:18px; line-height:1.6;">
-            <li><b>Crimp Lug:</b> Memerlukan tang press hidrolik dengan <i>dies</i> yang persis sama dengan ukuran penampang konduktor (mm²).</li>
-            <li><b>Shear-bolt Lug (3M QL2 / Prysmian ALSB):</b> Memiliki baut pengunci mekanis yang patah otomatis (<i>shear off</i>) saat mencapai torsi terkalibrasi pabrikan.</li>
+            <li><b>Konduktor Cu ➔ Terminal Cu:</b> Gunakan Lug <b>Full Copper (Cu)</b>.</li>
+            <li><b>Konduktor Al ➔ Terminal Al:</b> Gunakan Lug <b>Full Aluminium (Al)</b>.</li>
+            <li><b>Konduktor Al ➔ Terminal Cu:</b> <b>WAJIB LUG BIMETAL</b> (Barrel Al, Pad Cu).</li>
+            <li><b>Shear-bolt Lug (3M QL2 / Prysmian ALSB):</b> Baut pengunci mekanis patah otomatis saat torsi pas.</li>
           </ul>
         </div>
 
@@ -731,7 +777,8 @@
     category: 'term_out',
     voltage: '24',
     core: '3',
-    size: '150'
+    size: '150',
+    pollution: 'light'
   };
 
   function selectOpt(group, val, el) {
@@ -743,21 +790,30 @@
   }
 
   function updateKitResult() {
-    const { category, voltage, core, size } = selectionState;
+    const { category, voltage, core, size, pollution } = selectionState;
     let code3M = '', codeRay = '', codePrys = '', cutback = '500 mm';
+
+    // Raychem HVT-Z Series Exact Mapping
+    let raySeries = 'HVT-Z-152';
+    const szNum = parseInt(size);
+    if (szNum <= 50) raySeries = 'HVT-Z-151';
+    else if (szNum <= 150) raySeries = 'HVT-Z-152';
+    else if (szNum <= 500) raySeries = 'HVT-Z-153';
+    else raySeries = 'HVT-Z-154';
 
     if (category.startsWith('term')) {
       const typeStr = category === 'term_out' ? 'Outdoor' : 'Indoor';
+      const raySuffix = category === 'term_out' ? '-SG (Skirted Outdoor)' : '-G (Indoor)';
       code3M = `3M Cold Shrink QT-III 7695-S-${core} (${typeStr} ${voltage}kV ${size}mm²)`;
-      codeRay = `Raychem ${category === 'term_out' ? 'TFTO' : 'TFTI'}-${voltage}kV-${size}`;
-      codePrys = `Prysmian Elaspeed EL-${core}B-${voltage} (${size}mm²)`;
-      cutback = `${parseInt(size) > 120 ? '550' : '480'} mm`;
+      codeRay = `Raychem ${raySeries}${raySuffix}`;
+      codePrys = `Prysmian ColdFit™ EL-${core}B-${voltage} (${size}mm²)`;
+      cutback = `${szNum > 120 ? '550' : '480'} mm`;
     } else {
       const jointStr = category === 'joint_straight' ? 'Straight Joint' : 'Transition Joint';
       code3M = `3M Cold Shrink QS-III 5468-${core}C (${jointStr} ${voltage}kV ${size}mm²)`;
       codeRay = `Raychem MXSU-${voltage}kV-${size}-INLINE`;
       codePrys = `Prysmian Elaspeed Joint EJ-${core}B-${voltage}`;
-      cutback = `${parseInt(size) > 120 ? '750' : '650'} mm`;
+      cutback = `${szNum > 120 ? '750' : '650'} mm`;
     }
 
     document.getElementById('resKitCode').innerText = code3M;

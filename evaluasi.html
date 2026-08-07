@@ -286,8 +286,8 @@
   <!-- TAB 1: QUIZ EVALUATION -->
   <div id="tab-quiz" class="tab-content active">
     <div class="card">
-      <div class="card-title">📝 Kuis Evaluasi Pengetahuan Lapangan (10 Soal Berbobot)</div>
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px;">Uji pemahaman teori Bab 1–7 (Teknik Isolasi, SKTM, SOP Jointing/Terminasi, K3, dan Pengujian). Pilih jawaban terbaik untuk melihat umpan balik rasional secara langsung.</p>
+      <div class="card-title">📝 Kuis Evaluasi Pengetahuan Lapangan (12 Soal Berbobot)</div>
+      <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px;">Uji pemahaman teori Bab 1–7 (Teknik Isolasi, SKTM, SOP Jointing/Terminasi, K3, Standar IEC/IEEE, dan Pengujian). Pilih jawaban terbaik untuk melihat umpan balik rasional secara langsung.</p>
       
       <div id="quizContainer"></div>
 
@@ -341,7 +341,7 @@
             <tr>
               <td>4</td>
               <td><b>Manajemen Semiconductive</b></td>
-              <td>Pengupasan lapisan semi-con rapi tanpa takikan (score mark) dan tanpa mengalasi residu karbon yang memicu tracking.</td>
+              <td>Pengupasan lapisan semi-con rapi tanpa takikan (score mark) dan tanpa meninggalkan residu karbon yang memicu tracking.</td>
               <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
             </tr>
             <tr>
@@ -365,7 +365,7 @@
             <tr>
               <td>8</td>
               <td><b>Pengujian Pasca-Instalasi</b></td>
-              <td>Melakukan Megger Test (injeksi 5kV DC) dengan hasil tahanan isolasi $\ge 1 \text{ M}\Omega/\text{kV}$ (min 20 M$\Omega$).</td>
+              <td>Melakukan Megger Test (injeksi 2.5/5kV DC) dengan hasil tahanan isolasi $\ge 1 \text{ M}\Omega/\text{kV}$ (min 5 G$\Omega$).</td>
               <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
             </tr>
             <tr>
@@ -484,7 +484,7 @@
     }
   }
 
-  // Quiz Questions Data (10 Questions covering Bab 1-7)
+  // Quiz Questions Data (12 Questions covering Bab 1-7 & Standards)
   const quizData = [
     {
       q: "1. Mengapa kabel TM 20 kV modern menggunakan isolasi XLPE dibandingkan PVC?",
@@ -531,15 +531,15 @@
       exp: "Stress cone menurunkan gradien medan listrik ekstrim di ujung terputusnya metallic screen untuk mencegah tembus isolasi (flashover)."
     },
     {
-      q: "5. Berapakah tegangan injeksi Megger standar yang digunakan untuk Uji Tahanan Isolasi kabel TM 20 kV?",
+      q: "5. Berapakah tegangan injeksi Megger standar yang digunakan untuk Uji Tahanan Isolasi kabel TM 20 kV (15 kV class) sesuai NETA MTS-2023 §7.3.3?",
       opts: [
-        "A. 500 V – 1.000 V DC",
+        "A. 500 V DC",
         "B. 2.500 V DC",
-        "C. 5.000 V – 10.000 V DC",
+        "C. 10.000 V AC",
         "D. 50.000 V AC"
       ],
-      ans: 2,
-      exp: "Kabel TM (20kV) mengaplikasikan Megger 5.000V hingga 10.000V DC dengan kriteria lulus min 1 MΩ/kV."
+      ans: 1,
+      exp: "NETA MTS-2023 §7.3.3 menetapkan 2.500 V DC untuk kabel ≤25 kV class dan 5.000 V DC untuk >25 kV class."
     },
     {
       q: "6. Berdasarkan PLN Buku 5 & PUIL, berapakah kedalaman galian tanah standar untuk penggelaran SKTM tanam langsung?",
@@ -575,18 +575,40 @@
       exp: "Spesifikasi vendor (Jembo/Kabelindo) mensyaratkan Bending Radius minimal 12 kali Diameter Luar (O.D.) Kabel."
     },
     {
-      q: "9. Mengapa terminasi lokasi Outdoor dilarang menggunakan kit khusus Indoor?",
+      q: "9. Jenis skun/lug apakah yang WAJIB digunakan saat menyambungkan konduktor Aluminium (Al) ke terminal Tembaga (Cu)?",
       opts: [
-        "A. Kit indoor warnanya tidak tahan sinar matahari",
-        "B. Kit indoor tidak memiliki skirt/weathershed yang cukup untuk mencegah arus bocor (tracking) saat terpapar hujan & polusi",
-        "C. Kit indoor diameternya terlalu besar",
-        "D. Kit indoor tidak bisa dipasang skun bimetal"
+        "A. Lug Tembaga murni (Full Copper)",
+        "B. Lug Aluminium murni (Full Aluminium)",
+        "C. Lug BIMETAL (Barrel Al + Pad Cu) untuk mencegah korosi galvanik",
+        "D. Bebas menggunakan lug apa saja"
       ],
-      ans: 1,
-      exp: "Kit Indoor tidak memiliki payung/skirt tambahan (weathershed) yang dibutuhkan untuk memperpanjang jalur creepage di area terbuka."
+      ans: 2,
+      exp: "Sambungan Al ke Cu wajib memakai skun Bimetal untuk mencegah reaksi elektrokimia yang memicu korosi galvanik dan overheating."
     },
     {
-      q: "10. Berdasarkan statistik studi kasus, apakah penyebab terbesar (50%) kegagalan sambungan kabel TM di lapangan?",
+      q: "10. Apakah keunggulan utama teknologi Cold Shrink (3M QT-III) dibandingkan Heat Shrink (Raychem HVT-Z)?",
+      opts: [
+        "A. Cold Shrink menggunakan torch pemanas gas elpiji",
+        "B. Cold Shrink dipasang tanpa open flame/torch, tinggal menarik inti spiral plastik sehingga lebih aman di area rawan kebakaran",
+        "C. Cold Shrink harganya jauh lebih murah",
+        "D. Heat Shrink tidak membutuhkan kabel grounding"
+      ],
+      ans: 1,
+      exp: "Cold Shrink tidak memerlukan torch pemanas terbuka (open flame) sehingga sangat aman di instalasi tambang, kimia, dan area terbatas."
+    },
+    {
+      q: "11. Standar IEEE manakah yang secara spesifik mengatur metode pengujian Type Test & Requirement untuk sambungan kabel (Cable Joints / Splices)?",
+      opts: [
+        "A. IEEE Std 48",
+        "B. IEEE Std 404",
+        "C. IEEE Std 43",
+        "D. IEEE Std 100"
+      ],
+      ans: 1,
+      exp: "IEEE Std 48 mengatur Terminasi kabel, sedangkan IEEE Std 404 mengatur Sambungan kabel (Joints / Splices)."
+    },
+    {
+      q: "12. Berdasarkan statistik studi kasus, apakah penyebab terbesar (50%) kegagalan sambungan kabel TM di lapangan?",
       opts: [
         "A. Kualitas material pabrik bermasalah",
         "B. Bencana alam dan gempa bumi",
