@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi & Modul Pelatihan 7 Bab — Diorama Training Ketenagalistrikan 20 kV</title>
+<meta name="description" content="Modul Materi & Referensi Teknik Ketenagalistrikan 20 kV: Teknik Isolasi, Konstruksi SKTM, Jointing & Terminasi, SOP K3, Landasan OJT, dan Studi Kasus.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #090c10;
+    --panel: #11161d;
+    --panel2: #171e27;
+    --panel3: #1e2633;
+    --line: #263140;
+    --line-bright: #38475c;
+    --accent: #a855f7;
+    --accent-glow: rgba(168, 85, 247, 0.15);
+    --accent-dim: #581c87;
+    --cyan: #38bdf8;
+    --cyan-glow: rgba(56, 189, 248, 0.15);
+    --orange: #ff8a3d;
+    --text: #e6edf3;
+    --text-dim: #8b949e;
+    --ok: #3ddc84;
+    --warn: #ffb547;
+    --danger: #ff5252;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 20px 24px;
+    line-height: 1.6;
+  }
+
+  .wrap { max-width: 1300px; margin: 0 auto; }
+
+  header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+  }
+  .brand-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+
+  h1 { font-size: 24px; font-weight: 800; color: var(--text); }
+  .sub { color: var(--text-dim); font-size: 13.5px; margin-top: 4px; }
+
+  .theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line-bright);
+    background: var(--panel2);
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all .2s ease;
+  }
+  .theme-toggle-btn:hover { border-color: var(--accent); background: var(--panel3); }
+
+  /* Layout Two Columns */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+  }
+
+  /* Sidebar TOC Nav */
+  .sidebar-nav {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .sidebar-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+
+  .toc-item a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .toc-item a:hover {
+    background: var(--panel2);
+    color: var(--text);
+  }
+  .toc-item a.active {
+    background: var(--accent-glow);
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    font-weight: 600;
+  }
+
+  /* Content Cards */
+  .content-area { display: flex; flex-direction: column; gap: 28px; }
+
+  .chapter-card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px 28px;
+  }
+
+  .chapter-header {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .chapter-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-glow);
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--accent-dim);
+  }
+
+  .chapter-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .section-block {
+    margin-bottom: 22px;
+  }
+  .section-block:last-child { margin-bottom: 0; }
+
+  .section-h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #38bdf8;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  p { font-size: 13.5px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.65; }
+  ul, ol { margin-left: 20px; font-size: 13.5px; color: #cbd5e1; margin-bottom: 12px; }
+  li { margin-bottom: 4px; }
+  code { font-family: var(--mono); background: rgba(255,255,255,0.06); color: #f472b6; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  /* Formula Callout Box */
+  .formula-box {
+    background: var(--panel2);
+    border-left: 4px solid var(--cyan);
+    border: 1px solid var(--line);
+    border-left-width: 4px;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: #e2e8f0;
+  }
+
+  /* Teaching Point Box */
+  .teach-box {
+    background: rgba(255, 138, 61, 0.1);
+    border: 1px solid rgba(255, 138, 61, 0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+    color: #ff9d5c;
+  }
+  .teach-box b { color: #fff; }
+
+  /* Tables */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 12.5px;
+  }
+  .styled-table th {
+    background: var(--panel2);
+    color: var(--text-dim);
+    text-align: left;
+    padding: 10px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+  }
+  .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); color: #e2e8f0; }
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Light Theme Overrides */
+  [data-theme="light"] {
+    --bg: #F3F3F5;
+    --panel: #FFFFFF;
+    --panel2: #F8F9FA;
+    --panel3: #EDF0F5;
+    --line: #E2E8F0;
+    --line-bright: #CBD5E1;
+    --accent: #7C3AED;
+    --accent-glow: rgba(124, 58, 237, 0.12);
+    --accent-dim: #6D28D9;
+    --cyan: #0284C7;
+    --text: #1E293B;
+    --text-dim: #64748B;
+  }
+  [data-theme="light"] p, [data-theme="light"] ul, [data-theme="light"] ol { color: #334155; }
+  [data-theme="light"] .styled-table td { color: #1e293b; }
+  [data-theme="light"] .formula-box { background: #F1F5F9; color: #0F172A; }
+
+  @media (max-width: 900px) {
+    .layout-grid { grid-template-columns: 1fr; }
+    .sidebar-nav { position: static; max-height: none; margin-bottom: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand-badge"><span></span> Diorama Training · Core Curriculum</div>
+      <h1>Modul Pelatihan &amp; Knowledge Base (7 Bab)</h1>
+      <div class="sub">Kurikulum Komprehensif Pelatihan Fasilitator &amp; Jointer Kabel Tegangan Menengah 20 kV</div>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <a href="index.html" class="theme-toggle-btn">🏠 Portal Suite</a>
+      <button class="theme-toggle-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
+    </div>
+  </header>
+
+  <div class="layout-grid">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <div class="sidebar-title">Daftar Bab (Outline Pelatihan)</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a href="#bab1" class="active">Bab 1: Teknik Isolasi</a></li>
+        <li class="toc-item"><a href="#bab2">Bab 2: Kabel TM 20 kV</a></li>
+        <li class="toc-item"><a href="#bab3">Bab 3: Konstruksi SKTM</a></li>
+        <li class="toc-item"><a href="#bab4">Bab 4: Kotak Sambung &amp; Terminasi</a></li>
+        <li class="toc-item"><a href="#bab5">Bab 5: SOP Praktek Jointing</a></li>
+        <li class="toc-item"><a href="#bab6">Bab 6: Tugas &amp; Aktivitas OJT</a></li>
+        <li class="toc-item"><a href="#bab7">Bab 7: Studi Kasus &amp; Diskusi</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content-area">
+
+      <!-- BAB 1 -->
+      <section id="bab1" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Teori — Hari 1, Sesi 1</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 1 — TEKNIK ISOLASI</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.1 Sifat Dasar &amp; Syarat Ideal Bahan Isolasi Kabel</h3>
+          <p>Agar layak dipakai sebagai isolasi kabel listrik Tegangan Menengah, suatu material harus memenuhi beberapa kriteria mekanis dan elektrikal utama:</p>
+          <ul>
+            <li><b>Kuat Dielektrik Tinggi:</b> Mampu menahan stress tegangan tanpa terjadi tembus isolasi (breakdown).</li>
+            <li><b>Tahanan Jenis (Resistivitas) Tinggi:</b> Meminimalkan arus bocor (leakage current) ke pembumian.</li>
+            <li><b>Stabilitas Termal Tinggi:</b> Mampu bekerja kontinu pada suhu tinggi (90°C–105°C) maupun saat arus hubung singkat (250°C).</li>
+            <li><b>Kedap Air &amp; Kelembapan:</b> Tidak menyerap air agar tidak menurunkan kekuatan dielektrik.</li>
+            <li><b>Fleksibilitas Mekanis:</b> Tahan terhadap gerakan, getaran, dan bending radius saat penggelaran.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.2 Perbandingan Tiga Jenis Isolasi Utama (PVC vs XLPE vs EPR)</h3>
+          <div style="overflow-x:auto;">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Parameter</th>
+                  <th>PVC (Polyvinyl Chloride)</th>
+                  <th>XLPE (Cross-linked Polyethylene)</th>
+                  <th>EPR (Ethylene Propylene Rubber)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Suhu Kerja Kontinu</b></td>
+                  <td>± 70°C</td>
+                  <td><b>± 90°C</b></td>
+                  <td>105°C (140°C Darurat)</td>
+                </tr>
+                <tr>
+                  <td><b>Suhu Hubung Singkat</b></td>
+                  <td>~ 160°C</td>
+                  <td><b>hingga 250°C</b></td>
+                  <td>250°C</td>
+                </tr>
+                <tr>
+                  <td><b>Kuat Dielektrik</b></td>
+                  <td>15–20 kV/mm</td>
+                  <td><b>20–25 kV/mm</b></td>
+                  <td>Sedikit di bawah XLPE</td>
+                </tr>
+                <tr>
+                  <td><b>Rentang Tegangan</b></td>
+                  <td>Standar s.d 1 kV (Max 6.6 kV)</td>
+                  <td><b>1 kV – 500 kV (Semua Kelas)</b></td>
+                  <td>1 kV – 500 kV</td>
+                </tr>
+                <tr>
+                  <td><b>Fleksibilitas</b></td>
+                  <td>Baik</td>
+                  <td>Sedang</td>
+                  <td>Sangat Baik (Tahan getaran)</td>
+                </tr>
+                <tr>
+                  <td><b>Ketahanan Lembap/Air</b></td>
+                  <td>Cukup</td>
+                  <td>Baik (Rentan <i>Water Treeing</i>)</td>
+                  <td>Sangat Baik</td>
+                </tr>
+                <tr>
+                  <td><b>Dielectric Loss</b></td>
+                  <td>Tinggi (Menghasilkan panas)</td>
+                  <td><b>Sangat Rendah (Efisiensi tinggi)</b></td>
+                  <td>± 20× lebih tinggi dari XLPE</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="teach-box">
+            <b>💡 Poin Mengajar Utama:</b> Karena XLPE bekerja pada suhu 90°C vs PVC 70°C, kabel XLPE mampu menghantar arus (KHA) sekitar <b>18–22% lebih besar</b> dibanding PVC pada luas penampang konduktor yang sama. Inilah alasan utama kenapa SKTM 20kV modern di Indonesia menggunakan XLPE sebagai isolasi utama (PVC hanya dipakai untuk outer sheath/selubung luar).
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.3 Breakdown Voltage &amp; Electric Stress</h3>
+          <p>Pada kabel silinder berpenebalan isolasi, distribusi medan listrik tidak merata. Medan listrik tertinggi terjadi pada permukaan konduktor dan menurun secara rasial menuju permukaan luar insulasi:</p>
+
+          <div class="formula-box">
+E_max = V / (r × ln(R/r))    [Stress Tertinggi di Permukaan Konduktor]
+E_min = V / (R × ln(R/r))    [Stress Terendah di Luar Isolasi]
+Dimana: r = Radius Konduktor, R = Radius Luar Isolasi, V = Tegangan Fase-ke-Netral
+          </div>
+          <p><b>Implikasi Praktis:</b> Titik paling rawan tembus isolasi (breakdown) selalu di dekat konduktor. Oleh karena itu, lapisan <code>Semi-conducting Screen</code> wajib dipasang presisi menempel di atas konduktor dan insulasi untuk meratakan medan listrik (grading).</p>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.4 Fenomena Water Treeing pada XLPE</h3>
+          <p>XLPE memiliki struktur molekul relatif besar. Di bawah medan listrik tinggi dan keberadaan air/uap lembap, molekul air terdorong masuk membentuk kanal bertekstur seperti ranting pohon yang disebut <b>Water Tree</b>.</p>
+          <ul>
+            <li>Berbeda dari <i>Electrical Treeing</i>, water tree tidak diawali oleh Partial Discharge, melainkan akibat kelembapan dan stress elektrokimia.</li>
+            <li>Inilah alasan teknis mengapa pengujian <b>VLF (Very Low Frequency) 0.1Hz</b> dan SOP sealing/cutback pada kabel XLPE sangat krusial.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.5 Stress Control / Stress Cone pada Terminasi</h3>
+          <p>Saat lapisan grounding/metallic screen dipotong pada terminasi, terjadi lonjakan konsentrasi medan listrik ekstrim di titik pemutusan. Tanpa penanganan, hal ini memicu <i>flashover</i> dan breakdown tegangan tinggi.</p>
+          <p>Kit terminasi (3M Cold Shrink, Raychem Heat Shrink, Prysmian) menyertakan <b>Stress Control Tube</b> atau <b>Built-in Stress Cone</b> dengan pendekatan geometris untuk menurunkan gradien medan listrik.</p>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">1.6 Uji Tahanan Isolasi (Megger) — Prinsip Dasar</h3>
+          <p>Menguji resistansi isolasi dengan menginjeksikan tegangan DC tinggi. Untuk jaringan Tegangan Menengah (TM 20kV), injeksi Megger standar adalah <b>5.000 V hingga 10.000 V DC</b> (Kriteria Lulus: $\ge 1 \text{ M}\Omega / \text{kV}$ atau min 20 M$\Omega$ untuk 20kV).</p>
+        </div>
+      </section>
+
+      <!-- BAB 2 -->
+      <section id="bab2" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Teori — Hari 1, Sesi 2</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 2 — KABEL TEGANGAN MENENGAH 20 KV</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">2.1 Nomenklatur &amp; Membaca Kode Kabel (SPLN / IEC)</h3>
+          <p>Contoh Notasi Notional: <code>N2XSEBY 12/20 (24) kV 3x150 mm²</code></p>
+          <ul>
+            <li><code>N</code> = Kabel standar VDE/IEC dengan konduktor Tembaga (Cu). *(Jika <code>NA</code> = Konduktor Aluminium / Al)*</li>
+            <li><code>2X</code> = Isolasi Utama XLPE (Cross-linked Polyethylene).</li>
+            <li><code>S</code> = Individual Copper Tape Screen di setiap core.</li>
+            <li><code>E</code> = Konstruksi 3-Core berpelindung individual.</li>
+            <li><code>B</code> = Armouring pita baja ganda (Double Steel Tape Armour / DSTA).</li>
+            <li><code>Y</code> = Outer Sheath berbahan PVC.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">2.2 Konstruksi Fisik Lapisan Kabel TM</h3>
+          <ol>
+            <li><b>Conductor:</b> Tembaga (Cu) atau Aluminium (Al) Serabut Dipadatkan (Compact Stranded).</li>
+            <li><b>Conductor Screen:</b> Extruded Semiconductive Compound (menempel rapat di konduktor).</li>
+            <li><b>Insulation:</b> XLPE murni tanpa cacat/void.</li>
+            <li><b>Insulation Screen:</b> Extruded Strippable Semiconductive Layer.</li>
+            <li><b>Metallic Screen:</b> Copper Tape / Copper Wire Screen (CWS/CTS).</li>
+            <li><b>Bedding / Inner Sheath:</b> Extruded PVC / Non-hygroscopic Filler.</li>
+            <li><b>Armour:</b> Double Steel Tape (DSTA) / Steel Wire (SWA) / Aluminium Wire (AWA).</li>
+            <li><b>Outer Sheath:</b> Heavy Duty PVC / LSZH (Low Smoke Zero Halogen).</li>
+          </ol>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">2.3 &amp; 2.4 Perbandingan Spesifikasi Katalog (Kabelindo vs Jembo)</h3>
+          <p>Berikut adalah sampel data perbandingan kabel TM populer <code>N2XSEBY 12/20 kV</code> dari Katalog Resmi <b>Jembo Cable</b> vs <b>Kabelindo</b>:</p>
+          <div style="overflow-x:auto;">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Ukuran Penampang</th>
+                  <th>Vendor</th>
+                  <th>Approx Diameter</th>
+                  <th>Berat Kabel Net</th>
+                  <th>KHA di Udara (30°C)</th>
+                  <th>KHA di Tanah (20°C)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>3 x 70 mm²</b></td>
+                  <td>Jembo Cable</td>
+                  <td>62.8 mm</td>
+                  <td>5,660 kg/km</td>
+                  <td>253 A</td>
+                  <td>220 A</td>
+                </tr>
+                <tr>
+                  <td><b>3 x 70 mm²</b></td>
+                  <td>Kabelindo</td>
+                  <td>63.2 mm</td>
+                  <td>5,710 kg/km</td>
+                  <td>250 A</td>
+                  <td>218 A</td>
+                </tr>
+                <tr>
+                  <td><b>3 x 150 mm²</b></td>
+                  <td>Jembo Cable</td>
+                  <td>70.3 mm</td>
+                  <td>7,729 kg/km</td>
+                  <td>352 A</td>
+                  <td>298 A</td>
+                </tr>
+                <tr>
+                  <td><b>3 x 150 mm²</b></td>
+                  <td>Kabelindo</td>
+                  <td>71.0 mm</td>
+                  <td>7,800 kg/km</td>
+                  <td>350 A</td>
+                  <td>295 A</td>
+                </tr>
+                <tr>
+                  <td><b>3 x 240 mm²</b></td>
+                  <td>Jembo Cable</td>
+                  <td>84.6 mm</td>
+                  <td>13,099 kg/km</td>
+                  <td>529 A</td>
+                  <td>431 A</td>
+                </tr>
+                <tr>
+                  <td><b>3 x 240 mm²</b></td>
+                  <td>Kabelindo</td>
+                  <td>85.2 mm</td>
+                  <td>13,150 kg/km</td>
+                  <td>525 A</td>
+                  <td>428 A</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p><i>Gunakan menu <a href="cable-calc.html" style="color:var(--cyan); font-weight:600;">Cable Specs &amp; Sizing Calculator</a> untuk simulasi kalkulasi penuh.</i></p>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">2.5 Perhitungan KHA &amp; Derating Factor</h3>
+          <p>Arus Beban Terijin ($I_{real}$) dihitung dari KHA Nominal dikalikan derating factor lingkungan:</p>
+          <div class="formula-box">
+I_terijin = I_nominal × f_suhu × f_kedalaman × f_resistivitas × f_grouping
+          </div>
+        </div>
+      </section>
+
+      <!-- BAB 3 -->
+      <section id="bab3" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Teori — Hari 1, Sesi 3</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 3 — KONSTRUKSI KABEL TANAH 20 KV</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">3.1 Jenis Konstruksi SKTM</h3>
+          <ul>
+            <li><b>Tanam Langsung (Direct Buried):</b> Paling ekonomis, wajib menggunakan kabel jenis <i>Armoured</i> (DSTA/SWA/SFA).</li>
+            <li><b>Pipa Conduit / Subduct:</b> Menggunakan pipa PVC fleksibel min 5". Bak kontrol ditempatkan maks tiap 100m (kedalaman min 180 cm, dimensi 150×100 cm).</li>
+            <li><b>Kanal Terowongan (Tunneling):</b> Untuk instalasi masif. Manhole pengawas tiap 50m dengan bak penangkap air 40×40×20 cm.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">3.2 Dimensi Galian Standar (PLN Buku 5)</h3>
+          <ul>
+            <li><b>Kedalaman Tanam:</b> Standar 70 cm – 80 cm.</li>
+            <li><b>Lapisan Sand Bedding:</b> Selimut pasir urug tebal 5 cm di atas/bawah kabel (total urugan pasir 20 cm).</li>
+            <li><b>Batu Peringatan / Pelat Beton:</b> Tebal min 6 cm bertuliskan <i>"AWAS KABEL PLN BERTEGANGAN"</i> diletakkan di atas pasir.</li>
+            <li><b>Pemadatan:</b> Pengurugan tanah dipadatkan bertahap per 30 cm menggunakan stamper.</li>
+            <li><b>Jumlah Kabel per Galian:</b> Maksimal 7 kabel per jalur galian.</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">3.3 Penandaan Jalur Kabel (Patok Tanda)</h3>
+          <p>Patok tanda jalur kabel wajib dipasang setiap jarak <b>maksimal 30 meter</b> dan tepat di atas setiap <b>titik sambungan (jointing box)</b>. Di trotoar kota, digunakan pelat beton mendatar rata trotoar.</p>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">3.4 Jarak Aman terhadap Utilitas Lain (SNI 04-0225-2000 / PUIL)</h3>
+          <div style="overflow-x:auto;">
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Kondisi Persilangan / Sejajar</th>
+                  <th>Jarak Aman &amp; Perlakuan Khusus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Persilangan antar SKTM 20kV</b></td>
+                  <td>Minimal 30 cm + sekat lempeng beton tebal 6 cm.</td>
+                </tr>
+                <tr>
+                  <td><b>Sejajar / Persilangan Kabel Telkom</b></td>
+                  <td>Minimal 30 cm (rekomendasi 1m). Kabel listrik di bawah Telkom + pelindung pipa beton belah 6 cm (dilebihkan 0.5m di kedua sisi).</td>
+                </tr>
+                <tr>
+                  <td><b>Sejajar / Persilangan Pipa PAM / Gas</b></td>
+                  <td>Minimal 30 cm + dimasukkan pipa beton belah / pelat beton pelindung.</td>
+                </tr>
+                <tr>
+                  <td><b>Sejajar / Persilangan Kabel SKTR</b></td>
+                  <td>Minimal 30 cm. Jika di bawah JTM terdapat JTR, jarak minimal 120 cm.</td>
+                </tr>
+                <tr>
+                  <td><b>Persilangan Rel Kereta Api (KA)</b></td>
+                  <td>Minimal 2 meter dari rel. Dimasukkan pipa baja diameter min 6" (dilebihkan 2m dari rel).</td>
+                </tr>
+                <tr>
+                  <td><b>Persilangan Sungai (> 50m)</b></td>
+                  <td>Direkomendasikan peralihan ke SUTM (Tiang beton min 2m dari bibir sungai banjir 10 tahunan, beban 500 daN).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">3.5 Tahapan Urutan Kerja &amp; Uji Komisioning</h3>
+          <ol>
+            <li><b>Persiapan:</b> Gambar rute 1:5000, galian kontrol (injection test) per 5m untuk cek utilitas tersembunyi, K3 &amp; Perizinan PEMDA.</li>
+            <li><b>Penggelaran:</b> Memperhatikan <i>Bending Radius</i> minimum ($\ge 12 \times \text{Outer Diameter Kabel}$).</li>
+            <li><b>Penimbunan:</b> Pasir 20cm, batu peringatan, stamper per 30cm, patok tanda.</li>
+            <li><b>Urutan Uji Komisioning:</b> Megger 5/10kV $\rightarrow$ DC Test 57kV (1 mnt) $\rightarrow$ Megger $\rightarrow$ Power Frequency AC 20kV (15 mnt) $\rightarrow$ Megger $\rightarrow$ Energize 20kV.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- BAB 4 -->
+      <section id="bab4" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Teori — Hari 2, Sesi 1</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 4 — KOTAK SAMBUNG DAN TERMINASI</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">4.1 Jenis Joint &amp; 4.2 Terminasi Indoor vs Outdoor</h3>
+          <ul>
+            <li><b>Cold Shrink:</b> Pemasangan tanpa torch pemanas, menggunakan sistem inti plastik spiral yang ditarik out. Kedap air presisi tinggi (3M QT-III / QS-III).</li>
+            <li><b>Heat Shrink:</b> Menggunakan torch pemanas (Raychem TFTI/TFTO/MXSU). Fleksibel dan ekonomis.</li>
+            <li><b>Indoor vs Outdoor Termination:</b> Terminasi Outdoor wajib dilengkapi <i>Weather Sheds / Skirts</i> tambahan untuk mencegah arus bocor (tracking) akibat paparan hujan dan polusi lingkungan.</li>
+          </ul>
+          <p><i>Buka menu <a href="termination-jointing-selector.html" style="color:var(--orange); font-weight:600;">Kit Selector (Terminasi + Joint)</a> untuk pemilihan spesifikasi spesifik.</i></p>
+        </div>
+      </section>
+
+      <!-- BAB 5 -->
+      <section id="bab5" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Praktek — Hari 2, Sesi 2–3</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 5 — PRAKTEK PENYAMBUNGAN &amp; TERMINASI KABEL</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">5.2 SOP K3 Wajib Sebelum Memotong Kabel</h3>
+          <ul>
+            <li><b>LOTO (Lockout / Tagout):</b> Memastikan sakelar breaker terkunci dan diberi papan peringatan.</li>
+            <li><b>Verifikasi Bebas Tegangan:</b> Menggunakan Detector Voltage TM 20kV.</li>
+            <li><b>Grounding &amp; Discharge Rod:</b> Membuang muatan sisa kapasitif kabel ke tanah sebelum disentuh tangan.</li>
+            <li><b>APD Wajib:</b> Helm K3, Sarung Tangan Isolasi 20kV, Sepatu Safety Dielektrik, Kacamata Safety.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- BAB 6 -->
+      <section id="bab6" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Evaluasi — Hari 2, Sesi 4</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 6 — AKTIVITAS OJT &amp; SERTIFIKASI</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">6.1 Landasan Sertifikasi Jointer TM</h3>
+          <p>Merujuk pada Standar Kompetensi Personel Konstruksi Jaringan Distribusi PLN / SKKNI:</p>
+          <ul>
+            <li><code>DIS.KON.016(2)A</code>: Melaksanakan Pemasangan Terminasi Kabel Tegangan Menengah.</li>
+            <li><code>DIS.KON.029(2)A</code>: Melaksanakan Pemasangan Jointing / Sambungan Kabel Tegangan Menengah.</li>
+          </ul>
+          <p><i>Isi form checklist kompetensi OJT di menu <a href="evaluasi.html" style="color:var(--ok); font-weight:600;">Evaluasi &amp; OJT Checklist</a>.</i></p>
+        </div>
+      </section>
+
+      <!-- BAB 7 -->
+      <section id="bab7" class="chapter-card">
+        <div class="chapter-header">
+          <div>
+            <span class="chapter-tag">Penutup — Hari 2, Sesi 5</span>
+            <h2 class="chapter-title" style="margin-top:4px;">BAB 7 — STUDI KASUS &amp; DISKUSI</h2>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h3 class="section-h3">7.1 Statistik Kegagalan Jointing &amp; Terminasi</h3>
+          <div style="display:flex; gap:16px; flex-wrap:wrap; margin:14px 0;">
+            <div style="flex:1; min-width:200px; background:rgba(255,82,82,0.1); border:1px solid rgba(255,82,82,0.3); border-radius:10px; padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:800; color:var(--danger);">50%</div>
+              <div style="font-size:12px; color:#fff; font-weight:600; margin-top:4px;">SDM / Jointer Tidak Kompeten</div>
+              <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">Kesalahan SOP &amp; pengupasan</div>
+            </div>
+            <div style="flex:1; min-width:200px; background:rgba(255,181,71,0.1); border:1px solid rgba(255,181,71,0.3); border-radius:10px; padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:800; color:var(--warn);">22%</div>
+              <div style="font-size:12px; color:#fff; font-weight:600; margin-top:4px;">Salah Pemilihan Material</div>
+              <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">Kit tidak sesuai lingkungan</div>
+            </div>
+            <div style="flex:1; min-width:200px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:16px; text-align:center;">
+              <div style="font-size:28px; font-weight:800; color:var(--cyan);">28%</div>
+              <div style="font-size:12px; color:#fff; font-weight:600; margin-top:4px;">Kualitas Material Vendor</div>
+              <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">Cacat pabrikasi / expired kit</div>
+            </div>
+          </div>
+          <p><b>Kesimpulan:</b> Lebih dari 72% kegagalan di lapangan disebabkan oleh *human error* dan ketidakpahaman jointer. Pelatihan berstandar kompetensi ini dirancang untuk menghapus risiko tersebut.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    if (currentTheme === 'light') {
+      document.documentElement.removeAttribute('data-theme');
+      document.getElementById('themeIcon').innerText = '☀️';
+      document.getElementById('themeLabel').innerText = 'Win11 Light';
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('themeIcon').innerText = '🌙';
+      document.getElementById('themeLabel').innerText = 'Dark Mode';
+    }
+  }
+
+  // Smooth scroll active state for TOC
+  const sections = document.querySelectorAll('.chapter-card');
+  const navLi = document.querySelectorAll('.toc-item a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (pageYOffset >= sectionTop - 120) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLi.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current) {
+        a.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>

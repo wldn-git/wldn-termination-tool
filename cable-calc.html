@@ -420,12 +420,16 @@ canvas { display: block; }
     <span class="titlebar-appname">Cable Calculator</span>
   </a>
   <div class="titlebar-div"></div>
-  <span class="titlebar-sub">Electrical Engineering Tools</span>
+  <a href="materi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📚 Materi (7 Bab)</a>
+  <div class="titlebar-div"></div>
+  <a href="evaluasi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📝 Evaluasi &amp; OJT</a>
+  <div class="titlebar-div"></div>
+  <a href="termination-jointing-selector.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">⚡ Kit Selector</a>
   <div class="titlebar-spacer"></div>
   <a href="index.html" style="text-decoration:none; font-size:11.5px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:12px; border:1px solid var(--accent-ring); display:flex; align-items:center; gap:4px; margin-right:8px;">
     🏠 Portal Suite
   </a>
-  <span class="titlebar-badge">SNI · IEC · NEC</span>
+  <span class="titlebar-badge">Jembo · Kabelindo · IEC · SNI</span>
 </div>
 
 <div class="layout">
@@ -438,7 +442,9 @@ canvas { display: block; }
   <button class="nav-item" onclick="showPanel('amp',this)"><span class="nav-icon">🔌</span> Ampacity / KHA</button>
   <button class="nav-item" onclick="showPanel('advisor',this)"><span class="nav-icon">💡</span> Sizing Advisor</button>
   <div class="nav-divider"></div>
-  <div class="nav-section">Referensi</div>
+  <div class="nav-section">Katalog &amp; Referensi</div>
+  <button class="nav-item" onclick="showPanel('jembo',this)"><span class="nav-icon">📊</span> Datasheet Jembo vs Kabelindo</button>
+  <button class="nav-item" onclick="showPanel('derating',this)"><span class="nav-icon">🌡️</span> Derating Factor Jembo</button>
   <button class="nav-item" onclick="showPanel('awg',this)"><span class="nav-icon">📋</span> Tabel AWG ↔ mm²</button>
   <button class="nav-item" onclick="showPanel('about',this)"><span class="nav-icon">ℹ️</span> Tentang</button>
 </nav>
@@ -880,6 +886,187 @@ canvas { display: block; }
       </div>
     </div>
   </div>
+</div>
+
+<!-- PANEL JEMBO VS KABELINDO DATASHEET -->
+<div id="panel-jembo" class="panel">
+  <div class="page-header">
+    <h1 class="page-title">📊 Datasheet Vendor Comparison (Jembo Cable vs Kabelindo)</h1>
+    <p class="page-sub">Data Spesifikasi Teknis Resmi Katalog PT Jembo Cable Company Tbk. (N2XSY, N2XSEBY 12/20 kV) vs Kabelindo</p>
+  </div>
+  <div class="card">
+    <div class="card-hd"><span class="card-title">Tabel Spesifikasi Kabel N2XSEBY 12/20 (24) kV (3-Core Copper DSTA)</span></div>
+    <div class="card-body" style="padding:0">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nominal Area</th>
+              <th>Vendor Katalog</th>
+              <th>Approx Diameter</th>
+              <th>Berat Net</th>
+              <th>Max DC Res (20°C)</th>
+              <th>KHA di Udara (30°C)</th>
+              <th>KHA di Tanah (20°C)</th>
+              <th>Short Circuit (1s)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>3 x 25 mm²</strong></td><td>Jembo Cable</td><td>43.8 mm</td><td>2,790 kg/km</td><td>0.727 Ω/km</td><td>143 A</td><td>129 A</td><td>3.41 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 25 mm²</strong></td><td>Kabelindo</td><td>44.2 mm</td><td>2,810 kg/km</td><td>0.727 Ω/km</td><td>140 A</td><td>127 A</td><td>3.41 kA</td></tr>
+            <tr><td><strong>3 x 35 mm²</strong></td><td>Jembo Cable</td><td>46.2 mm</td><td>3,221 kg/km</td><td>0.524 Ω/km</td><td>172 A</td><td>154 A</td><td>4.73 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 35 mm²</strong></td><td>Kabelindo</td><td>46.8 mm</td><td>3,250 kg/km</td><td>0.524 Ω/km</td><td>170 A</td><td>152 A</td><td>4.73 kA</td></tr>
+            <tr><td><strong>3 x 50 mm²</strong></td><td>Jembo Cable</td><td>49.0 mm</td><td>3,762 kg/km</td><td>0.387 Ω/km</td><td>205 A</td><td>181 A</td><td>6.41 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 50 mm²</strong></td><td>Kabelindo</td><td>49.5 mm</td><td>3,800 kg/km</td><td>0.387 Ω/km</td><td>202 A</td><td>178 A</td><td>6.41 kA</td></tr>
+            <tr><td><strong>3 x 70 mm²</strong></td><td>Jembo Cable</td><td>52.7 mm</td><td>4,589 kg/km</td><td>0.268 Ω/km</td><td>253 A</td><td>220 A</td><td>9.25 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 70 mm²</strong></td><td>Kabelindo</td><td>53.2 mm</td><td>4,620 kg/km</td><td>0.268 Ω/km</td><td>250 A</td><td>218 A</td><td>9.25 kA</td></tr>
+            <tr><td><strong>3 x 95 mm²</strong></td><td>Jembo Cable</td><td>56.8 mm</td><td>5,612 kg/km</td><td>0.193 Ω/km</td><td>307 A</td><td>263 A</td><td>12.85 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 95 mm²</strong></td><td>Kabelindo</td><td>57.2 mm</td><td>5,650 kg/km</td><td>0.193 Ω/km</td><td>305 A</td><td>260 A</td><td>12.85 kA</td></tr>
+            <tr><td><strong>3 x 120 mm²</strong></td><td>Jembo Cable</td><td>60.4 mm</td><td>6,573 kg/km</td><td>0.153 Ω/km</td><td>352 A</td><td>298 A</td><td>16.21 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 120 mm²</strong></td><td>Kabelindo</td><td>61.0 mm</td><td>6,620 kg/km</td><td>0.153 Ω/km</td><td>350 A</td><td>295 A</td><td>16.21 kA</td></tr>
+            <tr><td><strong>3 x 150 mm²</strong></td><td>Jembo Cable</td><td>63.7 mm</td><td>7,577 kg/km</td><td>0.124 Ω/km</td><td>397 A</td><td>332 A</td><td>20.00 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 150 mm²</strong></td><td>Kabelindo</td><td>64.2 mm</td><td>7,630 kg/km</td><td>0.124 Ω/km</td><td>395 A</td><td>330 A</td><td>20.00 kA</td></tr>
+            <tr><td><strong>3 x 185 mm²</strong></td><td>Jembo Cable</td><td>67.7 mm</td><td>8,897 kg/km</td><td>0.0991 Ω/km</td><td>453 A</td><td>374 A</td><td>25.03 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 185 mm²</strong></td><td>Kabelindo</td><td>68.2 mm</td><td>8,950 kg/km</td><td>0.0991 Ω/km</td><td>450 A</td><td>370 A</td><td>25.03 kA</td></tr>
+            <tr><td><strong>3 x 240 mm²</strong></td><td>Jembo Cable</td><td>73.3 mm</td><td>10,925 kg/km</td><td>0.0754 Ω/km</td><td>529 A</td><td>431 A</td><td>32.89 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 240 mm²</strong></td><td>Kabelindo</td><td>74.0 mm</td><td>11,000 kg/km</td><td>0.0754 Ω/km</td><td>525 A</td><td>428 A</td><td>32.89 kA</td></tr>
+            <tr><td><strong>3 x 300 mm²</strong></td><td>Jembo Cable</td><td>78.4 mm</td><td>13,010 kg/km</td><td>0.0601 Ω/km</td><td>599 A</td><td>482 A</td><td>41.27 kA</td></tr>
+            <tr class="rec-row"><td><strong>3 x 300 mm²</strong></td><td>Kabelindo</td><td>79.2 mm</td><td>13,100 kg/km</td><td>0.0601 Ω/km</td><td>595 A</td><td>480 A</td><td>41.27 kA</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL DERATING FACTOR JEMBO -->
+<div id="panel-derating" class="panel">
+  <div class="page-header">
+    <h1 class="page-title">🌡️ Derating Factor (Tabel Koreksi Katalog Jembo)</h1>
+    <p class="page-sub">Faktor Koreksi KHA berdasarkan Suhu Tanah, Kedalaman Tanam, Resistivitas Termal, dan Pengelompokan Kabel</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="card-title">1. Koreksi Suhu Tanah Lingkungan (Standar Base 20°C)</span></div>
+    <div class="card-body" style="padding:0">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Suhu Tanah (°C)</th>
+              <th>10°C</th>
+              <th>15°C</th>
+              <th>20°C (Base)</th>
+              <th>25°C</th>
+              <th>30°C</th>
+              <th>35°C</th>
+              <th>40°C</th>
+              <th>45°C</th>
+              <th>50°C</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Faktor Koreksi (Kt)</strong></td>
+              <td>1.07</td>
+              <td>1.04</td>
+              <td><strong>1.00</strong></td>
+              <td>0.96</td>
+              <td>0.93</td>
+              <td>0.89</td>
+              <td>0.85</td>
+              <td>0.80</td>
+              <td>0.76</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam Galian Direct Buried (Standar Base 0.8m)</span></div>
+    <div class="card-body" style="padding:0">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Kedalaman Tanam (m)</th>
+              <th>0.5 m</th>
+              <th>0.6 m</th>
+              <th>0.8 m (Base)</th>
+              <th>1.0 m</th>
+              <th>1.25 m</th>
+              <th>1.5 m</th>
+              <th>2.0 m</th>
+              <th>3.0 m</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>3-Core Cable</strong></td>
+              <td>1.04</td>
+              <td>1.02</td>
+              <td><strong>1.00</strong></td>
+              <td>0.98</td>
+              <td>0.96</td>
+              <td>0.95</td>
+              <td>0.93</td>
+              <td>0.90</td>
+            </tr>
+            <tr>
+              <td><strong>1-Core Cable (&le;185mm²)</strong></td>
+              <td>1.04</td>
+              <td>1.02</td>
+              <td><strong>1.00</strong></td>
+              <td>0.98</td>
+              <td>0.96</td>
+              <td>0.95</td>
+              <td>0.93</td>
+              <td>0.90</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="card-title">3. Koreksi Resistivitas Termal Tanah (Soil Thermal Resistivity K·m/W)</span></div>
+    <div class="card-body" style="padding:0">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Soil Resistivity (K·m/W)</th>
+              <th>0.7</th>
+              <th>0.8</th>
+              <th>0.9</th>
+              <th>1.0</th>
+              <th>1.5 (Base)</th>
+              <th>2.0</th>
+              <th>2.5</th>
+              <th>3.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Direct Buried 3-Core</strong></td>
+              <td>1.23</td>
+              <td>1.19</td>
+              <td>1.16</td>
+              <td>1.13</td>
+              <td><strong>1.00</strong></td>
+              <td>0.91</td>
+              <td>0.84</td>
+              <td>0.78</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 </div>

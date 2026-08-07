@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WLDN Technical Suite — Diorama Training Terminasi MV</title>
-  <meta name="description" content="Portal Aplikasi Teknik Ketenagalistrikan: Medium Voltage Termination Selector & Cable Specification Calculator. Standar IEC, SNI & PLN.">
+  <title>WLDN Technical Suite — Diorama Training Ketenagalistrikan 20 kV</title>
+  <meta name="description" content="Portal Aplikasi Teknik Ketenagalistrikan: Materi Pelatihan 7 Bab, Evaluasi Kuis & OJT, Medium Voltage Termination & Jointing Selector, serta Cable Sizing Calculator. Standar IEC, SNI, SPLN & Datasheet Vendor.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -22,7 +22,10 @@
       --accent-cyan-glow: rgba(56, 189, 248, 0.2);
       --accent-orange: #ff8a3d;
       --accent-orange-glow: rgba(255, 138, 61, 0.2);
-      --green-ok: #34d399;
+      --accent-purple: #a855f7;
+      --accent-purple-glow: rgba(168, 85, 247, 0.2);
+      --accent-green: #34d399;
+      --accent-green-glow: rgba(52, 211, 153, 0.2);
       --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -43,7 +46,7 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       width: 100%;
     }
@@ -51,7 +54,7 @@
     /* Header */
     header {
       text-align: center;
-      margin-bottom: 3.5rem;
+      margin-bottom: 3rem;
       padding-top: 1rem;
     }
 
@@ -74,13 +77,13 @@
     .badge-dot {
       width: 7px;
       height: 7px;
-      background: var(--green-ok);
+      background: var(--accent-green);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--green-ok);
+      box-shadow: 0 0 8px var(--accent-green);
     }
 
     h1 {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(2.1rem, 4.5vw, 3.2rem);
       font-weight: 800;
       letter-spacing: -0.03em;
       background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
@@ -92,24 +95,24 @@
     .subtitle {
       font-size: 1.1rem;
       color: var(--text-muted);
-      max-width: 680px;
+      max-width: 760px;
       margin: 0 auto;
       font-weight: 400;
     }
 
-    /* Tools Grid */
+    /* 4 Tools Grid */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 2rem;
-      margin-bottom: 4rem;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 3.5rem;
     }
 
     .tool-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 20px;
-      padding: 2.25rem;
+      padding: 2rem;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -133,13 +136,10 @@
       transition: opacity 0.3s ease;
     }
 
-    .card-orange::before {
-      background: linear-gradient(90deg, var(--accent-orange), #f59e0b);
-    }
-
-    .card-cyan::before {
-      background: linear-gradient(90deg, var(--accent-cyan), #6366f1);
-    }
+    .card-purple::before { background: linear-gradient(90deg, var(--accent-purple), #ec4899); }
+    .card-green::before  { background: linear-gradient(90deg, var(--accent-green), #10b981); }
+    .card-orange::before { background: linear-gradient(90deg, var(--accent-orange), #f59e0b); }
+    .card-cyan::before   { background: linear-gradient(90deg, var(--accent-cyan), #6366f1); }
 
     .tool-card:hover {
       transform: translateY(-6px);
@@ -147,58 +147,49 @@
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
 
-    .tool-card:hover::before {
-      opacity: 1;
-    }
+    .tool-card:hover::before { opacity: 1; }
 
     .card-icon {
-      width: 56px;
-      height: 56px;
+      width: 52px;
+      height: 52px;
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.5rem;
-      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      font-size: 1.5rem;
     }
 
-    .card-orange .card-icon {
-      background: var(--accent-orange-glow);
-      color: var(--accent-orange);
-      border: 1px solid rgba(255, 138, 61, 0.3);
-    }
-
-    .card-cyan .card-icon {
-      background: var(--accent-cyan-glow);
-      color: var(--accent-cyan);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
+    .card-purple .card-icon { background: var(--accent-purple-glow); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.3); }
+    .card-green .card-icon  { background: var(--accent-green-glow); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .card-orange .card-icon { background: var(--accent-orange-glow); color: var(--accent-orange); border: 1px solid rgba(255, 138, 61, 0.3); }
+    .card-cyan .card-icon   { background: var(--accent-cyan-glow); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
 
     .card-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.6rem;
       color: #fff;
     }
 
     .card-desc {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      margin-bottom: 1.75rem;
-      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      line-height: 1.55;
     }
 
     .feature-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
+      gap: 0.4rem;
+      margin-bottom: 1.75rem;
     }
 
     .tag {
       font-family: var(--font-mono);
-      font-size: 0.75rem;
-      padding: 0.25rem 0.6rem;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
       border-radius: 6px;
       background: rgba(255, 255, 255, 0.05);
       color: #cbd5e1;
@@ -210,29 +201,53 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      padding: 0.85rem 1.25rem;
+      padding: 0.8rem 1.1rem;
       border-radius: 12px;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       transition: all 0.2s ease;
     }
 
-    .card-orange .btn-action {
-      background: rgba(255, 138, 61, 0.15);
-      color: #ff9d5c;
-      border: 1px solid rgba(255, 138, 61, 0.3);
-    }
-
-    .card-cyan .btn-action {
-      background: rgba(56, 189, 248, 0.15);
-      color: #7dd3fc;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-    }
+    .card-purple .btn-action { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .card-green .btn-action  { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .card-orange .btn-action { background: rgba(255, 138, 61, 0.15); color: #ff9d5c; border: 1px solid rgba(255, 138, 61, 0.3); }
+    .card-cyan .btn-action   { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
 
     .tool-card:hover .btn-action {
       background: var(--text-main);
       color: #0f172a;
       border-color: var(--text-main);
+    }
+
+    /* Summary Bar Info */
+    .info-strip {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .info-strip-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .info-strip-icon {
+      font-size: 1.8rem;
+    }
+    .info-strip-text h4 {
+      font-size: 0.95rem;
+      color: #fff;
+      font-weight: 600;
+    }
+    .info-strip-text p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
     }
 
     /* Footer */
@@ -249,7 +264,7 @@
       color: var(--text-muted);
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       body { padding: 1.25rem 1rem; }
       header { margin-bottom: 2rem; }
       .grid { grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2rem; }
@@ -264,47 +279,92 @@
     <header>
       <div class="badge">
         <span class="badge-dot"></span>
-        Diorama Training — Teknik Ketenagalistrikan
+        Diorama Training — Pelatihan Teknik Ketenagalistrikan 20 kV
       </div>
       <h1>WLDN Engineering Tool Suite</h1>
-      <p class="subtitle">Aplikasi interaktif pemilihan aksesoris kabel Tegangan Menengah (TM) & kalkulator perhitungan teknis penampang kabel listrik.</p>
+      <p class="subtitle">Portal interaktif pelatihan fasilitator & jointer TM: Modul Teori 7 Bab, Evaluasi & Kuis, Pemilah Kit Terminasi & Jointing, serta Kalkulator Spesifikasi Kabel.</p>
     </header>
 
     <main class="grid">
-      <!-- Tool 1: MV Termination Selector -->
-      <a href="mv-termination-selector.html" class="tool-card card-orange">
+      <!-- Card 1: Materi & Modul Pelatihan -->
+      <a href="materi.html" class="tool-card card-purple">
         <div>
-          <div class="card-icon">⚡</div>
-          <h2 class="card-title">MV Termination Selector</h2>
-          <p class="card-desc">Panduan teknis & pemilihan spesifikasi kit terminasi kabel Tegangan Menengah (Cold Shrink & Heat Shrink 12kV, 20kV, 24kV, 36kV).</p>
+          <div class="card-icon">📚</div>
+          <h2 class="card-title">1. Materi & Modul Pelatihan</h2>
+          <p class="card-desc">Modul pembelajaran lengkap 7 Bab (Teknik Isolasi, Spesifikasi Kabel TM 20kV, Konstruksi Galian SKTM, Aksesoris Kit, SOP Praktek, Landasan OJT, dan Studi Kasus).</p>
           
           <div class="feature-tags">
-            <span class="tag">3M</span>
-            <span class="tag">Raychem</span>
-            <span class="tag">Prysmian</span>
-            <span class="tag">Instruksi Potong</span>
-            <span class="tag">Brosur Visual</span>
+            <span class="tag">Teknik Isolasi</span>
+            <span class="tag">PVC / XLPE / EPR</span>
+            <span class="tag">Galian SKTM</span>
+            <span class="tag">Utilitas SNI</span>
+            <span class="tag">Datasheet Vendor</span>
           </div>
         </div>
 
         <div class="btn-action">
-          <span>Buka Selector Terminasi</span>
+          <span>Buka Modul Materi (7 Bab)</span>
           <span style="font-size: 1.2rem;">→</span>
         </div>
       </a>
 
-      <!-- Tool 2: Cable Calculator -->
+      <!-- Card 2: Evaluasi & OJT Checklist -->
+      <a href="evaluasi.html" class="tool-card card-green">
+        <div>
+          <div class="card-icon">📝</div>
+          <h2 class="card-title">2. Evaluasi & OJT Checklist</h2>
+          <p class="card-desc">Kuis Evaluasi Interaktif Bab 1–7 dengan skor otomatis, Form Checklist Kompetensi Praktik OJT (DIS.KON.016/029), Laporan Kegiatan OJT, dan Analisis Kegagalan Jointing.</p>
+          
+          <div class="feature-tags">
+            <span class="tag">Evaluation Quiz</span>
+            <span class="tag">DIS.KON.016(2)A</span>
+            <span class="tag">DIS.KON.029(2)A</span>
+            <span class="tag">Checklist OJT</span>
+            <span class="tag">Printable PDF</span>
+          </div>
+        </div>
+
+        <div class="btn-action">
+          <span>Buka Evaluasi & Checklist</span>
+          <span style="font-size: 1.2rem;">→</span>
+        </div>
+      </a>
+
+      <!-- Card 3: Termination & Jointing Kit Selector -->
+      <a href="termination-jointing-selector.html" class="tool-card card-orange">
+        <div>
+          <div class="card-icon">⚡</div>
+          <h2 class="card-title">3. Kit Selector (Terminasi + Joint)</h2>
+          <p class="card-desc">Wizard khusus pemilihan kit aksesoris kabel Tegangan Menengah: Terminasi (Indoor/Outdoor) & Jointing Kit (Sambungan Lurus & Transisi 3M, Raychem, Prysmian) + Cutback Z.</p>
+          
+          <div class="feature-tags">
+            <span class="tag">Terminasi 12-36kV</span>
+            <span class="tag">Jointing Kit Lurus/Transisi</span>
+            <span class="tag">3M / Raychem / Prysmian</span>
+            <span class="tag">Cutback Z</span>
+            <span class="tag">Torsi & Clearance</span>
+          </div>
+        </div>
+
+        <div class="btn-action">
+          <span>Buka Kit Selector</span>
+          <span style="font-size: 1.2rem;">→</span>
+        </div>
+      </a>
+
+      <!-- Card 4: Cable Specs & Sizing Calculator -->
       <a href="cable-calc.html" class="tool-card card-cyan">
         <div>
           <div class="card-icon">📐</div>
-          <h2 class="card-title">Cable Specs & Sizing Calculator</h2>
-          <p class="card-desc">Kalkulator kalkulasi teknik kabel: Kuat Hantar Arus (KHA/Ampacity), Voltage Drop (% Susut Tegangan), Resistansi AC/DC, dan Sizing Advisor.</p>
+          <h2 class="card-title">4. Cable Specs & Sizing Calculator</h2>
+          <p class="card-desc">Kalkulator teknik penampang kabel: Kuat Hantar Arus (KHA), Voltage Drop, Resistansi DC/AC, Sizing Advisor, serta Perbandingan Datasheet Katalog Jembo vs Kabelindo.</p>
           
           <div class="feature-tags">
-            <span class="tag">Standar IEC 60502</span>
-            <span class="tag">SNI / SPLN</span>
+            <span class="tag">Datasheet Jembo</span>
+            <span class="tag">Datasheet Kabelindo</span>
+            <span class="tag">IEC / SNI / SPLN</span>
+            <span class="tag">KHA & Derating</span>
             <span class="tag">Voltage Drop</span>
-            <span class="tag">KHA Sizing</span>
           </div>
         </div>
 
@@ -314,11 +374,29 @@
         </div>
       </a>
     </main>
+
+    <!-- Info Strip -->
+    <div class="info-strip">
+      <div class="info-strip-item">
+        <div class="info-strip-icon">🏆</div>
+        <div class="info-strip-text">
+          <h4>Standar Kompetensi Nasional</h4>
+          <p>Merujuk pada Unit Kompetensi SKKNI/PLN DIS.KON.016(2)A & DIS.KON.029(2)A</p>
+        </div>
+      </div>
+      <div class="info-strip-item">
+        <div class="info-strip-icon">📊</div>
+        <div class="info-strip-text">
+          <h4>Data Resmi Katalog Vendor</h4>
+          <p>Terintegrasi dengan spesifikasi teknis Jembo Cable Catalogue & Kabelindo 12/20kV</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 Diorama Training Ketenagalistrikan. Deployed via <code>Vercel</code>.</p>
+      <p>&copy; 2026 Diorama Training Ketenagalistrikan TM 20 kV. Deployed via <code>Vercel</code>.</p>
     </div>
   </footer>
 
