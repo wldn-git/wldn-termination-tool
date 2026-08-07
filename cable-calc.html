@@ -1,1894 +1,2659 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cable Calculator — Kalkulator Teknik Kabel Listrik</title>
-<meta name="description" content="Kalkulator luas penampang kabel, resistansi DC/AC, voltage drop, ampacity KHA, dan sizing advisor. Standar SNI/IEC/NEC.">
-<style>
-/* ============================================================
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cable Calculator — Kalkulator Teknik Kabel Listrik</title>
+  <meta name="description"
+    content="Kalkulator luas penampang kabel, resistansi DC/AC, voltage drop, ampacity KHA, dan sizing advisor. Standar SNI/IEC/NEC.">
+  <style>
+    /* ============================================================
    WINDOWS 11 FLUENT DESIGN SYSTEM
    ============================================================ */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; height: 100%; }
-
-:root {
-  --bg:            #F3F3F3;
-  --bg-alt:        #EBEBEB;
-  --surface:       #FFFFFF;
-  --surface-alt:   #F9F9F9;
-  --surface-hover: #F2F2F2;
-  --nav-bg:        rgba(243,243,243,0.78);
-  --titlebar-bg:   rgba(243,243,243,0.92);
-  --border:        rgba(0,0,0,0.075);
-  --border-mid:    rgba(0,0,0,0.12);
-  --border-ctrl:   #C8C8C8;
-  --shadow-sm:     0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.055);
-  --shadow-card:   0 2px 6px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.06);
-  --shadow-hover:  0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.06);
-  --accent:        #0067C0;
-  --accent-dark:   #003E92;
-  --accent-hover:  #0078D4;
-  --accent-light:  rgba(0,120,212,0.08);
-  --accent-ring:   rgba(0,120,212,0.35);
-  --text:          #1A1A1A;
-  --text-2:        #5C5C5C;
-  --text-3:        #9A9A9A;
-  --text-placeholder: #ABABAB;
-  --success:       #107C10;
-  --success-bg:    #DFF6DD;
-  --success-bdr:   #A7D9A6;
-  --warning:       #7A4F00;
-  --warning-bg:    #FFF4CE;
-  --warning-bdr:   #EFC75E;
-  --danger:        #A4262C;
-  --danger-bg:     #FDE7E9;
-  --danger-bdr:    #F1AAAD;
-  --info:          #004578;
-  --info-bg:       #EFF6FF;
-  --info-bdr:      #B3D4F7;
-  --nav-w:         232px;
-  --titlebar-h:    44px;
-  --radius-xs:     3px;
-  --radius-sm:     6px;
-  --radius-md:     8px;
-  --radius-lg:     12px;
-}
-
-body {
-  font-family: 'Segoe UI Variable Display', 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
-
-.titlebar {
-  position: fixed; top: 0; left: 0; right: 0;
-  height: var(--titlebar-h);
-  background: var(--titlebar-bg);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  padding: 0 16px; gap: 10px;
-  z-index: 300;
-  user-select: none;
-}
-.titlebar-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--accent); }
-.titlebar-appname { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.01em; }
-.titlebar-div { width: 1px; height: 14px; background: var(--border-ctrl); margin: 0 2px; }
-.titlebar-sub { font-size: 12px; color: var(--text-2); }
-.titlebar-spacer { flex: 1; }
-.titlebar-badge {
-  font-size: 10px; font-weight: 600;
-  background: var(--accent-light); color: var(--accent);
-  padding: 2px 8px; border-radius: 10px;
-  border: 1px solid var(--accent-ring);
-  letter-spacing: 0.03em;
-}
-
-.layout { display: flex; padding-top: var(--titlebar-h); min-height: 100vh; }
-
-.nav {
-  position: fixed; top: var(--titlebar-h); bottom: 0; left: 0;
-  width: var(--nav-w);
-  background: var(--nav-bg);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-right: 1px solid var(--border);
-  overflow-y: auto; overflow-x: hidden;
-  padding: 12px 8px 24px;
-  display: flex; flex-direction: column; gap: 1px;
-  scrollbar-width: thin; scrollbar-color: transparent transparent;
-}
-.nav:hover { scrollbar-color: rgba(0,0,0,0.15) transparent; }
-.nav-section { font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.07em; color: var(--text-3); padding: 10px 10px 5px; margin-top: 4px; }
-.nav-item {
-  display: flex; align-items: center; gap: 10px;
-  width: 100%; padding: 8px 10px;
-  border: none; background: transparent;
-  border-radius: var(--radius-sm);
-  cursor: pointer; text-align: left;
-  color: var(--text-2); font-size: 13px; font-weight: 400;
-  font-family: inherit;
-  transition: background 0.12s, color 0.12s;
-  position: relative;
-}
-.nav-item:hover { background: rgba(0,0,0,0.04); color: var(--text); }
-.nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
-.nav-item.active::before {
-  content: ''; position: absolute; left: 0; top: 28%; bottom: 28%;
-  width: 3px; background: var(--accent); border-radius: 0 3px 3px 0;
-}
-.nav-icon { font-size: 15px; width: 20px; text-align: center; flex-shrink: 0; }
-.nav-divider { height: 1px; background: var(--border); margin: 6px 4px; }
-
-.content { margin-left: var(--nav-w); flex: 1; padding: 24px 28px; max-width: calc(100vw - var(--nav-w)); }
-.page-max { max-width: 860px; }
-.panel { display: none; }
-.panel.active { display: block; }
-@keyframes fade-in { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
-.panel.active { animation: fade-in 0.18s ease; }
-
-.page-header { margin-bottom: 20px; }
-.page-title { font-size: 22px; font-weight: 600; color: var(--text); line-height: 1.3; }
-.page-sub { font-size: 13px; color: var(--text-2); margin-top: 3px; }
-
-.card {
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-card);
-  overflow: hidden; margin-bottom: 12px;
-  transition: box-shadow 0.2s;
-}
-.card:hover { box-shadow: var(--shadow-hover); }
-.card-hd {
-  padding: 12px 18px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 8px;
-  background: var(--surface-alt);
-}
-.card-title { font-size: 13px; font-weight: 600; color: var(--text); }
-.card-pill {
-  font-size: 10px; font-weight: 700;
-  padding: 2px 8px; border-radius: 10px;
-  background: var(--accent-light); color: var(--accent);
-  border: 1px solid var(--accent-ring); letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-.card-body { padding: 18px; }
-
-.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 14px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 12px; font-weight: 600; color: var(--text-2); letter-spacing: 0.015em; }
-.form-note { font-size: 11px; color: var(--text-3); margin-top: 2px; }
-
-.igrp {
-  display: flex; align-items: stretch;
-  border: 1px solid var(--border-ctrl);
-  border-radius: var(--radius-xs);
-  background: var(--surface);
-  overflow: hidden;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.igrp:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-ring); }
-.igrp input {
-  flex: 1; min-width: 0;
-  height: 30px; padding: 0 10px;
-  border: none; outline: none;
-  font-family: inherit; font-size: 13px;
-  color: var(--text); background: transparent;
-}
-.iunit {
-  height: 30px; padding: 0 9px;
-  display: flex; align-items: center;
-  font-size: 11px; font-weight: 500;
-  color: var(--text-3);
-  background: var(--surface-alt);
-  border-left: 1px solid var(--border-ctrl);
-  flex-shrink: 0; white-space: nowrap;
-}
-
-select.form-control {
-  height: 30px; padding: 0 28px 0 10px;
-  border: 1px solid var(--border-ctrl);
-  border-radius: var(--radius-xs);
-  background-color: var(--surface);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%235C5C5C' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  -webkit-appearance: none; appearance: none;
-  font-family: inherit; font-size: 13px;
-  color: var(--text); cursor: pointer; outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  width: 100%;
-}
-select.form-control:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-ring); }
-select.form-control:hover { border-color: #8A8A8A; }
-
-.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 10px; }
-.ritem {
-  padding: 11px 13px;
-  background: var(--surface-alt);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-.ritem:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-.ritem.accent  { background: var(--accent-light); border-color: var(--accent-ring); }
-.ritem.success { background: var(--success-bg); border-color: var(--success-bdr); }
-.ritem.warning { background: var(--warning-bg); border-color: var(--warning-bdr); }
-.ritem.danger  { background: var(--danger-bg);  border-color: var(--danger-bdr);  }
-.rlabel { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); margin-bottom: 4px; }
-.rval { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.1; font-variant-numeric: tabular-nums; }
-.runit { font-size: 12px; font-weight: 400; color: var(--text-2); margin-left: 3px; }
-.rnote { font-size: 10.5px; color: var(--text-3); margin-top: 3px; line-height: 1.3; }
-.ritem.accent .rval  { color: var(--accent); }
-.ritem.success .rval { color: var(--success); }
-.ritem.warning .rval { color: var(--warning); }
-.ritem.danger  .rval { color: var(--danger); }
-
-.prog-wrap { margin-top: 4px; }
-.prog-head { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-2); margin-bottom: 5px; }
-.prog-head span:last-child { font-weight: 600; }
-.prog-bg { height: 7px; background: var(--bg-alt); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
-.prog-fill { height: 100%; border-radius: 4px; transition: width 0.4s cubic-bezier(.4,0,.2,1), background 0.3s; }
-.prog-fill.ok   { background: var(--success); }
-.prog-fill.mid  { background: #F0A30A; }
-.prog-fill.warn { background: #CA5010; }
-.prog-fill.err  { background: var(--danger); }
-
-.formula-box {
-  margin-top: 14px; padding: 10px 14px;
-  background: var(--surface-alt);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--radius-xs);
-  font-size: 12.5px; color: var(--text-2);
-  font-family: 'Consolas', 'Courier New', monospace;
-  line-height: 1.7; white-space: pre-wrap;
-}
-
-.alert { padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px;
-  display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; line-height: 1.5; }
-.alert.info    { background: var(--info-bg);    border: 1px solid var(--info-bdr);    color: var(--info);    }
-.alert.success { background: var(--success-bg); border: 1px solid var(--success-bdr); color: var(--success); }
-.alert.warning { background: var(--warning-bg); border: 1px solid var(--warning-bdr); color: var(--warning); }
-.alert.danger  { background: var(--danger-bg);  border: 1px solid var(--danger-bdr);  color: var(--danger);  }
-
-.tbl-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--border); }
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-thead th {
-  background: var(--surface-alt); padding: 9px 12px;
-  text-align: left; font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.05em;
-  color: var(--text-2); border-bottom: 1px solid var(--border-mid);
-  white-space: nowrap; position: sticky; top: 0;
-}
-tbody td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--text); }
-tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover td { background: var(--accent-light); }
-tbody tr.rec-row td { background: rgba(0,103,192,0.06); font-weight: 600; color: var(--accent); }
-
-.sbadge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 12px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
-.sbadge.ok   { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-bdr); }
-.sbadge.warn { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-bdr); }
-.sbadge.err  { background: var(--danger-bg);  color: var(--danger);  border: 1px solid var(--danger-bdr);  }
-
-.rec-box {
-  background: linear-gradient(135deg, #EBF4FF 0%, #F0F7FF 100%);
-  border: 1.5px solid var(--accent-ring);
-  border-radius: var(--radius-lg);
-  padding: 20px; margin: 12px 0;
-  text-align: center;
-}
-.rec-lbl { font-size: 12px; color: var(--text-2); font-weight: 500; }
-.rec-val { font-size: 40px; font-weight: 700; color: var(--accent); line-height: 1.1; margin: 6px 0 2px; }
-.rec-unit { font-size: 16px; color: var(--accent); font-weight: 500; }
-.rec-note { font-size: 12px; color: var(--text-2); margin-top: 8px; line-height: 1.5; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.canvas-wrap { display: flex; justify-content: center; align-items: center; padding: 10px; }
-canvas { display: block; }
-
-.divider { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); margin: 16px 0 12px; }
-.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
-
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.14); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.28); }
-
-/* Responsive Mobile & Tablet Layout */
-@media (max-width: 768px) {
-  .titlebar {
-    position: relative;
-    height: auto;
-    min-height: var(--titlebar-h);
-    padding: 8px 12px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .titlebar-sub { display: none; }
-  .titlebar-div { display: none; }
-  
-  .layout {
-    flex-direction: column;
-    padding-top: 0;
-  }
-  
-  .nav {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 8px 10px;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-    z-index: 200;
-    -webkit-overflow-scrolling: touch;
-    gap: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .nav-section { display: none; }
-  .nav-divider { display: none; }
-  .nav-item {
-    flex: 0 0 auto;
-    width: auto;
-    padding: 6px 12px;
-    font-size: 12.5px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: var(--surface-alt);
-  }
-  .nav-item.active {
-    border-color: var(--accent-ring);
-    background: var(--accent-light);
-  }
-  .nav-item.active::before { display: none; }
-
-  .content {
-    margin-left: 0;
-    max-width: 100vw;
-    padding: 16px 12px;
-  }
-  
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-  
-  .two-col {
-    grid-template-columns: 1fr;
-  }
-  
-  .result-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-  
-  .rec-val { font-size: 30px; }
-  .page-title { font-size: 19px; }
-  
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-}
-
-@media (max-width: 480px) {
-  .result-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-[data-tip] { position: relative; cursor: help; }
-[data-tip]::after {
-  content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%); white-space: nowrap;
-  background: rgba(20,20,20,0.9); color: #fff;
-  padding: 4px 9px; border-radius: 5px; font-size: 11px;
-  pointer-events: none; opacity: 0; z-index: 999;
-  transition: opacity 0.18s; font-weight: 400;
-}
-[data-tip]:hover::after { opacity: 1; }
-</style>
-</head>
-<body>
-
-<div class="titlebar">
-  <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:6px; color:inherit;">
-    <svg class="titlebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="12" cy="12" r="9" stroke-dasharray="3 3"/>
-      <line x1="3" y1="12" x2="6" y2="12"/>
-      <line x1="18" y1="12" x2="21" y2="12"/>
-      <line x1="12" y1="3" x2="12" y2="6"/>
-      <line x1="12" y1="18" x2="12" y2="21"/>
-    </svg>
-    <span class="titlebar-appname">Cable Calculator</span>
-  </a>
-  <div class="titlebar-div"></div>
-  <a href="materi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📚 Materi (7 Bab)</a>
-  <div class="titlebar-div"></div>
-  <a href="evaluasi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📝 Evaluasi &amp; OJT</a>
-  <div class="titlebar-div"></div>
-  <a href="termination-jointing-selector.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">⚡ Kit Selector</a>
-  <div class="titlebar-spacer"></div>
-  <a href="index.html" style="text-decoration:none; font-size:11.5px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:12px; border:1px solid var(--accent-ring); display:flex; align-items:center; gap:4px; margin-right:8px;">
-    🏠 Portal Suite
-  </a>
-  <span class="titlebar-badge">Jembo · Kabelindo · IEC · SNI</span>
-</div>
-
-<div class="layout">
-
-<nav class="nav">
-  <div class="nav-section">Kalkulasi</div>
-  <button class="nav-item active" onclick="showPanel('geom',this)"><span class="nav-icon">📐</span> Geometri Penampang</button>
-  <button class="nav-item" onclick="showPanel('resist',this)"><span class="nav-icon">⚡</span> Resistansi</button>
-  <button class="nav-item" onclick="showPanel('vdrop',this)"><span class="nav-icon">📉</span> Voltage Drop</button>
-  <button class="nav-item" onclick="showPanel('amp',this)"><span class="nav-icon">🔌</span> Ampacity / KHA</button>
-  <button class="nav-item" onclick="showPanel('advisor',this)"><span class="nav-icon">💡</span> Sizing Advisor</button>
-  <div class="nav-divider"></div>
-  <div class="nav-section">Katalog &amp; Referensi</div>
-  <button class="nav-item" onclick="showPanel('jembo',this)"><span class="nav-icon">📊</span> Datasheet Jembo vs Kabelindo</button>
-  <button class="nav-item" onclick="showPanel('derating',this)"><span class="nav-icon">🌡️</span> Derating Factor Jembo</button>
-  <button class="nav-item" onclick="showPanel('awg',this)"><span class="nav-icon">📋</span> Tabel AWG ↔ mm²</button>
-  <button class="nav-item" onclick="showPanel('about',this)"><span class="nav-icon">ℹ️</span> Tentang</button>
-</nav>
-
-<main class="content">
-<div class="page-max">
-
-<!-- PANEL 1: GEOMETRI -->
-<div id="panel-geom" class="panel active">
-  <div class="page-header">
-    <h1 class="page-title">📐 Geometri Penampang</h1>
-    <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, dan ukuran standar IEC terdekat</p>
-  </div>
-  <div class="two-col">
-    <div>
-      <div class="card">
-        <div class="card-hd"><span class="card-title">Input</span></div>
-        <div class="card-body">
-          <div class="form-group" style="margin-bottom:14px">
-            <label class="form-label">Mode Konversi</label>
-            <select class="form-control" id="g-mode" onchange="calcGeom()">
-              <option value="dia">Diameter → Luas Penampang</option>
-              <option value="area">Luas Penampang → Diameter</option>
-            </select>
-          </div>
-          <div class="form-group" id="g-dia-grp">
-            <label class="form-label">Diameter Konduktor</label>
-            <div class="igrp"><input type="number" id="g-dia" value="8" min="0.01" step="0.1" oninput="calcGeom()"><span class="iunit">mm</span></div>
-          </div>
-          <div class="form-group" id="g-area-grp" style="display:none">
-            <label class="form-label">Luas Penampang</label>
-            <div class="igrp"><input type="number" id="g-area-in" value="50" min="0.001" step="0.5" oninput="calcGeom()"><span class="iunit">mm²</span></div>
-          </div>
-          <div class="divider">Ukuran Standar IEC</div>
-          <div class="form-group">
-            <label class="form-label">Pilih Ukuran Standar</label>
-            <select class="form-control" id="g-std" onchange="pickStdSize()"></select>
-            <span class="form-note">Nilai akan dimasukkan ke input di atas</span>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-hd"><span class="card-title">Padanan AWG</span></div>
-        <div class="card-body" style="padding:14px 18px">
-          <div id="g-awg" style="font-size:13px;color:var(--text-2);line-height:1.8">—</div>
-        </div>
-      </div>
-    </div>
-        <div class="card" style="height:fit-content">
-      <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center">
-        <span class="card-title">Visualisasi Penampang Kabel</span>
-        <span class="card-pill">2D Real-time</span>
-      </div>
-      <div class="card-body" style="padding:14px">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-          <div>
-            <label class="form-label" style="font-size:11px">Struktur Konduktor</label>
-            <select class="form-control" id="g-type" onchange="calcGeom()" style="height:28px;font-size:11.5px;padding:0 6px">
-              <option value="stranded" selected>Serabut (Multi-strand)</option>
-              <option value="solid">Tunggal (Solid Core)</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label" style="font-size:11px">Material &amp; Sheath</label>
-            <select class="form-control" id="g-mat" onchange="calcGeom()" style="height:28px;font-size:11.5px;padding:0 6px">
-              <option value="cu_pvc" selected>Tembaga + Isolasi PVC</option>
-              <option value="al_pvc">Aluminium + Isolasi PVC</option>
-              <option value="cu_bare">Tembaga Telanjang (Bare)</option>
-            </select>
-          </div>
-        </div>
-        <div class="canvas-wrap" style="padding:0">
-          <canvas id="geom-cv" width="320" height="310"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Hasil Kalkulasi</span><span class="card-pill">Real-time</span></div>
-    <div class="card-body">
-      <div class="result-grid" id="geom-res"></div>
-      <div class="formula-box" id="geom-fml"></div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL 2: RESISTANSI -->
-<div id="panel-resist" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">⚡ Resistansi Konduktor</h1>
-    <p class="page-sub">Hitung resistansi DC &amp; AC dengan koreksi suhu, material, dan skin effect (IEC 60287)</p>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Parameter</span></div>
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Luas Penampang</label>
-          <div class="igrp"><input type="number" id="r-area" value="50" min="0.1" step="0.5" oninput="calcResist()"><span class="iunit">mm²</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Panjang Kabel</label>
-          <div class="igrp"><input type="number" id="r-len" value="100" min="0.1" step="1" oninput="calcResist()"><span class="iunit">m</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Material Konduktor</label>
-          <select class="form-control" id="r-mat" onchange="calcResist()">
-            <option value="cu">Tembaga (Cu) — ρ = 1.724×10⁻⁸ Ω·m</option>
-            <option value="al">Aluminium (Al) — ρ = 2.82×10⁻⁸ Ω·m</option>
-            <option value="fe">Besi (Fe) — ρ = 10.0×10⁻⁸ Ω·m</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Suhu Operasi</label>
-          <div class="igrp"><input type="number" id="r-temp" value="70" min="-50" max="300" step="5" oninput="calcResist()"><span class="iunit">°C</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Frekuensi (untuk R_AC)</label>
-          <select class="form-control" id="r-freq" onchange="calcResist()">
-            <option value="50">50 Hz — PLN / IEC Indonesia</option>
-            <option value="60">60 Hz — ANSI / NEC USA</option>
-            <option value="0">DC saja</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Hasil</span><span class="card-pill">DC &amp; AC</span></div>
-    <div class="card-body">
-      <div class="result-grid" id="resist-res"></div>
-      <div class="formula-box" id="resist-fml"></div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL 3: VOLTAGE DROP -->
-<div id="panel-vdrop" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">📉 Voltage Drop</h1>
-    <p class="page-sub">Hitung jatuh tegangan, persentase VD, dan rugi daya pada penghantar</p>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Parameter</span></div>
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Luas Penampang</label>
-          <div class="igrp"><input type="number" id="vd-area" value="50" min="0.1" step="0.5" oninput="calcVdrop()"><span class="iunit">mm²</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Panjang Kabel</label>
-          <div class="igrp"><input type="number" id="vd-len" value="100" min="0.1" step="1" oninput="calcVdrop()"><span class="iunit">m</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Arus Beban</label>
-          <div class="igrp"><input type="number" id="vd-curr" value="100" min="0.1" step="1" oninput="calcVdrop()"><span class="iunit">A</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tegangan Nominal</label>
-          <div class="igrp"><input type="number" id="vd-vnom" value="380" min="1" step="1" oninput="calcVdrop()"><span class="iunit">V</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Sistem</label>
-          <select class="form-control" id="vd-sys" onchange="calcVdrop()">
-            <option value="1p">1-Fasa (L-N, 2 konduktor)</option>
-            <option value="3p" selected>3-Fasa (L-L, 3 konduktor)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Material</label>
-          <select class="form-control" id="vd-mat" onchange="calcVdrop()">
-            <option value="cu">Tembaga (Cu)</option>
-            <option value="al">Aluminium (Al)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Faktor Daya (cos φ)</label>
-          <div class="igrp"><input type="number" id="vd-pf" value="0.85" min="0.1" max="1" step="0.01" oninput="calcVdrop()"><span class="iunit">—</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Suhu Konduktor</label>
-          <div class="igrp"><input type="number" id="vd-temp" value="70" min="-50" max="300" step="5" oninput="calcVdrop()"><span class="iunit">°C</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Hasil</span></div>
-    <div class="card-body">
-      <div class="result-grid" id="vdrop-res"></div>
-      <div id="vdrop-bar" style="margin-top:14px"></div>
-      <div class="formula-box" id="vdrop-fml"></div>
-      <div id="vdrop-alert"></div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL 4: AMPACITY -->
-<div id="panel-amp" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">🔌 Ampacity / KHA</h1>
-    <p class="page-sub">Kemampuan Hantar Arus berdasarkan IEC 60364-5-52 dengan faktor koreksi suhu dan grouping</p>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Parameter Kabel &amp; Instalasi</span></div>
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Penampang Kabel</label>
-          <select class="form-control" id="amp-size" onchange="calcAmp()"></select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Material Konduktor</label>
-          <select class="form-control" id="amp-mat" onchange="calcAmp()">
-            <option value="Cu">Tembaga (Cu)</option>
-            <option value="Al">Aluminium (Al)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Jenis Insulasi</label>
-          <select class="form-control" id="amp-ins" onchange="calcAmp()">
-            <option value="PVC">PVC — max 70°C</option>
-            <option value="XLPE">XLPE / EPR — max 90°C</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label" data-tip="IEC 60364-5-52 Installation Method">Metode Instalasi (IEC)</label>
-          <select class="form-control" id="amp-method" onchange="calcAmp()">
-            <option value="B2">B2 — Dalam konduit / pipa (permukaan)</option>
-            <option value="C">C — Ditempel ke dinding</option>
-            <option value="E" selected>E — Udara bebas / kabel tray</option>
-            <option value="D1">D1 — Dalam saluran / pipa di tanah</option>
-            <option value="D2">D2 — Ditanam langsung di tanah</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Suhu Ambient</label>
-          <div class="igrp"><input type="number" id="amp-temp" value="35" min="10" max="75" step="5" oninput="calcAmp()"><span class="iunit">°C</span></div>
-          <span class="form-note">Referensi IEC: 30°C</span>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Jumlah Kabel Berdekatan</label>
-          <select class="form-control" id="amp-group" onchange="calcAmp()">
-            <option value="1">1 kabel — tanpa grouping</option>
-            <option value="2">2 kabel — Kg = 0.80</option>
-            <option value="3">3 kabel — Kg = 0.70</option>
-            <option value="4">4 kabel — Kg = 0.65</option>
-            <option value="5">5 kabel — Kg = 0.60</option>
-            <option value="6">6 kabel — Kg = 0.57</option>
-            <option value="7">7–9 kabel — Kg = 0.52</option>
-            <option value="10">10–12 kabel — Kg = 0.45</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Arus Operasi (untuk cek utilisasi)</label>
-          <div class="igrp"><input type="number" id="amp-load" value="80" min="0" step="1" oninput="calcAmp()"><span class="iunit">A</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Hasil KHA Terkoreksi</span></div>
-    <div class="card-body">
-      <div class="result-grid" id="amp-res"></div>
-      <div id="amp-bar" style="margin-top:16px"></div>
-      <div id="amp-alert"></div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL 5: SIZING ADVISOR -->
-<div id="panel-advisor" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">💡 Sizing Advisor</h1>
-    <p class="page-sub">Rekomendasi penampang minimum berdasarkan kebutuhan daya, jarak, dan batas voltage drop</p>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Data Beban &amp; Instalasi</span></div>
-    <div class="card-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Daya Beban</label>
-          <div class="igrp"><input type="number" id="sa-power" value="30" min="0.01" step="0.5" oninput="calcAdvisor()"><span class="iunit">kW</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Faktor Daya (cos φ)</label>
-          <div class="igrp"><input type="number" id="sa-pf" value="0.85" min="0.1" max="1" step="0.01" oninput="calcAdvisor()"><span class="iunit">—</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tegangan Nominal</label>
-          <div class="igrp"><input type="number" id="sa-volt" value="380" min="1" step="1" oninput="calcAdvisor()"><span class="iunit">V</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Sistem</label>
-          <select class="form-control" id="sa-sys" onchange="calcAdvisor()">
-            <option value="1p">1-Fasa</option>
-            <option value="3p" selected>3-Fasa</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Panjang Kabel</label>
-          <div class="igrp"><input type="number" id="sa-len" value="100" min="1" step="1" oninput="calcAdvisor()"><span class="iunit">m</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Max Voltage Drop</label>
-          <div class="igrp"><input type="number" id="sa-maxvd" value="3" min="0.5" max="10" step="0.5" oninput="calcAdvisor()"><span class="iunit">%</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Material Konduktor</label>
-          <select class="form-control" id="sa-mat" onchange="calcAdvisor()">
-            <option value="Cu">Tembaga (Cu)</option>
-            <option value="Al">Aluminium (Al)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Jenis Insulasi</label>
-          <select class="form-control" id="sa-ins" onchange="calcAdvisor()">
-            <option value="PVC">PVC (70°C)</option>
-            <option value="XLPE">XLPE / EPR (90°C)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Metode Instalasi</label>
-          <select class="form-control" id="sa-method" onchange="calcAdvisor()">
-            <option value="B2">B2 — Dalam Konduit (Permukaan)</option>
-            <option value="C">C — Ditempel Dinding</option>
-            <option value="E" selected>E — Udara Bebas / Tray</option>
-            <option value="D1">D1 — Dalam Pipa / Duct di Tanah</option>
-            <option value="D2">D2 — Ditanam Langsung di Tanah</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Suhu Ambient</label>
-          <div class="igrp"><input type="number" id="sa-temp" value="35" min="10" max="75" step="5" oninput="calcAdvisor()"><span class="iunit">°C</span></div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Jumlah Kabel (Grouping)</label>
-          <select class="form-control" id="sa-group" onchange="calcAdvisor()">
-            <option value="1">1 kabel (tanpa grouping)</option>
-            <option value="2">2 kabel</option>
-            <option value="3">3 kabel</option>
-            <option value="4">4 kabel</option>
-            <option value="6">6 kabel</option>
-            <option value="10">10–12 kabel</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="rec-box" id="advisor-rec" style="display:none">
-    <div class="rec-lbl">Penampang Minimum yang Direkomendasikan</div>
-    <div id="sa-val" class="rec-val">—</div>
-    <div class="rec-unit" id="sa-unit">mm²</div>
-    <div class="rec-note" id="sa-note"></div>
-  </div>
-  <div class="result-grid" id="sa-res" style="margin-bottom:12px"></div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Perbandingan Semua Ukuran Standar IEC</span></div>
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap" style="border:none;border-radius:0">
-        <table id="sa-table">
-          <thead>
-            <tr>
-              <th>Ukuran (mm²)</th>
-              <th>I_maks (A)</th>
-              <th>ΔV (V)</th>
-              <th>ΔV (%)</th>
-              <th>Ampacity ✓?</th>
-              <th>Volt Drop ✓?</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="sa-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL: AWG TABLE -->
-<div id="panel-awg" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">📋 Tabel AWG ↔ mm²</h1>
-    <p class="page-sub">Referensi konversi ukuran kabel standar Amerika (AWG/kcmil) ke mm² (IEC/SNI)</p>
-  </div>
-  <div class="card">
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap" style="border:none;border-radius:0">
-        <table>
-          <thead>
-            <tr>
-              <th>AWG</th>
-              <th>kcmil</th>
-              <th>Diameter (mm)</th>
-              <th>Luas (mm²)</th>
-              <th>IEC Terdekat</th>
-              <th>R_DC Cu (Ω/km, 20°C)</th>
-              <th>R_DC Al (Ω/km, 20°C)</th>
-            </tr>
-          </thead>
-          <tbody id="awg-body"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL: ABOUT -->
-<div id="panel-about" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">ℹ️ Tentang Aplikasi</h1>
-    <p class="page-sub">Cable Calculator — Kalkulator Teknik Kabel Listrik</p>
-  </div>
-  <div class="card">
-    <div class="card-body">
-      <div class="divider">Modul Tersedia</div>
-      <div class="result-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
-        <div class="ritem"><div class="rlabel">Modul 1</div><div class="rval" style="font-size:14px">📐 Geometri</div><div class="rnote">Diameter ↔ mm² ↔ AWG ↔ kcmil, visualisasi canvas</div></div>
-        <div class="ritem"><div class="rlabel">Modul 2</div><div class="rval" style="font-size:14px">⚡ Resistansi</div><div class="rnote">R_DC, R_AC (skin effect IEC 60287), koreksi suhu</div></div>
-        <div class="ritem"><div class="rlabel">Modul 3</div><div class="rval" style="font-size:14px">📉 Voltage Drop</div><div class="rnote">ΔV, %VD, rugi daya — 1-fasa &amp; 3-fasa</div></div>
-        <div class="ritem"><div class="rlabel">Modul 4</div><div class="rval" style="font-size:14px">🔌 Ampacity</div><div class="rnote">KHA IEC 60364-5-52, koreksi suhu &amp; grouping</div></div>
-        <div class="ritem"><div class="rlabel">Modul 5</div><div class="rval" style="font-size:14px">💡 Sizing Advisor</div><div class="rnote">Rekomendasi penampang dari kebutuhan daya &amp; VD</div></div>
-      </div>
-      <div class="divider">Referensi Standar</div>
-      <div class="alert info">📚 <div><strong>IEC 60364-5-52:2009</strong> — Ampacity &amp; Installation Methods<br><strong>IEC 60287-1-1</strong> — Skin effect (y_s factor)<br><strong>SNI 0225 (PUIL 2011)</strong> — Standar Nasional Indonesia<br><strong>NEC Table 310</strong> — National Electrical Code (USA)<br><strong>IEEE Std 100</strong> — AWG/kcmil definitions</div></div>
-      <div class="alert warning" style="margin-top:8px">⚠ Kalkulasi ini bersifat pendekatan teknik engineering. Selalu verifikasi dengan engineer berlisensi dan standar proyek setempat sebelum implementasi.</div>
-      
-      <div class="divider">Hak Cipta &amp; Informasi Pengembang</div>
-      <div style="background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin-top:10px; display:flex; align-items:center; gap:16px;">
-        <div style="width:44px; height:44px; border-radius:50%; background:var(--accent-light); border:1px solid var(--accent-ring); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">
-          ©️
-        </div>
-        <div style="flex:1;">
-          <div style="font-size:13px; font-weight:700; color:var(--text);">© 2026 Diorama Training Department. All Rights Reserved.</div>
-          <div style="font-size:12px; color:var(--text-2); margin-top:2px;">Disusun &amp; Dikembangkan oleh <strong>Wildan Maradona, S.T.</strong> — Facilitator &amp; Technical Specialist</div>
-          <div style="font-size:11px; color:var(--text-3); margin-top:4px;">Cable Calculator v2.4 (Fluent Edition) · Diorama Training Technical Reference Series</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL JEMBO VS KABELINDO DATASHEET -->
-<div id="panel-jembo" class="panel">
-  <div class="page-header">
-    <h1 class="page-title">📊 Datasheet Vendor Comparison (Jembo Cable vs Kabelindo)</h1>
-    <p class="page-sub">Data Spesifikasi Teknis Resmi Katalog PT Jembo Cable Company Tbk. (N2XSY, N2XSEBY 12/20 kV) vs Kabelindo</p>
-  </div>
-  <div class="card">
-    <div class="card-hd"><span class="card-title">Tabel Spesifikasi Kabel N2XSEBY 12/20 (24) kV (3-Core Copper DSTA)</span></div>
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Nominal Area</th>
-              <th>Vendor Katalog</th>
-              <th>Approx Diameter</th>
-              <th>Berat Net</th>
-              <th>Max DC Res (20°C)</th>
-              <th>KHA di Udara (30°C)</th>
-              <th>KHA di Tanah (20°C)</th>
-              <th>Short Circuit (1s)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td><strong>3 x 25 mm²</strong></td><td>Jembo Cable</td><td>43.8 mm</td><td>2,790 kg/km</td><td>0.727 Ω/km</td><td>143 A</td><td>129 A</td><td>3.41 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 25 mm²</strong></td><td>Kabelindo</td><td>44.2 mm</td><td>2,810 kg/km</td><td>0.727 Ω/km</td><td>140 A</td><td>127 A</td><td>3.41 kA</td></tr>
-            <tr><td><strong>3 x 35 mm²</strong></td><td>Jembo Cable</td><td>46.2 mm</td><td>3,221 kg/km</td><td>0.524 Ω/km</td><td>172 A</td><td>154 A</td><td>4.73 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 35 mm²</strong></td><td>Kabelindo</td><td>46.8 mm</td><td>3,250 kg/km</td><td>0.524 Ω/km</td><td>170 A</td><td>152 A</td><td>4.73 kA</td></tr>
-            <tr><td><strong>3 x 50 mm²</strong></td><td>Jembo Cable</td><td>49.0 mm</td><td>3,762 kg/km</td><td>0.387 Ω/km</td><td>205 A</td><td>181 A</td><td>6.41 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 50 mm²</strong></td><td>Kabelindo</td><td>49.5 mm</td><td>3,800 kg/km</td><td>0.387 Ω/km</td><td>202 A</td><td>178 A</td><td>6.41 kA</td></tr>
-            <tr><td><strong>3 x 70 mm²</strong></td><td>Jembo Cable</td><td>52.7 mm</td><td>4,589 kg/km</td><td>0.268 Ω/km</td><td>253 A</td><td>220 A</td><td>9.25 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 70 mm²</strong></td><td>Kabelindo</td><td>53.2 mm</td><td>4,620 kg/km</td><td>0.268 Ω/km</td><td>250 A</td><td>218 A</td><td>9.25 kA</td></tr>
-            <tr><td><strong>3 x 95 mm²</strong></td><td>Jembo Cable</td><td>56.8 mm</td><td>5,612 kg/km</td><td>0.193 Ω/km</td><td>307 A</td><td>263 A</td><td>12.85 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 95 mm²</strong></td><td>Kabelindo</td><td>57.2 mm</td><td>5,650 kg/km</td><td>0.193 Ω/km</td><td>305 A</td><td>260 A</td><td>12.85 kA</td></tr>
-            <tr><td><strong>3 x 120 mm²</strong></td><td>Jembo Cable</td><td>60.4 mm</td><td>6,573 kg/km</td><td>0.153 Ω/km</td><td>352 A</td><td>298 A</td><td>16.21 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 120 mm²</strong></td><td>Kabelindo</td><td>61.0 mm</td><td>6,620 kg/km</td><td>0.153 Ω/km</td><td>350 A</td><td>295 A</td><td>16.21 kA</td></tr>
-            <tr><td><strong>3 x 150 mm²</strong></td><td>Jembo Cable</td><td>63.7 mm</td><td>7,577 kg/km</td><td>0.124 Ω/km</td><td>397 A</td><td>332 A</td><td>20.00 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 150 mm²</strong></td><td>Kabelindo</td><td>64.2 mm</td><td>7,630 kg/km</td><td>0.124 Ω/km</td><td>395 A</td><td>330 A</td><td>20.00 kA</td></tr>
-            <tr><td><strong>3 x 185 mm²</strong></td><td>Jembo Cable</td><td>67.7 mm</td><td>8,897 kg/km</td><td>0.0991 Ω/km</td><td>453 A</td><td>374 A</td><td>25.03 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 185 mm²</strong></td><td>Kabelindo</td><td>68.2 mm</td><td>8,950 kg/km</td><td>0.0991 Ω/km</td><td>450 A</td><td>370 A</td><td>25.03 kA</td></tr>
-            <tr><td><strong>3 x 240 mm²</strong></td><td>Jembo Cable</td><td>73.3 mm</td><td>10,925 kg/km</td><td>0.0754 Ω/km</td><td>529 A</td><td>431 A</td><td>32.89 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 240 mm²</strong></td><td>Kabelindo</td><td>74.0 mm</td><td>11,000 kg/km</td><td>0.0754 Ω/km</td><td>525 A</td><td>428 A</td><td>32.89 kA</td></tr>
-            <tr><td><strong>3 x 300 mm²</strong></td><td>Jembo Cable</td><td>78.4 mm</td><td>13,010 kg/km</td><td>0.0601 Ω/km</td><td>599 A</td><td>482 A</td><td>41.27 kA</td></tr>
-            <tr class="rec-row"><td><strong>3 x 300 mm²</strong></td><td>Kabelindo</td><td>79.2 mm</td><td>13,100 kg/km</td><td>0.0601 Ω/km</td><td>595 A</td><td>480 A</td><td>41.27 kA</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PANEL DERATING FACTOR KABELINDO VS JEMBO -->
-<div id="panel-derating" class="panel">
-  <div class="page-header">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
-      <div>
-        <h1 class="page-title">🌡️ Derating Factor (Faktor Koreksi KHA Pabrikan)</h1>
-        <p class="page-sub">Faktor Koreksi KHA Resmi Katalog Kabelindo (PT Kabelindo Murni Tbk) &amp; Jembo (PT Jembo Cable Company Tbk)</p>
-      </div>
-      <div style="display:flex; gap:8px;">
-        <button class="theme-toggle-btn active" id="btn-brand-all" onclick="switchDeratingBrand('all')" style="border-color:var(--accent); background:var(--accent-glow); color:var(--accent);">
-          🏢 Kabelindo &amp; Jembo (Semua)
-        </button>
-        <button class="theme-toggle-btn" id="btn-brand-kabelindo" onclick="switchDeratingBrand('kabelindo')">
-          🔴 PT Kabelindo Murni Tbk
-        </button>
-        <button class="theme-toggle-btn" id="btn-brand-jembo" onclick="switchDeratingBrand('jembo')">
-          🔵 PT Jembo Cable Co Tbk
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- KABELINDO SECTION -->
-  <div id="section-kabelindo" class="brand-section">
-    <div style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#e11d48; background:rgba(225,29,72,0.1); border:1px solid rgba(225,29,72,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; font-weight:700;">
-      🔴 PT Kabelindo Murni Tbk — MV Cable Derating Technical Data
-    </div>
-
-    <!-- 1. Suhu Udara Terbuka & Tanah Kabelindo -->
-    <div class="card">
-      <div class="card-hd"><span class="card-title">1. Koreksi Suhu Lingkungan (Kabelindo — Udara Terbuka &amp; Dalam Tanah)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Kondisi Lingkungan</th>
-                <th>10°C</th>
-                <th>15°C</th>
-                <th>20°C</th>
-                <th>25°C</th>
-                <th>30°C (Base Air)</th>
-                <th>35°C</th>
-                <th>40°C</th>
-                <th>45°C</th>
-                <th>50°C</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Kabelindo — Suhu Udara (Ambient Air 30°C Base)</strong></td>
-                <td>1.15</td>
-                <td>1.12</td>
-                <td>1.08</td>
-                <td>1.04</td>
-                <td><strong>1.00</strong></td>
-                <td>0.96</td>
-                <td>0.91</td>
-                <td>0.87</td>
-                <td>0.82</td>
-              </tr>
-              <tr>
-                <td><strong>Kabelindo — Suhu Tanah (Ground Temp 20°C Base)</strong></td>
-                <td>1.07</td>
-                <td>1.04</td>
-                <td><strong>1.00</strong></td>
-                <td>0.96</td>
-                <td>0.93</td>
-                <td>0.89</td>
-                <td>0.85</td>
-                <td>0.80</td>
-                <td>0.76</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Kedalaman Tanam Direct Buried & Pipe Duct Kabelindo -->
-    <div class="card">
-      <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam (Kabelindo — Direct Buried vs Underground Pipe Duct)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Metode Penanaman (Kabelindo)</th>
-                <th>0.5 m</th>
-                <th>0.6 m</th>
-                <th>0.8 m (Base)</th>
-                <th>1.0 m</th>
-                <th>1.25 m</th>
-                <th>1.5 m</th>
-                <th>2.0 m</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Tanam Langsung (Direct Buried 3-Core)</strong></td>
-                <td>1.04</td>
-                <td>1.02</td>
-                <td><strong>1.00</strong></td>
-                <td>0.98</td>
-                <td>0.96</td>
-                <td>0.95</td>
-                <td>0.93</td>
-              </tr>
-              <tr>
-                <td><b>Dalam Pipa / Conduit (Underground Pipe Duct)</b></td>
-                <td>1.03</td>
-                <td>1.01</td>
-                <td><strong>1.00</strong></td>
-                <td>0.97</td>
-                <td>0.95</td>
-                <td>0.93</td>
-                <td>0.90</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. Grouping Factors Kabelindo -->
-    <div class="card">
-      <div class="card-hd"><span class="card-title">3. Faktor Pengelompokan Kabel Sejajar (Kabelindo Group Rating Factors)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Formasi &amp; Jarak Antar Kabel (Kabelindo)</th>
-                <th>1 Kabel</th>
-                <th>2 Kabel</th>
-                <th>3 Kabel</th>
-                <th>4 Kabel</th>
-                <th>5 Kabel</th>
-                <th>6 Kabel</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Formasi Menempel (Touching Spacing)</strong></td>
-                <td><strong>1.00</strong></td>
-                <td>0.80</td>
-                <td>0.70</td>
-                <td>0.65</td>
-                <td>0.60</td>
-                <td>0.57</td>
-              </tr>
-              <tr>
-                <td><b>Formasi Berjarak (1x Diameter Clearance)</b></td>
-                <td><strong>1.00</strong></td>
-                <td>0.85</td>
-                <td>0.76</td>
-                <td>0.72</td>
-                <td>0.68</td>
-                <td>0.65</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- JEMBO SECTION -->
-  <div id="section-jembo" class="brand-section">
-    <div style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#0284c7; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; margin-top:8px; font-weight:700;">
-      🔵 PT Jembo Cable Company Tbk — MV Cable Derating Reference Data
-    </div>
-
-    <div class="card">
-      <div class="card-hd"><span class="card-title">1. Koreksi Suhu Tanah Lingkungan (Jembo — Base 20°C)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Suhu Tanah (°C)</th>
-                <th>10°C</th>
-                <th>15°C</th>
-                <th>20°C (Base)</th>
-                <th>25°C</th>
-                <th>30°C</th>
-                <th>35°C</th>
-                <th>40°C</th>
-                <th>45°C</th>
-                <th>50°C</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Faktor Koreksi (Kt)</strong></td>
-                <td>1.07</td>
-                <td>1.04</td>
-                <td><strong>1.00</strong></td>
-                <td>0.96</td>
-                <td>0.93</td>
-                <td>0.89</td>
-                <td>0.85</td>
-                <td>0.80</td>
-                <td>0.76</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam Galian Direct Buried (Jembo — Base 0.8m)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Kedalaman Tanam (m)</th>
-                <th>0.5 m</th>
-                <th>0.6 m</th>
-                <th>0.8 m (Base)</th>
-                <th>1.0 m</th>
-                <th>1.25 m</th>
-                <th>1.5 m</th>
-                <th>2.0 m</th>
-                <th>3.0 m</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>3-Core Cable</strong></td>
-                <td>1.04</td>
-                <td>1.02</td>
-                <td><strong>1.00</strong></td>
-                <td>0.98</td>
-                <td>0.96</td>
-                <td>0.95</td>
-                <td>0.93</td>
-                <td>0.90</td>
-              </tr>
-              <tr>
-                <td><strong>1-Core Cable (&le;185mm²)</strong></td>
-                <td>1.04</td>
-                <td>1.02</td>
-                <td><strong>1.00</strong></td>
-                <td>0.98</td>
-                <td>0.96</td>
-                <td>0.95</td>
-                <td>0.93</td>
-                <td>0.90</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-hd"><span class="card-title">3. Koreksi Resistivitas Termal Tanah (Jembo — Soil Thermal Resistivity K·m/W)</span></div>
-      <div class="card-body" style="padding:0">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Soil Resistivity (K·m/W)</th>
-                <th>0.7</th>
-                <th>0.8</th>
-                <th>0.9</th>
-                <th>1.0</th>
-                <th>1.5 (Base)</th>
-                <th>2.0</th>
-                <th>2.5</th>
-                <th>3.0</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Direct Buried 3-Core</strong></td>
-                <td>1.23</td>
-                <td>1.19</td>
-                <td>1.16</td>
-                <td>1.13</td>
-                <td><strong>1.00</strong></td>
-                <td>0.91</td>
-                <td>0.84</td>
-                <td>0.78</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-</div>
-</main>
-</div>
-
-<script>
-'use strict';
-
-const MAT = {
-  cu: { rho: 1.724e-8, alpha: 0.00393, name: 'Tembaga (Cu)' },
-  al: { rho: 2.82e-8,  alpha: 0.00403, name: 'Aluminium (Al)' },
-  fe: { rho: 10.0e-8,  alpha: 0.00651, name: 'Besi (Fe)' },
-};
-
-const IEC_SIZES = [1,1.5,2.5,4,6,10,16,25,35,50,70,95,120,150,185,240,300,400,500,630,800,1000];
-
-const AWG_DATA = [
-  {awg:'2000 kcmil',kcmil:2000, mm2:1013.4,dia:41.33},
-  {awg:'1750 kcmil',kcmil:1750, mm2:886.7, dia:38.66},
-  {awg:'1500 kcmil',kcmil:1500, mm2:760.1, dia:35.79},
-  {awg:'1250 kcmil',kcmil:1250, mm2:633.4, dia:32.68},
-  {awg:'1000 kcmil',kcmil:1000, mm2:506.7, dia:29.23},
-  {awg:'900 kcmil', kcmil:900,  mm2:456.0, dia:27.73},
-  {awg:'800 kcmil', kcmil:800,  mm2:405.4, dia:26.14},
-  {awg:'750 kcmil', kcmil:750,  mm2:380.0, dia:25.31},
-  {awg:'700 kcmil', kcmil:700,  mm2:354.7, dia:24.45},
-  {awg:'600 kcmil', kcmil:600,  mm2:304.0, dia:22.63},
-  {awg:'500 kcmil', kcmil:500,  mm2:253.4, dia:20.65},
-  {awg:'400 kcmil', kcmil:400,  mm2:202.7, dia:18.48},
-  {awg:'350 kcmil', kcmil:350,  mm2:177.3, dia:17.28},
-  {awg:'300 kcmil', kcmil:300,  mm2:152.0, dia:16.00},
-  {awg:'250 kcmil', kcmil:250,  mm2:126.7, dia:14.61},
-  {awg:'4/0',      kcmil:211.6,mm2:107.2, dia:11.68},
-  {awg:'3/0',      kcmil:167.8,mm2:85.03, dia:10.40},
-  {awg:'2/0',      kcmil:133.1,mm2:67.43, dia:9.27},
-  {awg:'1/0',      kcmil:105.6,mm2:53.49, dia:8.25},
-  {awg:'1',        kcmil:83.69,mm2:42.41, dia:7.35},
-  {awg:'2',        kcmil:66.36,mm2:33.63, dia:6.54},
-  {awg:'3',        kcmil:52.62,mm2:26.67, dia:5.83},
-  {awg:'4',        kcmil:41.74,mm2:21.15, dia:5.19},
-  {awg:'5',        kcmil:33.10,mm2:16.77, dia:4.62},
-  {awg:'6',        kcmil:26.25,mm2:13.30, dia:4.11},
-  {awg:'7',        kcmil:20.82,mm2:10.55, dia:3.67},
-  {awg:'8',        kcmil:16.51,mm2:8.367, dia:3.26},
-  {awg:'9',        kcmil:13.09,mm2:6.634, dia:2.91},
-  {awg:'10',       kcmil:10.38,mm2:5.261, dia:2.59},
-  {awg:'11',       kcmil:8.234,mm2:4.172, dia:2.31},
-  {awg:'12',       kcmil:6.530,mm2:3.309, dia:2.05},
-  {awg:'13',       kcmil:5.178,mm2:2.624, dia:1.83},
-  {awg:'14',       kcmil:4.107,mm2:2.081, dia:1.63},
-  {awg:'15',       kcmil:3.257,mm2:1.650, dia:1.45},
-  {awg:'16',       kcmil:2.583,mm2:1.309, dia:1.29},
-  {awg:'17',       kcmil:2.048,mm2:1.038, dia:1.15},
-  {awg:'18',       kcmil:1.624,mm2:0.823, dia:1.02},
-  {awg:'20',       kcmil:1.022,mm2:0.518, dia:0.812},
-  {awg:'22',       kcmil:0.642,mm2:0.326, dia:0.644},
-  {awg:'24',       kcmil:0.404,mm2:0.205, dia:0.511},
-  {awg:'26',       kcmil:0.254,mm2:0.129, dia:0.405},
-  {awg:'28',       kcmil:0.160,mm2:0.081, dia:0.321},
-  {awg:'30',       kcmil:0.101,mm2:0.051, dia:0.255},
-  {awg:'32',       kcmil:0.079,mm2:0.040, dia:0.202},
-  {awg:'34',       kcmil:0.063,mm2:0.032, dia:0.160},
-  {awg:'36',       kcmil:0.050,mm2:0.025, dia:0.127},
-  {awg:'38',       kcmil:0.039,mm2:0.020, dia:0.101},
-  {awg:'40',       kcmil:0.031,mm2:0.016, dia:0.080},
-];
-
-const AMP = {
-  Cu_PVC_B2: [13,15,20,27,34,46,61,80,99,119,151,182,210,240,273,321,367,424,480,550],
-  Cu_PVC_C:  [15.5,17.5,24,32,41,57,76,99,122,149,192,235,273,316,363,430,497,573,650,742],
-  Cu_PVC_E:  [17,20,27,36,46,63,85,112,138,168,213,258,299,344,392,461,530,613,706,818],
-  Cu_PVC_D1: [14.5,18,24,30,38,50,64,82,98,116,143,169,192,217,243,280,316,356,400,456],
-  Cu_PVC_D2: [15.5,19,24,33,41,54,70,92,110,130,162,193,220,246,278,320,359,405,455,519],
-  Cu_XLPE_B2:[16,18.5,25,34,43,60,79,101,125,151,192,232,269,309,353,415,477,542,615,700],
-  Cu_XLPE_C: [19,22,30,40,51,70,94,119,148,180,232,282,328,379,434,514,593,675,770,876],
-  Cu_XLPE_E: [22,26,36,49,63,86,115,149,185,225,289,352,410,473,542,641,741,853,976,1110],
-  Cu_XLPE_D1:[17,21,28,36,44,58,75,96,115,135,167,197,223,251,281,324,365,413,464,530],
-  Cu_XLPE_D2:[18.5,23,30,39,49,65,84,107,129,153,188,226,257,287,324,375,419,475,535,610],
-  Al_PVC_B2: [null,null,null,null,null,null,47,61,76,90,116,140,162,185,210,247,283,328,374,428],
-  Al_PVC_C:  [null,null,null,null,null,null,59,77,96,116,149,183,212,245,280,330,381,440,501,572],
-  Al_PVC_E:  [null,null,null,null,null,null,66,87,107,130,166,202,234,269,306,361,415,480,552,640],
-  Al_PVC_D1: [null,null,null,null,null,null,50,64,76,90,111,131,149,169,189,218,246,277,312,355],
-  Al_PVC_D2: [null,null,null,null,null,null,54,71,85,101,126,150,171,191,216,249,279,315,354,404],
-  Al_XLPE_B2:[null,null,null,null,null,null,60,78,96,116,148,179,208,239,274,322,371,424,482,549],
-  Al_XLPE_C: [null,null,null,null,null,null,73,94,115,141,182,221,258,298,342,405,468,536,614,700],
-  Al_XLPE_E: [null,null,null,null,null,null,90,116,144,175,225,275,321,370,424,500,578,666,762,869],
-  Al_XLPE_D1:[null,null,null,null,null,null,58,75,89,105,130,154,174,196,219,253,285,322,362,413],
-  Al_XLPE_D2:[null,null,null,null,null,null,65,83,100,119,146,176,200,224,253,293,327,371,417,476],
-};
-
-const TC_PVC  = [[10,1.22],[15,1.17],[20,1.12],[25,1.06],[30,1.00],[35,0.94],[40,0.87],[45,0.79],[50,0.71],[55,0.61],[60,0.50]];
-const TC_XLPE = [[10,1.15],[15,1.12],[20,1.08],[25,1.04],[30,1.00],[35,0.96],[40,0.91],[45,0.87],[50,0.82],[55,0.76],[60,0.71],[65,0.65],[70,0.58],[75,0.50]];
-const GF = [[1,1.00],[2,0.80],[3,0.70],[4,0.65],[5,0.60],[6,0.57],[7,0.54],[9,0.50],[12,0.45]];
-
-function fmt(v,d=2){ if(v===null||isNaN(v))return '—'; return v.toFixed(d); }
-
-function interp(tbl,x){
-  if(x<=tbl[0][0]) return tbl[0][1];
-  if(x>=tbl[tbl.length-1][0]) return tbl[tbl.length-1][1];
-  for(let i=0;i<tbl.length-1;i++){
-    const[x0,y0]=tbl[i],[x1,y1]=tbl[i+1];
-    if(x>=x0&&x<=x1) return y0+(y1-y0)*(x-x0)/(x1-x0);
-  }
-  return 1;
-}
-
-function getGF(n){
-  n=parseInt(n);
-  for(let i=GF.length-1;i>=0;i--) if(n>=GF[i][0]) return GF[i][1];
-  return 1;
-}
-
-function getAmp(mat,ins,method,idx){
-  const k=`${mat}_${ins}_${method}`;
-  return AMP[k]?(AMP[k][idx]??null):null;
-}
-
-function nearIEC(mm2){ return IEC_SIZES.reduce((a,b)=>Math.abs(mm2-b)<Math.abs(mm2-a)?b:a); }
-function nearAWG(mm2){ return AWG_DATA.reduce((a,b)=>Math.abs(mm2-b.mm2)<Math.abs(mm2-a.mm2)?b:a); }
-
-function skinEff(rho,Amm2,freq){
-  if(!freq)return 0;
-  const Rdc=rho/(Amm2*1e-6);
-  const xs2=(8*Math.PI*freq*1e-7)/Rdc;
-  const xs4=xs2*xs2;
-  return xs4/(192+0.8*xs4);
-}
-
-function ri(lbl,val,unit,cls='',note=''){
-  return `<div class="ritem ${cls}"><div class="rlabel">${lbl}</div><div class="rval">${val}<span class="runit">${unit}</span></div>${note?`<div class="rnote">${note}</div>`:''}</div>`;
-}
-
-function pbar(lbl,pct){
-  const cls=pct<60?'ok':pct<80?'mid':pct<95?'warn':'err';
-  const w=Math.min(Math.max(pct,0),100);
-  return `<div class="prog-wrap"><div class="prog-head"><span>${lbl}</span><span>${fmt(pct,1)}%</span></div><div class="prog-bg"><div class="prog-fill ${cls}" style="width:${w}%"></div></div></div>`;
-}
-
-function abox(type,msg){ return `<div class="alert ${type}">${msg}</div>`; }
-
-function showPanel(name,btn){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  if(btn)btn.classList.add('active');
-}
-
-function initGeomDrop(){
-  const sel=document.getElementById('g-std');
-  sel.innerHTML='<option value="">— Pilih ukuran standar IEC —</option>';
-  IEC_SIZES.forEach(s=>{
-    const d=(2*Math.sqrt(s/Math.PI)).toFixed(2);
-    const o=document.createElement('option');
-    o.value=s; o.text=`${s} mm²  (⌀ ≈ ${d} mm)`;
-    sel.appendChild(o);
-  });
-}
-
-function pickStdSize(){
-  const s=parseFloat(document.getElementById('g-std').value);
-  if(isNaN(s))return;
-  const mode=document.getElementById('g-mode').value;
-  if(mode==='dia') document.getElementById('g-dia').value=(2*Math.sqrt(s/Math.PI)).toFixed(3);
-  else document.getElementById('g-area-in').value=s;
-  calcGeom();
-}
-
-function calcGeom(){
-  const mode=document.getElementById('g-mode').value;
-  document.getElementById('g-dia-grp').style.display=mode==='dia'?'':'none';
-  document.getElementById('g-area-grp').style.display=mode==='area'?'':'none';
-  let dia,area;
-  if(mode==='dia'){ dia=parseFloat(document.getElementById('g-dia').value)||0; area=Math.PI/4*dia*dia; }
-  else { area=parseFloat(document.getElementById('g-area-in').value)||0; dia=2*Math.sqrt(area/Math.PI); }
-  const r=dia/2, circ=Math.PI*dia, iec=nearIEC(area), awg=nearAWG(area);
-  const c1=mode==='area'?'accent':'', c2=mode==='dia'?'accent':'';
-  document.getElementById('geom-res').innerHTML=
-    ri('Diameter',fmt(dia,3),'mm',c1)+ri('Radius',fmt(r,3),'mm')+
-    ri('Luas Penampang',fmt(area,4),'mm²',c2)+ri('Keliling',fmt(circ,3),'mm')+
-    ri('IEC Terdekat',iec,'mm²','success',`Selisih: ${fmt(Math.abs(area-iec),3)} mm²`)+
-    ri('AWG Terdekat',`AWG ${awg.awg}`,'','',`${awg.mm2} mm² — ${awg.kcmil} kcmil`);
-  document.getElementById('geom-fml').textContent=mode==='dia'
-    ?`A = (π/4) × d² = (π/4) × ${fmt(dia,3)}² = ${fmt(area,4)} mm²`
-    :`d = 2 × √(A/π) = 2 × √(${fmt(area,4)}/π) = ${fmt(dia,3)} mm`;
-  document.getElementById('g-awg').innerHTML=
-    `<strong>AWG ${awg.awg}</strong> &nbsp;|&nbsp; ${awg.mm2} mm² &nbsp;|&nbsp; ⌀ ${awg.dia} mm &nbsp;|&nbsp; ${awg.kcmil} kcmil<br>`+
-    `<small style="color:var(--text-3)">Selisih: ${fmt(Math.abs(area-awg.mm2),4)} mm² (${fmt(Math.abs(area-awg.mm2)/Math.max(area,0.001)*100,2)}%)</small>`;
-  drawCanvas(dia,area);
-}
-
-function drawCanvas(dia, area) {
-  const cv = document.getElementById('geom-cv');
-  if(!cv) return;
-  const ctx = cv.getContext('2d');
-  const W = cv.width, H = cv.height;
-  
-  ctx.clearRect(0, 0, W, H);
-  
-  const cType = document.getElementById('g-type') ? document.getElementById('g-type').value : 'stranded';
-  const cMat  = document.getElementById('g-mat') ? document.getElementById('g-mat').value : 'cu_pvc';
-  
-  const hasJacket = !cMat.includes('bare');
-  const isAl      = cMat.includes('al');
-  
-  const cx = W / 2;
-  const cy = 112;
-  
-  const maxR = Math.min(W, H) * 0.23;
-  const scale = maxR / Math.max(dia / 2, 0.5);
-  const condR = Math.min(maxR, Math.max(16, (dia / 2) * scale));
-  const jacketThick = hasJacket ? Math.max(8, condR * 0.20) : 0;
-  const outerR = condR + jacketThick;
-
-  // Outer Sheath
-  if(hasJacket) {
-    ctx.shadowColor = 'rgba(0,0,0,0.12)';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetY = 3;
-    
-    ctx.beginPath();
-    ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
-    const jGrad = ctx.createRadialGradient(cx - outerR * 0.3, cy - outerR * 0.3, outerR * 0.1, cx, cy, outerR);
-    jGrad.addColorStop(0, '#3A424D');
-    jGrad.addColorStop(0.7, '#1E232A');
-    jGrad.addColorStop(1, '#121519');
-    ctx.fillStyle = jGrad;
-    ctx.fill();
-    
-    ctx.shadowColor = 'transparent';
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetY = 0;
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, condR + 0.8, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-  }
-
-  // Conductor Colors
-  const colors = isAl ? {
-    light: '#F4F7FA', mid: '#B4C4D4', dark: '#687888', border: '#485868'
-  } : {
-    light: '#FFE2B8', mid: '#E67E22', dark: '#9C3E00', border: '#702400'
-  };
-
-  if (cType === 'solid') {
-    ctx.beginPath();
-    ctx.arc(cx, cy, condR, 0, Math.PI * 2);
-    const cGrad = ctx.createRadialGradient(cx - condR * 0.35, cy - condR * 0.35, condR * 0.05, cx, cy, condR);
-    cGrad.addColorStop(0, colors.light);
-    cGrad.addColorStop(0.5, colors.mid);
-    cGrad.addColorStop(1, colors.dark);
-    ctx.fillStyle = cGrad;
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, condR, 0, Math.PI * 2);
-    ctx.strokeStyle = colors.border;
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  } else {
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, condR, 0, Math.PI * 2);
-    ctx.fillStyle = colors.dark;
-    ctx.fill();
-
-    const strandCount = area > 50 ? 19 : 7;
-    const strandR = condR / (strandCount === 19 ? 5 : 3);
-
-    const drawStrand = (sx, sy, sr) => {
-      ctx.beginPath();
-      ctx.arc(sx, sy, sr - 0.3, 0, Math.PI * 2);
-      const sGrad = ctx.createRadialGradient(sx - sr * 0.3, sy - sr * 0.3, sr * 0.1, sx, sy, sr);
-      sGrad.addColorStop(0, colors.light);
-      sGrad.addColorStop(0.6, colors.mid);
-      sGrad.addColorStop(1, colors.dark);
-      ctx.fillStyle = sGrad;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(sx, sy, sr - 0.3, 0, Math.PI * 2);
-      ctx.strokeStyle = colors.border;
-      ctx.lineWidth = 0.7;
-      ctx.stroke();
-    };
-
-    drawStrand(cx, cy, strandR);
-
-    const dist1 = strandR * 2 - 0.4;
-    for (let i = 0; i < 6; i++) {
-      const ang = (i * Math.PI) / 3;
-      drawStrand(cx + Math.cos(ang) * dist1, cy + Math.sin(ang) * dist1, strandR);
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
     }
 
-    if (strandCount === 19) {
-      const dist2 = strandR * 4 - 0.8;
-      for (let i = 0; i < 12; i++) {
-        const ang = (i * Math.PI) / 6;
-        drawStrand(cx + Math.cos(ang) * dist2, cy + Math.sin(ang) * dist2, strandR);
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    :root {
+      --bg: #F3F3F3;
+      --bg-alt: #EBEBEB;
+      --surface: #FFFFFF;
+      --surface-alt: #F9F9F9;
+      --surface-hover: #F2F2F2;
+      --nav-bg: rgba(243, 243, 243, 0.78);
+      --titlebar-bg: rgba(243, 243, 243, 0.92);
+      --border: rgba(0, 0, 0, 0.075);
+      --border-mid: rgba(0, 0, 0, 0.12);
+      --border-ctrl: #C8C8C8;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.055);
+      --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      --accent: #0067C0;
+      --accent-dark: #003E92;
+      --accent-hover: #0078D4;
+      --accent-light: rgba(0, 120, 212, 0.08);
+      --accent-ring: rgba(0, 120, 212, 0.35);
+      --text: #1A1A1A;
+      --text-2: #5C5C5C;
+      --text-3: #9A9A9A;
+      --text-placeholder: #ABABAB;
+      --success: #107C10;
+      --success-bg: #DFF6DD;
+      --success-bdr: #A7D9A6;
+      --warning: #7A4F00;
+      --warning-bg: #FFF4CE;
+      --warning-bdr: #EFC75E;
+      --danger: #A4262C;
+      --danger-bg: #FDE7E9;
+      --danger-bdr: #F1AAAD;
+      --info: #004578;
+      --info-bg: #EFF6FF;
+      --info-bdr: #B3D4F7;
+      --nav-w: 232px;
+      --titlebar-h: 44px;
+      --radius-xs: 3px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    body {
+      font-family: 'Segoe UI Variable Display', 'Segoe UI Variable', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .titlebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--titlebar-h);
+      background: var(--titlebar-bg);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 10px;
+      z-index: 300;
+      user-select: none;
+    }
+
+    .titlebar-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    .titlebar-appname {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .titlebar-div {
+      width: 1px;
+      height: 14px;
+      background: var(--border-ctrl);
+      margin: 0 2px;
+    }
+
+    .titlebar-sub {
+      font-size: 12px;
+      color: var(--text-2);
+    }
+
+    .titlebar-spacer {
+      flex: 1;
+    }
+
+    .titlebar-badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--accent-ring);
+      letter-spacing: 0.03em;
+    }
+
+    .layout {
+      display: flex;
+      padding-top: var(--titlebar-h);
+      min-height: 100vh;
+    }
+
+    .nav {
+      position: fixed;
+      top: var(--titlebar-h);
+      bottom: 0;
+      left: 0;
+      width: var(--nav-w);
+      background: var(--nav-bg);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 12px 8px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+
+    .nav:hover {
+      scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+    }
+
+    .nav-section {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-3);
+      padding: 10px 10px 5px;
+      margin-top: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 8px 10px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-align: left;
+      color: var(--text-2);
+      font-size: 13px;
+      font-weight: 400;
+      font-family: inherit;
+      transition: background 0.12s, color 0.12s;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 28%;
+      bottom: 28%;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 3px 3px 0;
+    }
+
+    .nav-icon {
+      font-size: 15px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .nav-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 6px 4px;
+    }
+
+    .content {
+      margin-left: var(--nav-w);
+      flex: 1;
+      padding: 24px 28px;
+      max-width: calc(100vw - var(--nav-w));
+    }
+
+    .page-max {
+      max-width: 860px;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
       }
     }
-    ctx.restore();
 
-    ctx.beginPath();
-    ctx.arc(cx, cy, condR, 0, Math.PI * 2);
-    ctx.strokeStyle = colors.border;
-    ctx.lineWidth = 1.2;
-    ctx.stroke();
-  }
+    .panel.active {
+      animation: fade-in 0.18s ease;
+    }
 
-  // Area Badge Pill (Center of conductor)
-  const areaStr = `${area.toFixed(2)} mm²`;
-  ctx.font = 'bold 12px "Segoe UI Variable", system-ui, sans-serif';
-  const atw = ctx.measureText(areaStr).width;
-  
-  const apy = cy - 10;
-  const apx = cx - atw / 2 - 8, apw = atw + 16, aph = 20;
-  
-  ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(apx, apy, apw, aph, 10); else ctx.rect(apx, apy, apw, aph);
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.94)'; ctx.fill();
-  ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)'; ctx.lineWidth = 1; ctx.stroke();
+    .page-header {
+      margin-bottom: 20px;
+    }
 
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#1A1A1A';
-  ctx.fillText(areaStr, cx, apy + aph / 2);
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
 
-  // Dimension Arrow
-  const dimY = cy + (hasJacket ? outerR : condR) + 16;
+    .page-sub {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-top: 3px;
+    }
 
-  ctx.beginPath();
-  ctx.moveTo(cx - condR, dimY); ctx.lineTo(cx + condR, dimY);
-  ctx.strokeStyle = '#0067C0'; ctx.lineWidth = 1.5; ctx.stroke();
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      margin-bottom: 12px;
+      transition: box-shadow 0.2s;
+    }
 
-  ctx.beginPath();
-  ctx.moveTo(cx - condR, dimY - 4); ctx.lineTo(cx - condR, dimY + 4);
-  ctx.moveTo(cx + condR, dimY - 4); ctx.lineTo(cx + condR, dimY + 4);
-  ctx.strokeStyle = '#0067C0'; ctx.lineWidth = 1.5; ctx.stroke();
+    .card:hover {
+      box-shadow: var(--shadow-hover);
+    }
 
-  ctx.beginPath();
-  ctx.moveTo(cx - condR, cy + condR + 2); ctx.lineTo(cx - condR, dimY - 2);
-  ctx.moveTo(cx + condR, cy + condR + 2); ctx.lineTo(cx + condR, dimY - 2);
-  ctx.setLineDash([2, 3]);
-  ctx.strokeStyle = 'rgba(0,103,192,0.3)'; ctx.lineWidth = 1; ctx.stroke();
-  ctx.setLineDash([]);
+    .card-hd {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-alt);
+    }
 
-  const asz = 4;
-  [[cx - condR, dimY, 1], [cx + condR, dimY, -1]].forEach(([x, y, dir]) => {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + dir * asz * 1.8, y - 3);
-    ctx.lineTo(x + dir * asz * 1.8, y + 3);
-    ctx.closePath();
-    ctx.fillStyle = '#0067C0'; ctx.fill();
-  });
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
 
-  // Dimension Text Pill Badge
-  const textStr = `⌀ ${dia.toFixed(2)} mm`;
-  ctx.font = 'bold 11.5px "Segoe UI Variable", system-ui, sans-serif';
-  const tw = ctx.measureText(textStr).width;
-  
-  const px = cx - tw / 2 - 7, py = dimY + 4, pw = tw + 14, ph = 18;
-  ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(px, py, pw, ph, 9); else ctx.rect(px, py, pw, ph);
-  ctx.fillStyle = '#EBF4FF'; ctx.fill();
-  ctx.strokeStyle = '#B3D4F7'; ctx.lineWidth = 1; ctx.stroke();
+    .card-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border: 1px solid var(--accent-ring);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
 
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#005A9E';
-  ctx.fillText(textStr, cx, py + ph / 2);
+    .card-body {
+      padding: 18px;
+    }
 
-  // Bottom Legend Box
-  const legY = H - 15;
-  ctx.font = '500 11px "Segoe UI Variable", system-ui, sans-serif';
-  ctx.textBaseline = 'middle';
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+      gap: 14px;
+    }
 
-  const legOffset = hasJacket ? 65 : 45;
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
 
-  ctx.beginPath();
-  ctx.arc(cx - legOffset, legY, 4, 0, Math.PI * 2);
-  ctx.fillStyle = isAl ? '#B4C4D4' : '#E67E22'; ctx.fill();
-  ctx.textAlign = 'left';
-  ctx.fillStyle = '#5C5C5C';
-  ctx.fillText(isAl ? 'Konduktor Al' : 'Konduktor Cu', cx - legOffset + 8, legY);
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.015em;
+    }
 
-  if (hasJacket) {
-    ctx.beginPath();
-    ctx.arc(cx + 20, legY, 4, 0, Math.PI * 2);
-    ctx.fillStyle = '#2A3038'; ctx.fill();
-    ctx.fillText('Isolasi Sheath', cx + 28, legY);
-  }
-}
+    .form-note {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-top: 2px;
+    }
+
+    .igrp {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid var(--border-ctrl);
+      border-radius: var(--radius-xs);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .igrp:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-ring);
+    }
+
+    .igrp input {
+      flex: 1;
+      min-width: 0;
+      height: 30px;
+      padding: 0 10px;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text);
+      background: transparent;
+    }
+
+    .iunit {
+      height: 30px;
+      padding: 0 9px;
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-3);
+      background: var(--surface-alt);
+      border-left: 1px solid var(--border-ctrl);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    select.form-control {
+      height: 30px;
+      padding: 0 28px 0 10px;
+      border: 1px solid var(--border-ctrl);
+      border-radius: var(--radius-xs);
+      background-color: var(--surface);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%235C5C5C' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      -webkit-appearance: none;
+      appearance: none;
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
+    }
+
+    select.form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-ring);
+    }
+
+    select.form-control:hover {
+      border-color: #8A8A8A;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+      gap: 10px;
+    }
+
+    .ritem {
+      padding: 11px 13px;
+      background: var(--surface-alt);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .ritem:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .ritem.accent {
+      background: var(--accent-light);
+      border-color: var(--accent-ring);
+    }
+
+    .ritem.success {
+      background: var(--success-bg);
+      border-color: var(--success-bdr);
+    }
+
+    .ritem.warning {
+      background: var(--warning-bg);
+      border-color: var(--warning-bdr);
+    }
+
+    .ritem.danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-bdr);
+    }
+
+    .rlabel {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-3);
+      margin-bottom: 4px;
+    }
+
+    .rval {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .runit {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-2);
+      margin-left: 3px;
+    }
+
+    .rnote {
+      font-size: 10.5px;
+      color: var(--text-3);
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    .ritem.accent .rval {
+      color: var(--accent);
+    }
+
+    .ritem.success .rval {
+      color: var(--success);
+    }
+
+    .ritem.warning .rval {
+      color: var(--warning);
+    }
+
+    .ritem.danger .rval {
+      color: var(--danger);
+    }
+
+    .prog-wrap {
+      margin-top: 4px;
+    }
+
+    .prog-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-2);
+      margin-bottom: 5px;
+    }
+
+    .prog-head span:last-child {
+      font-weight: 600;
+    }
+
+    .prog-bg {
+      height: 7px;
+      background: var(--bg-alt);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .prog-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s cubic-bezier(.4, 0, .2, 1), background 0.3s;
+    }
+
+    .prog-fill.ok {
+      background: var(--success);
+    }
+
+    .prog-fill.mid {
+      background: #F0A30A;
+    }
+
+    .prog-fill.warn {
+      background: #CA5010;
+    }
+
+    .prog-fill.err {
+      background: var(--danger);
+    }
+
+    .formula-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-xs);
+      font-size: 12.5px;
+      color: var(--text-2);
+      font-family: 'Consolas', 'Courier New', monospace;
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .alert {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .alert.info {
+      background: var(--info-bg);
+      border: 1px solid var(--info-bdr);
+      color: var(--info);
+    }
+
+    .alert.success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-bdr);
+      color: var(--success);
+    }
+
+    .alert.warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-bdr);
+      color: var(--warning);
+    }
+
+    .alert.danger {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-bdr);
+      color: var(--danger);
+    }
+
+    .tbl-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    thead th {
+      background: var(--surface-alt);
+      padding: 9px 12px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-2);
+      border-bottom: 1px solid var(--border-mid);
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+    }
+
+    tbody td {
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover td {
+      background: var(--accent-light);
+    }
+
+    tbody tr.rec-row td {
+      background: rgba(0, 103, 192, 0.06);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .sbadge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .sbadge.ok {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-bdr);
+    }
+
+    .sbadge.warn {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning-bdr);
+    }
+
+    .sbadge.err {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-bdr);
+    }
+
+    .rec-box {
+      background: linear-gradient(135deg, #EBF4FF 0%, #F0F7FF 100%);
+      border: 1.5px solid var(--accent-ring);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin: 12px 0;
+      text-align: center;
+    }
+
+    .rec-lbl {
+      font-size: 12px;
+      color: var(--text-2);
+      font-weight: 500;
+    }
+
+    .rec-val {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.1;
+      margin: 6px 0 2px;
+    }
+
+    .rec-unit {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .rec-note {
+      font-size: 12px;
+      color: var(--text-2);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .canvas-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-3);
+      margin: 16px 0 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.14);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    /* Responsive Mobile & Tablet Layout */
+    @media (max-width: 768px) {
+      .titlebar {
+        position: relative;
+        height: auto;
+        min-height: var(--titlebar-h);
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .titlebar-sub {
+        display: none;
+      }
+
+      .titlebar-div {
+        display: none;
+      }
+
+      .layout {
+        flex-direction: column;
+        padding-top: 0;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 8px 10px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+        z-index: 200;
+        -webkit-overflow-scrolling: touch;
+        gap: 6px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+
+      .nav-section {
+        display: none;
+      }
+
+      .nav-divider {
+        display: none;
+      }
+
+      .nav-item {
+        flex: 0 0 auto;
+        width: auto;
+        padding: 6px 12px;
+        font-size: 12.5px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--surface-alt);
+      }
+
+      .nav-item.active {
+        border-color: var(--accent-ring);
+        background: var(--accent-light);
+      }
+
+      .nav-item.active::before {
+        display: none;
+      }
+
+      .content {
+        margin-left: 0;
+        max-width: 100vw;
+        padding: 16px 12px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .rec-val {
+        font-size: 30px;
+      }
+
+      .page-title {
+        font-size: 19px;
+      }
+
+      table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    [data-tip] {
+      position: relative;
+      cursor: help;
+    }
+
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(20, 20, 20, 0.9);
+      color: #fff;
+      padding: 4px 9px;
+      border-radius: 5px;
+      font-size: 11px;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 999;
+      transition: opacity 0.18s;
+      font-weight: 400;
+    }
+
+    [data-tip]:hover::after {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="titlebar">
+    <a href="index.html" style="text-decoration:none; display:flex; align-items:center; gap:6px; color:inherit;">
+      <svg class="titlebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
+        <line x1="3" y1="12" x2="6" y2="12" />
+        <line x1="18" y1="12" x2="21" y2="12" />
+        <line x1="12" y1="3" x2="12" y2="6" />
+        <line x1="12" y1="18" x2="12" y2="21" />
+      </svg>
+      <span class="titlebar-appname">Cable Calculator</span>
+    </a>
+    <div class="titlebar-div"></div>
+    <a href="materi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📚 Materi
+      (7 Bab)</a>
+    <div class="titlebar-div"></div>
+    <a href="evaluasi.html" style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">📝
+      Evaluasi &amp; OJT</a>
+    <div class="titlebar-div"></div>
+    <a href="termination-jointing-selector.html"
+      style="text-decoration:none; font-size:12px; color:var(--text-2); font-weight:500;">⚡ Kit Selector</a>
+    <div class="titlebar-spacer"></div>
+    <a href="index.html"
+      style="text-decoration:none; font-size:11.5px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:12px; border:1px solid var(--accent-ring); display:flex; align-items:center; gap:4px; margin-right:8px;">
+      🏠 Portal Suite
+    </a>
+    <span class="titlebar-badge">Jembo · Kabelindo · IEC · SNI</span>
+  </div>
+
+  <div class="layout">
+
+    <nav class="nav">
+      <div class="nav-section">Kalkulasi</div>
+      <button class="nav-item active" onclick="showPanel('geom',this)"><span class="nav-icon">📐</span> Geometri
+        Penampang</button>
+      <button class="nav-item" onclick="showPanel('resist',this)"><span class="nav-icon">⚡</span> Resistansi</button>
+      <button class="nav-item" onclick="showPanel('vdrop',this)"><span class="nav-icon">📉</span> Voltage Drop</button>
+      <button class="nav-item" onclick="showPanel('amp',this)"><span class="nav-icon">🔌</span> Ampacity / KHA</button>
+      <button class="nav-item" onclick="showPanel('advisor',this)"><span class="nav-icon">💡</span> Sizing
+        Advisor</button>
+      <div class="nav-divider"></div>
+      <div class="nav-section">Katalog &amp; Referensi</div>
+      <button class="nav-item" onclick="showPanel('jembo',this)"><span class="nav-icon">📊</span> Datasheet Jembo vs
+        Kabelindo</button>
+      <button class="nav-item" onclick="showPanel('derating',this)"><span class="nav-icon">🌡️</span> Derating Factor
+      </button>
+      <button class="nav-item" onclick="showPanel('awg',this)"><span class="nav-icon">📋</span> Tabel AWG ↔ mm²</button>
+      <button class="nav-item" onclick="showPanel('about',this)"><span class="nav-icon">ℹ️</span> Tentang</button>
+    </nav>
+
+    <main class="content">
+      <div class="page-max">
+
+        <!-- PANEL 1: GEOMETRI -->
+        <div id="panel-geom" class="panel active">
+          <div class="page-header">
+            <h1 class="page-title">📐 Geometri Penampang</h1>
+            <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, dan ukuran standar IEC
+              terdekat</p>
+          </div>
+          <div class="two-col">
+            <div>
+              <div class="card">
+                <div class="card-hd"><span class="card-title">Input</span></div>
+                <div class="card-body">
+                  <div class="form-group" style="margin-bottom:14px">
+                    <label class="form-label">Mode Konversi</label>
+                    <select class="form-control" id="g-mode" onchange="calcGeom()">
+                      <option value="dia">Diameter → Luas Penampang</option>
+                      <option value="area">Luas Penampang → Diameter</option>
+                    </select>
+                  </div>
+                  <div class="form-group" id="g-dia-grp">
+                    <label class="form-label">Diameter Konduktor</label>
+                    <div class="igrp"><input type="number" id="g-dia" value="8" min="0.01" step="0.1"
+                        oninput="calcGeom()"><span class="iunit">mm</span></div>
+                  </div>
+                  <div class="form-group" id="g-area-grp" style="display:none">
+                    <label class="form-label">Luas Penampang</label>
+                    <div class="igrp"><input type="number" id="g-area-in" value="50" min="0.001" step="0.5"
+                        oninput="calcGeom()"><span class="iunit">mm²</span></div>
+                  </div>
+                  <div class="divider">Ukuran Standar IEC</div>
+                  <div class="form-group">
+                    <label class="form-label">Pilih Ukuran Standar</label>
+                    <select class="form-control" id="g-std" onchange="pickStdSize()"></select>
+                    <span class="form-note">Nilai akan dimasukkan ke input di atas</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-hd"><span class="card-title">Padanan AWG</span></div>
+                <div class="card-body" style="padding:14px 18px">
+                  <div id="g-awg" style="font-size:13px;color:var(--text-2);line-height:1.8">—</div>
+                </div>
+              </div>
+            </div>
+            <div class="card" style="height:fit-content">
+              <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center">
+                <span class="card-title">Visualisasi Penampang Kabel</span>
+                <span class="card-pill">2D Real-time</span>
+              </div>
+              <div class="card-body" style="padding:14px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+                  <div>
+                    <label class="form-label" style="font-size:11px">Struktur Konduktor</label>
+                    <select class="form-control" id="g-type" onchange="calcGeom()"
+                      style="height:28px;font-size:11.5px;padding:0 6px">
+                      <option value="stranded" selected>Serabut (Multi-strand)</option>
+                      <option value="solid">Tunggal (Solid Core)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label" style="font-size:11px">Material &amp; Sheath</label>
+                    <select class="form-control" id="g-mat" onchange="calcGeom()"
+                      style="height:28px;font-size:11.5px;padding:0 6px">
+                      <option value="cu_pvc" selected>Tembaga + Isolasi PVC</option>
+                      <option value="al_pvc">Aluminium + Isolasi PVC</option>
+                      <option value="cu_bare">Tembaga Telanjang (Bare)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="canvas-wrap" style="padding:0">
+                  <canvas id="geom-cv" width="320" height="310"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Hasil Kalkulasi</span><span class="card-pill">Real-time</span>
+            </div>
+            <div class="card-body">
+              <div class="result-grid" id="geom-res"></div>
+              <div class="formula-box" id="geom-fml"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: RESISTANSI -->
+        <div id="panel-resist" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">⚡ Resistansi Konduktor</h1>
+            <p class="page-sub">Hitung resistansi DC &amp; AC dengan koreksi suhu, material, dan skin effect (IEC 60287)
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Parameter</span></div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Luas Penampang</label>
+                  <div class="igrp"><input type="number" id="r-area" value="50" min="0.1" step="0.5"
+                      oninput="calcResist()"><span class="iunit">mm²</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Panjang Kabel</label>
+                  <div class="igrp"><input type="number" id="r-len" value="100" min="0.1" step="1"
+                      oninput="calcResist()"><span class="iunit">m</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Material Konduktor</label>
+                  <select class="form-control" id="r-mat" onchange="calcResist()">
+                    <option value="cu">Tembaga (Cu) — ρ = 1.724×10⁻⁸ Ω·m</option>
+                    <option value="al">Aluminium (Al) — ρ = 2.82×10⁻⁸ Ω·m</option>
+                    <option value="fe">Besi (Fe) — ρ = 10.0×10⁻⁸ Ω·m</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Suhu Operasi</label>
+                  <div class="igrp"><input type="number" id="r-temp" value="70" min="-50" max="300" step="5"
+                      oninput="calcResist()"><span class="iunit">°C</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Frekuensi (untuk R_AC)</label>
+                  <select class="form-control" id="r-freq" onchange="calcResist()">
+                    <option value="50">50 Hz — PLN / IEC Indonesia</option>
+                    <option value="60">60 Hz — ANSI / NEC USA</option>
+                    <option value="0">DC saja</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Hasil</span><span class="card-pill">DC &amp; AC</span></div>
+            <div class="card-body">
+              <div class="result-grid" id="resist-res"></div>
+              <div class="formula-box" id="resist-fml"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 3: VOLTAGE DROP -->
+        <div id="panel-vdrop" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">📉 Voltage Drop</h1>
+            <p class="page-sub">Hitung jatuh tegangan, persentase VD, dan rugi daya pada penghantar</p>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Parameter</span></div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Luas Penampang</label>
+                  <div class="igrp"><input type="number" id="vd-area" value="50" min="0.1" step="0.5"
+                      oninput="calcVdrop()"><span class="iunit">mm²</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Panjang Kabel</label>
+                  <div class="igrp"><input type="number" id="vd-len" value="100" min="0.1" step="1"
+                      oninput="calcVdrop()"><span class="iunit">m</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Arus Beban</label>
+                  <div class="igrp"><input type="number" id="vd-curr" value="100" min="0.1" step="1"
+                      oninput="calcVdrop()"><span class="iunit">A</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tegangan Nominal</label>
+                  <div class="igrp"><input type="number" id="vd-vnom" value="380" min="1" step="1"
+                      oninput="calcVdrop()"><span class="iunit">V</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Sistem</label>
+                  <select class="form-control" id="vd-sys" onchange="calcVdrop()">
+                    <option value="1p">1-Fasa (L-N, 2 konduktor)</option>
+                    <option value="3p" selected>3-Fasa (L-L, 3 konduktor)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Material</label>
+                  <select class="form-control" id="vd-mat" onchange="calcVdrop()">
+                    <option value="cu">Tembaga (Cu)</option>
+                    <option value="al">Aluminium (Al)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Faktor Daya (cos φ)</label>
+                  <div class="igrp"><input type="number" id="vd-pf" value="0.85" min="0.1" max="1" step="0.01"
+                      oninput="calcVdrop()"><span class="iunit">—</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Suhu Konduktor</label>
+                  <div class="igrp"><input type="number" id="vd-temp" value="70" min="-50" max="300" step="5"
+                      oninput="calcVdrop()"><span class="iunit">°C</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Hasil</span></div>
+            <div class="card-body">
+              <div class="result-grid" id="vdrop-res"></div>
+              <div id="vdrop-bar" style="margin-top:14px"></div>
+              <div class="formula-box" id="vdrop-fml"></div>
+              <div id="vdrop-alert"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 4: AMPACITY -->
+        <div id="panel-amp" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">🔌 Ampacity / KHA</h1>
+            <p class="page-sub">Kemampuan Hantar Arus berdasarkan IEC 60364-5-52 dengan faktor koreksi suhu dan grouping
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Parameter Kabel &amp; Instalasi</span></div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Penampang Kabel</label>
+                  <select class="form-control" id="amp-size" onchange="calcAmp()"></select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Material Konduktor</label>
+                  <select class="form-control" id="amp-mat" onchange="calcAmp()">
+                    <option value="Cu">Tembaga (Cu)</option>
+                    <option value="Al">Aluminium (Al)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Jenis Insulasi</label>
+                  <select class="form-control" id="amp-ins" onchange="calcAmp()">
+                    <option value="PVC">PVC — max 70°C</option>
+                    <option value="XLPE">XLPE / EPR — max 90°C</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" data-tip="IEC 60364-5-52 Installation Method">Metode Instalasi (IEC)</label>
+                  <select class="form-control" id="amp-method" onchange="calcAmp()">
+                    <option value="B2">B2 — Dalam konduit / pipa (permukaan)</option>
+                    <option value="C">C — Ditempel ke dinding</option>
+                    <option value="E" selected>E — Udara bebas / kabel tray</option>
+                    <option value="D1">D1 — Dalam saluran / pipa di tanah</option>
+                    <option value="D2">D2 — Ditanam langsung di tanah</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Suhu Ambient</label>
+                  <div class="igrp"><input type="number" id="amp-temp" value="35" min="10" max="75" step="5"
+                      oninput="calcAmp()"><span class="iunit">°C</span></div>
+                  <span class="form-note">Referensi IEC: 30°C</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Jumlah Kabel Berdekatan</label>
+                  <select class="form-control" id="amp-group" onchange="calcAmp()">
+                    <option value="1">1 kabel — tanpa grouping</option>
+                    <option value="2">2 kabel — Kg = 0.80</option>
+                    <option value="3">3 kabel — Kg = 0.70</option>
+                    <option value="4">4 kabel — Kg = 0.65</option>
+                    <option value="5">5 kabel — Kg = 0.60</option>
+                    <option value="6">6 kabel — Kg = 0.57</option>
+                    <option value="7">7–9 kabel — Kg = 0.52</option>
+                    <option value="10">10–12 kabel — Kg = 0.45</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Arus Operasi (untuk cek utilisasi)</label>
+                  <div class="igrp"><input type="number" id="amp-load" value="80" min="0" step="1"
+                      oninput="calcAmp()"><span class="iunit">A</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Hasil KHA Terkoreksi</span></div>
+            <div class="card-body">
+              <div class="result-grid" id="amp-res"></div>
+              <div id="amp-bar" style="margin-top:16px"></div>
+              <div id="amp-alert"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 5: SIZING ADVISOR -->
+        <div id="panel-advisor" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">💡 Sizing Advisor</h1>
+            <p class="page-sub">Rekomendasi penampang minimum berdasarkan kebutuhan daya, jarak, dan batas voltage drop
+            </p>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Data Beban &amp; Instalasi</span></div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">Daya Beban</label>
+                  <div class="igrp"><input type="number" id="sa-power" value="30" min="0.01" step="0.5"
+                      oninput="calcAdvisor()"><span class="iunit">kW</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Faktor Daya (cos φ)</label>
+                  <div class="igrp"><input type="number" id="sa-pf" value="0.85" min="0.1" max="1" step="0.01"
+                      oninput="calcAdvisor()"><span class="iunit">—</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Tegangan Nominal</label>
+                  <div class="igrp"><input type="number" id="sa-volt" value="380" min="1" step="1"
+                      oninput="calcAdvisor()"><span class="iunit">V</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Sistem</label>
+                  <select class="form-control" id="sa-sys" onchange="calcAdvisor()">
+                    <option value="1p">1-Fasa</option>
+                    <option value="3p" selected>3-Fasa</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Panjang Kabel</label>
+                  <div class="igrp"><input type="number" id="sa-len" value="100" min="1" step="1"
+                      oninput="calcAdvisor()"><span class="iunit">m</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Max Voltage Drop</label>
+                  <div class="igrp"><input type="number" id="sa-maxvd" value="3" min="0.5" max="10" step="0.5"
+                      oninput="calcAdvisor()"><span class="iunit">%</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Material Konduktor</label>
+                  <select class="form-control" id="sa-mat" onchange="calcAdvisor()">
+                    <option value="Cu">Tembaga (Cu)</option>
+                    <option value="Al">Aluminium (Al)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Jenis Insulasi</label>
+                  <select class="form-control" id="sa-ins" onchange="calcAdvisor()">
+                    <option value="PVC">PVC (70°C)</option>
+                    <option value="XLPE">XLPE / EPR (90°C)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Metode Instalasi</label>
+                  <select class="form-control" id="sa-method" onchange="calcAdvisor()">
+                    <option value="B2">B2 — Dalam Konduit (Permukaan)</option>
+                    <option value="C">C — Ditempel Dinding</option>
+                    <option value="E" selected>E — Udara Bebas / Tray</option>
+                    <option value="D1">D1 — Dalam Pipa / Duct di Tanah</option>
+                    <option value="D2">D2 — Ditanam Langsung di Tanah</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Suhu Ambient</label>
+                  <div class="igrp"><input type="number" id="sa-temp" value="35" min="10" max="75" step="5"
+                      oninput="calcAdvisor()"><span class="iunit">°C</span></div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Jumlah Kabel (Grouping)</label>
+                  <select class="form-control" id="sa-group" onchange="calcAdvisor()">
+                    <option value="1">1 kabel (tanpa grouping)</option>
+                    <option value="2">2 kabel</option>
+                    <option value="3">3 kabel</option>
+                    <option value="4">4 kabel</option>
+                    <option value="6">6 kabel</option>
+                    <option value="10">10–12 kabel</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="rec-box" id="advisor-rec" style="display:none">
+            <div class="rec-lbl">Penampang Minimum yang Direkomendasikan</div>
+            <div id="sa-val" class="rec-val">—</div>
+            <div class="rec-unit" id="sa-unit">mm²</div>
+            <div class="rec-note" id="sa-note"></div>
+          </div>
+          <div class="result-grid" id="sa-res" style="margin-bottom:12px"></div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Perbandingan Semua Ukuran Standar IEC</span></div>
+            <div class="card-body" style="padding:0">
+              <div class="tbl-wrap" style="border:none;border-radius:0">
+                <table id="sa-table">
+                  <thead>
+                    <tr>
+                      <th>Ukuran (mm²)</th>
+                      <th>I_maks (A)</th>
+                      <th>ΔV (V)</th>
+                      <th>ΔV (%)</th>
+                      <th>Ampacity ✓?</th>
+                      <th>Volt Drop ✓?</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sa-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: AWG TABLE -->
+        <div id="panel-awg" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">📋 Tabel AWG ↔ mm²</h1>
+            <p class="page-sub">Referensi konversi ukuran kabel standar Amerika (AWG/kcmil) ke mm² (IEC/SNI)</p>
+          </div>
+          <div class="card">
+            <div class="card-body" style="padding:0">
+              <div class="tbl-wrap" style="border:none;border-radius:0">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>AWG</th>
+                      <th>kcmil</th>
+                      <th>Diameter (mm)</th>
+                      <th>Luas (mm²)</th>
+                      <th>IEC Terdekat</th>
+                      <th>R_DC Cu (Ω/km, 20°C)</th>
+                      <th>R_DC Al (Ω/km, 20°C)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="awg-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL: ABOUT -->
+        <div id="panel-about" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">ℹ️ Tentang Aplikasi</h1>
+            <p class="page-sub">Cable Calculator — Kalkulator Teknik Kabel Listrik</p>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="divider">Modul Tersedia</div>
+              <div class="result-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+                <div class="ritem">
+                  <div class="rlabel">Modul 1</div>
+                  <div class="rval" style="font-size:14px">📐 Geometri</div>
+                  <div class="rnote">Diameter ↔ mm² ↔ AWG ↔ kcmil, visualisasi canvas</div>
+                </div>
+                <div class="ritem">
+                  <div class="rlabel">Modul 2</div>
+                  <div class="rval" style="font-size:14px">⚡ Resistansi</div>
+                  <div class="rnote">R_DC, R_AC (skin effect IEC 60287), koreksi suhu</div>
+                </div>
+                <div class="ritem">
+                  <div class="rlabel">Modul 3</div>
+                  <div class="rval" style="font-size:14px">📉 Voltage Drop</div>
+                  <div class="rnote">ΔV, %VD, rugi daya — 1-fasa &amp; 3-fasa</div>
+                </div>
+                <div class="ritem">
+                  <div class="rlabel">Modul 4</div>
+                  <div class="rval" style="font-size:14px">🔌 Ampacity</div>
+                  <div class="rnote">KHA IEC 60364-5-52, koreksi suhu &amp; grouping</div>
+                </div>
+                <div class="ritem">
+                  <div class="rlabel">Modul 5</div>
+                  <div class="rval" style="font-size:14px">💡 Sizing Advisor</div>
+                  <div class="rnote">Rekomendasi penampang dari kebutuhan daya &amp; VD</div>
+                </div>
+              </div>
+              <div class="divider">Referensi Standar</div>
+              <div class="alert info">📚 <div><strong>IEC 60364-5-52:2009</strong> — Ampacity &amp; Installation
+                  Methods<br><strong>IEC 60287-1-1</strong> — Skin effect (y_s factor)<br><strong>SNI 0225 (PUIL
+                    2011)</strong> — Standar Nasional Indonesia<br><strong>NEC Table 310</strong> — National Electrical
+                  Code (USA)<br><strong>IEEE Std 100</strong> — AWG/kcmil definitions</div>
+              </div>
+              <div class="alert warning" style="margin-top:8px">⚠ Kalkulasi ini bersifat pendekatan teknik engineering.
+                Selalu verifikasi dengan engineer berlisensi dan standar proyek setempat sebelum implementasi.</div>
+
+              <div class="divider">Hak Cipta &amp; Informasi Pengembang</div>
+              <div
+                style="background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; margin-top:10px; display:flex; align-items:center; gap:16px;">
+                <div
+                  style="width:44px; height:44px; border-radius:50%; background:var(--accent-light); border:1px solid var(--accent-ring); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">
+                  ©️
+                </div>
+                <div style="flex:1;">
+                  <div style="font-size:13px; font-weight:700; color:var(--text);">© 2026 Diorama Training Department.
+                    All Rights Reserved.</div>
+                  <div style="font-size:12px; color:var(--text-2); margin-top:2px;">Disusun &amp; Dikembangkan oleh
+                    <strong>Wildan Maradona, S.T.</strong> — Facilitator &amp; Technical Specialist</div>
+                  <div style="font-size:11px; color:var(--text-3); margin-top:4px;">Cable Calculator v2.4 (Fluent
+                    Edition) · Diorama Training Technical Reference Series</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL JEMBO VS KABELINDO DATASHEET -->
+        <div id="panel-jembo" class="panel">
+          <div class="page-header">
+            <h1 class="page-title">📊 Datasheet Vendor Comparison (Jembo Cable vs Kabelindo)</h1>
+            <p class="page-sub">Data Spesifikasi Teknis Resmi Katalog PT Jembo Cable Company Tbk. (N2XSY, N2XSEBY 12/20
+              kV) vs Kabelindo</p>
+          </div>
+          <div class="card">
+            <div class="card-hd"><span class="card-title">Tabel Spesifikasi Kabel N2XSEBY 12/20 (24) kV (3-Core Copper
+                DSTA)</span></div>
+            <div class="card-body" style="padding:0">
+              <div class="tbl-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nominal Area</th>
+                      <th>Vendor Katalog</th>
+                      <th>Approx Diameter</th>
+                      <th>Berat Net</th>
+                      <th>Max DC Res (20°C)</th>
+                      <th>KHA di Udara (30°C)</th>
+                      <th>KHA di Tanah (20°C)</th>
+                      <th>Short Circuit (1s)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>3 x 25 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>43.8 mm</td>
+                      <td>2,790 kg/km</td>
+                      <td>0.727 Ω/km</td>
+                      <td>143 A</td>
+                      <td>129 A</td>
+                      <td>3.41 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 25 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>44.2 mm</td>
+                      <td>2,810 kg/km</td>
+                      <td>0.727 Ω/km</td>
+                      <td>140 A</td>
+                      <td>127 A</td>
+                      <td>3.41 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 35 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>46.2 mm</td>
+                      <td>3,221 kg/km</td>
+                      <td>0.524 Ω/km</td>
+                      <td>172 A</td>
+                      <td>154 A</td>
+                      <td>4.73 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 35 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>46.8 mm</td>
+                      <td>3,250 kg/km</td>
+                      <td>0.524 Ω/km</td>
+                      <td>170 A</td>
+                      <td>152 A</td>
+                      <td>4.73 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 50 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>49.0 mm</td>
+                      <td>3,762 kg/km</td>
+                      <td>0.387 Ω/km</td>
+                      <td>205 A</td>
+                      <td>181 A</td>
+                      <td>6.41 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 50 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>49.5 mm</td>
+                      <td>3,800 kg/km</td>
+                      <td>0.387 Ω/km</td>
+                      <td>202 A</td>
+                      <td>178 A</td>
+                      <td>6.41 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 70 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>52.7 mm</td>
+                      <td>4,589 kg/km</td>
+                      <td>0.268 Ω/km</td>
+                      <td>253 A</td>
+                      <td>220 A</td>
+                      <td>9.25 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 70 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>53.2 mm</td>
+                      <td>4,620 kg/km</td>
+                      <td>0.268 Ω/km</td>
+                      <td>250 A</td>
+                      <td>218 A</td>
+                      <td>9.25 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 95 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>56.8 mm</td>
+                      <td>5,612 kg/km</td>
+                      <td>0.193 Ω/km</td>
+                      <td>307 A</td>
+                      <td>263 A</td>
+                      <td>12.85 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 95 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>57.2 mm</td>
+                      <td>5,650 kg/km</td>
+                      <td>0.193 Ω/km</td>
+                      <td>305 A</td>
+                      <td>260 A</td>
+                      <td>12.85 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 120 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>60.4 mm</td>
+                      <td>6,573 kg/km</td>
+                      <td>0.153 Ω/km</td>
+                      <td>352 A</td>
+                      <td>298 A</td>
+                      <td>16.21 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 120 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>61.0 mm</td>
+                      <td>6,620 kg/km</td>
+                      <td>0.153 Ω/km</td>
+                      <td>350 A</td>
+                      <td>295 A</td>
+                      <td>16.21 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 150 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>63.7 mm</td>
+                      <td>7,577 kg/km</td>
+                      <td>0.124 Ω/km</td>
+                      <td>397 A</td>
+                      <td>332 A</td>
+                      <td>20.00 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 150 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>64.2 mm</td>
+                      <td>7,630 kg/km</td>
+                      <td>0.124 Ω/km</td>
+                      <td>395 A</td>
+                      <td>330 A</td>
+                      <td>20.00 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 185 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>67.7 mm</td>
+                      <td>8,897 kg/km</td>
+                      <td>0.0991 Ω/km</td>
+                      <td>453 A</td>
+                      <td>374 A</td>
+                      <td>25.03 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 185 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>68.2 mm</td>
+                      <td>8,950 kg/km</td>
+                      <td>0.0991 Ω/km</td>
+                      <td>450 A</td>
+                      <td>370 A</td>
+                      <td>25.03 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 240 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>73.3 mm</td>
+                      <td>10,925 kg/km</td>
+                      <td>0.0754 Ω/km</td>
+                      <td>529 A</td>
+                      <td>431 A</td>
+                      <td>32.89 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 240 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>74.0 mm</td>
+                      <td>11,000 kg/km</td>
+                      <td>0.0754 Ω/km</td>
+                      <td>525 A</td>
+                      <td>428 A</td>
+                      <td>32.89 kA</td>
+                    </tr>
+                    <tr>
+                      <td><strong>3 x 300 mm²</strong></td>
+                      <td>Jembo Cable</td>
+                      <td>78.4 mm</td>
+                      <td>13,010 kg/km</td>
+                      <td>0.0601 Ω/km</td>
+                      <td>599 A</td>
+                      <td>482 A</td>
+                      <td>41.27 kA</td>
+                    </tr>
+                    <tr class="rec-row">
+                      <td><strong>3 x 300 mm²</strong></td>
+                      <td>Kabelindo</td>
+                      <td>79.2 mm</td>
+                      <td>13,100 kg/km</td>
+                      <td>0.0601 Ω/km</td>
+                      <td>595 A</td>
+                      <td>480 A</td>
+                      <td>41.27 kA</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DERATING FACTOR KABELINDO VS JEMBO -->
+        <div id="panel-derating" class="panel">
+          <div class="page-header">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h1 class="page-title">🌡️ Derating Factor (Faktor Koreksi KHA Pabrikan)</h1>
+                <p class="page-sub">Faktor Koreksi KHA Resmi Katalog Kabelindo (PT Kabelindo Murni Tbk) &amp; Jembo (PT
+                  Jembo Cable Company Tbk)</p>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="theme-toggle-btn active" id="btn-brand-all" onclick="switchDeratingBrand('all')"
+                  style="border-color:var(--accent); background:var(--accent-glow); color:var(--accent);">
+                  🏢 Kabelindo &amp; Jembo (Semua)
+                </button>
+                <button class="theme-toggle-btn" id="btn-brand-kabelindo" onclick="switchDeratingBrand('kabelindo')">
+                  🔴 PT Kabelindo Murni Tbk
+                </button>
+                <button class="theme-toggle-btn" id="btn-brand-jembo" onclick="switchDeratingBrand('jembo')">
+                  🔵 PT Jembo Cable Co Tbk
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- KABELINDO SECTION -->
+          <div id="section-kabelindo" class="brand-section">
+            <div
+              style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#e11d48; background:rgba(225,29,72,0.1); border:1px solid rgba(225,29,72,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; font-weight:700;">
+              🔴 PT Kabelindo Murni Tbk — MV Cable Derating Technical Data
+            </div>
+
+            <!-- 1. Suhu Udara Terbuka & Tanah Kabelindo -->
+            <div class="card">
+              <div class="card-hd"><span class="card-title">1. Koreksi Suhu Lingkungan (Kabelindo — Udara Terbuka &amp;
+                  Dalam Tanah)</span></div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Kondisi Lingkungan</th>
+                        <th>10°C</th>
+                        <th>15°C</th>
+                        <th>20°C</th>
+                        <th>25°C</th>
+                        <th>30°C (Base Air)</th>
+                        <th>35°C</th>
+                        <th>40°C</th>
+                        <th>45°C</th>
+                        <th>50°C</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Kabelindo — Suhu Udara (Ambient Air 30°C Base)</strong></td>
+                        <td>1.15</td>
+                        <td>1.12</td>
+                        <td>1.08</td>
+                        <td>1.04</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.96</td>
+                        <td>0.91</td>
+                        <td>0.87</td>
+                        <td>0.82</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Kabelindo — Suhu Tanah (Ground Temp 20°C Base)</strong></td>
+                        <td>1.07</td>
+                        <td>1.04</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.96</td>
+                        <td>0.93</td>
+                        <td>0.89</td>
+                        <td>0.85</td>
+                        <td>0.80</td>
+                        <td>0.76</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Kedalaman Tanam Direct Buried & Pipe Duct Kabelindo -->
+            <div class="card">
+              <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam (Kabelindo — Direct Buried vs
+                  Underground Pipe Duct)</span></div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Metode Penanaman (Kabelindo)</th>
+                        <th>0.5 m</th>
+                        <th>0.6 m</th>
+                        <th>0.8 m (Base)</th>
+                        <th>1.0 m</th>
+                        <th>1.25 m</th>
+                        <th>1.5 m</th>
+                        <th>2.0 m</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Tanam Langsung (Direct Buried 3-Core)</strong></td>
+                        <td>1.04</td>
+                        <td>1.02</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.98</td>
+                        <td>0.96</td>
+                        <td>0.95</td>
+                        <td>0.93</td>
+                      </tr>
+                      <tr>
+                        <td><b>Dalam Pipa / Conduit (Underground Pipe Duct)</b></td>
+                        <td>1.03</td>
+                        <td>1.01</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.97</td>
+                        <td>0.95</td>
+                        <td>0.93</td>
+                        <td>0.90</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Grouping Factors Kabelindo -->
+            <div class="card">
+              <div class="card-hd"><span class="card-title">3. Faktor Pengelompokan Kabel Sejajar (Kabelindo Group
+                  Rating Factors)</span></div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Formasi &amp; Jarak Antar Kabel (Kabelindo)</th>
+                        <th>1 Kabel</th>
+                        <th>2 Kabel</th>
+                        <th>3 Kabel</th>
+                        <th>4 Kabel</th>
+                        <th>5 Kabel</th>
+                        <th>6 Kabel</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Formasi Menempel (Touching Spacing)</strong></td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.80</td>
+                        <td>0.70</td>
+                        <td>0.65</td>
+                        <td>0.60</td>
+                        <td>0.57</td>
+                      </tr>
+                      <tr>
+                        <td><b>Formasi Berjarak (1x Diameter Clearance)</b></td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.85</td>
+                        <td>0.76</td>
+                        <td>0.72</td>
+                        <td>0.68</td>
+                        <td>0.65</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- JEMBO SECTION -->
+          <div id="section-jembo" class="brand-section">
+            <div
+              style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#0284c7; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; margin-top:8px; font-weight:700;">
+              🔵 PT Jembo Cable Company Tbk — MV Cable Derating Reference Data
+            </div>
+
+            <div class="card">
+              <div class="card-hd"><span class="card-title">1. Koreksi Suhu Tanah Lingkungan (Jembo — Base 20°C)</span>
+              </div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Suhu Tanah (°C)</th>
+                        <th>10°C</th>
+                        <th>15°C</th>
+                        <th>20°C (Base)</th>
+                        <th>25°C</th>
+                        <th>30°C</th>
+                        <th>35°C</th>
+                        <th>40°C</th>
+                        <th>45°C</th>
+                        <th>50°C</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Faktor Koreksi (Kt)</strong></td>
+                        <td>1.07</td>
+                        <td>1.04</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.96</td>
+                        <td>0.93</td>
+                        <td>0.89</td>
+                        <td>0.85</td>
+                        <td>0.80</td>
+                        <td>0.76</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam Galian Direct Buried (Jembo —
+                  Base 0.8m)</span></div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Kedalaman Tanam (m)</th>
+                        <th>0.5 m</th>
+                        <th>0.6 m</th>
+                        <th>0.8 m (Base)</th>
+                        <th>1.0 m</th>
+                        <th>1.25 m</th>
+                        <th>1.5 m</th>
+                        <th>2.0 m</th>
+                        <th>3.0 m</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>3-Core Cable</strong></td>
+                        <td>1.04</td>
+                        <td>1.02</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.98</td>
+                        <td>0.96</td>
+                        <td>0.95</td>
+                        <td>0.93</td>
+                        <td>0.90</td>
+                      </tr>
+                      <tr>
+                        <td><strong>1-Core Cable (&le;185mm²)</strong></td>
+                        <td>1.04</td>
+                        <td>1.02</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.98</td>
+                        <td>0.96</td>
+                        <td>0.95</td>
+                        <td>0.93</td>
+                        <td>0.90</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-hd"><span class="card-title">3. Koreksi Resistivitas Termal Tanah (Jembo — Soil Thermal
+                  Resistivity K·m/W)</span></div>
+              <div class="card-body" style="padding:0">
+                <div class="tbl-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Soil Resistivity (K·m/W)</th>
+                        <th>0.7</th>
+                        <th>0.8</th>
+                        <th>0.9</th>
+                        <th>1.0</th>
+                        <th>1.5 (Base)</th>
+                        <th>2.0</th>
+                        <th>2.5</th>
+                        <th>3.0</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Direct Buried 3-Core</strong></td>
+                        <td>1.23</td>
+                        <td>1.19</td>
+                        <td>1.16</td>
+                        <td>1.13</td>
+                        <td><strong>1.00</strong></td>
+                        <td>0.91</td>
+                        <td>0.84</td>
+                        <td>0.78</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    'use strict';
+
+    const MAT = {
+      cu: { rho: 1.724e-8, alpha: 0.00393, name: 'Tembaga (Cu)' },
+      al: { rho: 2.82e-8, alpha: 0.00403, name: 'Aluminium (Al)' },
+      fe: { rho: 10.0e-8, alpha: 0.00651, name: 'Besi (Fe)' },
+    };
+
+    const IEC_SIZES = [1, 1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630, 800, 1000];
+
+    const AWG_DATA = [
+      { awg: '2000 kcmil', kcmil: 2000, mm2: 1013.4, dia: 41.33 },
+      { awg: '1750 kcmil', kcmil: 1750, mm2: 886.7, dia: 38.66 },
+      { awg: '1500 kcmil', kcmil: 1500, mm2: 760.1, dia: 35.79 },
+      { awg: '1250 kcmil', kcmil: 1250, mm2: 633.4, dia: 32.68 },
+      { awg: '1000 kcmil', kcmil: 1000, mm2: 506.7, dia: 29.23 },
+      { awg: '900 kcmil', kcmil: 900, mm2: 456.0, dia: 27.73 },
+      { awg: '800 kcmil', kcmil: 800, mm2: 405.4, dia: 26.14 },
+      { awg: '750 kcmil', kcmil: 750, mm2: 380.0, dia: 25.31 },
+      { awg: '700 kcmil', kcmil: 700, mm2: 354.7, dia: 24.45 },
+      { awg: '600 kcmil', kcmil: 600, mm2: 304.0, dia: 22.63 },
+      { awg: '500 kcmil', kcmil: 500, mm2: 253.4, dia: 20.65 },
+      { awg: '400 kcmil', kcmil: 400, mm2: 202.7, dia: 18.48 },
+      { awg: '350 kcmil', kcmil: 350, mm2: 177.3, dia: 17.28 },
+      { awg: '300 kcmil', kcmil: 300, mm2: 152.0, dia: 16.00 },
+      { awg: '250 kcmil', kcmil: 250, mm2: 126.7, dia: 14.61 },
+      { awg: '4/0', kcmil: 211.6, mm2: 107.2, dia: 11.68 },
+      { awg: '3/0', kcmil: 167.8, mm2: 85.03, dia: 10.40 },
+      { awg: '2/0', kcmil: 133.1, mm2: 67.43, dia: 9.27 },
+      { awg: '1/0', kcmil: 105.6, mm2: 53.49, dia: 8.25 },
+      { awg: '1', kcmil: 83.69, mm2: 42.41, dia: 7.35 },
+      { awg: '2', kcmil: 66.36, mm2: 33.63, dia: 6.54 },
+      { awg: '3', kcmil: 52.62, mm2: 26.67, dia: 5.83 },
+      { awg: '4', kcmil: 41.74, mm2: 21.15, dia: 5.19 },
+      { awg: '5', kcmil: 33.10, mm2: 16.77, dia: 4.62 },
+      { awg: '6', kcmil: 26.25, mm2: 13.30, dia: 4.11 },
+      { awg: '7', kcmil: 20.82, mm2: 10.55, dia: 3.67 },
+      { awg: '8', kcmil: 16.51, mm2: 8.367, dia: 3.26 },
+      { awg: '9', kcmil: 13.09, mm2: 6.634, dia: 2.91 },
+      { awg: '10', kcmil: 10.38, mm2: 5.261, dia: 2.59 },
+      { awg: '11', kcmil: 8.234, mm2: 4.172, dia: 2.31 },
+      { awg: '12', kcmil: 6.530, mm2: 3.309, dia: 2.05 },
+      { awg: '13', kcmil: 5.178, mm2: 2.624, dia: 1.83 },
+      { awg: '14', kcmil: 4.107, mm2: 2.081, dia: 1.63 },
+      { awg: '15', kcmil: 3.257, mm2: 1.650, dia: 1.45 },
+      { awg: '16', kcmil: 2.583, mm2: 1.309, dia: 1.29 },
+      { awg: '17', kcmil: 2.048, mm2: 1.038, dia: 1.15 },
+      { awg: '18', kcmil: 1.624, mm2: 0.823, dia: 1.02 },
+      { awg: '20', kcmil: 1.022, mm2: 0.518, dia: 0.812 },
+      { awg: '22', kcmil: 0.642, mm2: 0.326, dia: 0.644 },
+      { awg: '24', kcmil: 0.404, mm2: 0.205, dia: 0.511 },
+      { awg: '26', kcmil: 0.254, mm2: 0.129, dia: 0.405 },
+      { awg: '28', kcmil: 0.160, mm2: 0.081, dia: 0.321 },
+      { awg: '30', kcmil: 0.101, mm2: 0.051, dia: 0.255 },
+      { awg: '32', kcmil: 0.079, mm2: 0.040, dia: 0.202 },
+      { awg: '34', kcmil: 0.063, mm2: 0.032, dia: 0.160 },
+      { awg: '36', kcmil: 0.050, mm2: 0.025, dia: 0.127 },
+      { awg: '38', kcmil: 0.039, mm2: 0.020, dia: 0.101 },
+      { awg: '40', kcmil: 0.031, mm2: 0.016, dia: 0.080 },
+    ];
+
+    const AMP = {
+      Cu_PVC_B2: [13, 15, 20, 27, 34, 46, 61, 80, 99, 119, 151, 182, 210, 240, 273, 321, 367, 424, 480, 550],
+      Cu_PVC_C: [15.5, 17.5, 24, 32, 41, 57, 76, 99, 122, 149, 192, 235, 273, 316, 363, 430, 497, 573, 650, 742],
+      Cu_PVC_E: [17, 20, 27, 36, 46, 63, 85, 112, 138, 168, 213, 258, 299, 344, 392, 461, 530, 613, 706, 818],
+      Cu_PVC_D1: [14.5, 18, 24, 30, 38, 50, 64, 82, 98, 116, 143, 169, 192, 217, 243, 280, 316, 356, 400, 456],
+      Cu_PVC_D2: [15.5, 19, 24, 33, 41, 54, 70, 92, 110, 130, 162, 193, 220, 246, 278, 320, 359, 405, 455, 519],
+      Cu_XLPE_B2: [16, 18.5, 25, 34, 43, 60, 79, 101, 125, 151, 192, 232, 269, 309, 353, 415, 477, 542, 615, 700],
+      Cu_XLPE_C: [19, 22, 30, 40, 51, 70, 94, 119, 148, 180, 232, 282, 328, 379, 434, 514, 593, 675, 770, 876],
+      Cu_XLPE_E: [22, 26, 36, 49, 63, 86, 115, 149, 185, 225, 289, 352, 410, 473, 542, 641, 741, 853, 976, 1110],
+      Cu_XLPE_D1: [17, 21, 28, 36, 44, 58, 75, 96, 115, 135, 167, 197, 223, 251, 281, 324, 365, 413, 464, 530],
+      Cu_XLPE_D2: [18.5, 23, 30, 39, 49, 65, 84, 107, 129, 153, 188, 226, 257, 287, 324, 375, 419, 475, 535, 610],
+      Al_PVC_B2: [null, null, null, null, null, null, 47, 61, 76, 90, 116, 140, 162, 185, 210, 247, 283, 328, 374, 428],
+      Al_PVC_C: [null, null, null, null, null, null, 59, 77, 96, 116, 149, 183, 212, 245, 280, 330, 381, 440, 501, 572],
+      Al_PVC_E: [null, null, null, null, null, null, 66, 87, 107, 130, 166, 202, 234, 269, 306, 361, 415, 480, 552, 640],
+      Al_PVC_D1: [null, null, null, null, null, null, 50, 64, 76, 90, 111, 131, 149, 169, 189, 218, 246, 277, 312, 355],
+      Al_PVC_D2: [null, null, null, null, null, null, 54, 71, 85, 101, 126, 150, 171, 191, 216, 249, 279, 315, 354, 404],
+      Al_XLPE_B2: [null, null, null, null, null, null, 60, 78, 96, 116, 148, 179, 208, 239, 274, 322, 371, 424, 482, 549],
+      Al_XLPE_C: [null, null, null, null, null, null, 73, 94, 115, 141, 182, 221, 258, 298, 342, 405, 468, 536, 614, 700],
+      Al_XLPE_E: [null, null, null, null, null, null, 90, 116, 144, 175, 225, 275, 321, 370, 424, 500, 578, 666, 762, 869],
+      Al_XLPE_D1: [null, null, null, null, null, null, 58, 75, 89, 105, 130, 154, 174, 196, 219, 253, 285, 322, 362, 413],
+      Al_XLPE_D2: [null, null, null, null, null, null, 65, 83, 100, 119, 146, 176, 200, 224, 253, 293, 327, 371, 417, 476],
+    };
+
+    const TC_PVC = [[10, 1.22], [15, 1.17], [20, 1.12], [25, 1.06], [30, 1.00], [35, 0.94], [40, 0.87], [45, 0.79], [50, 0.71], [55, 0.61], [60, 0.50]];
+    const TC_XLPE = [[10, 1.15], [15, 1.12], [20, 1.08], [25, 1.04], [30, 1.00], [35, 0.96], [40, 0.91], [45, 0.87], [50, 0.82], [55, 0.76], [60, 0.71], [65, 0.65], [70, 0.58], [75, 0.50]];
+    const GF = [[1, 1.00], [2, 0.80], [3, 0.70], [4, 0.65], [5, 0.60], [6, 0.57], [7, 0.54], [9, 0.50], [12, 0.45]];
+
+    function fmt(v, d = 2) { if (v === null || isNaN(v)) return '—'; return v.toFixed(d); }
+
+    function interp(tbl, x) {
+      if (x <= tbl[0][0]) return tbl[0][1];
+      if (x >= tbl[tbl.length - 1][0]) return tbl[tbl.length - 1][1];
+      for (let i = 0; i < tbl.length - 1; i++) {
+        const [x0, y0] = tbl[i], [x1, y1] = tbl[i + 1];
+        if (x >= x0 && x <= x1) return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+      }
+      return 1;
+    }
+
+    function getGF(n) {
+      n = parseInt(n);
+      for (let i = GF.length - 1; i >= 0; i--) if (n >= GF[i][0]) return GF[i][1];
+      return 1;
+    }
+
+    function getAmp(mat, ins, method, idx) {
+      const k = `${mat}_${ins}_${method}`;
+      return AMP[k] ? (AMP[k][idx] ?? null) : null;
+    }
+
+    function nearIEC(mm2) { return IEC_SIZES.reduce((a, b) => Math.abs(mm2 - b) < Math.abs(mm2 - a) ? b : a); }
+    function nearAWG(mm2) { return AWG_DATA.reduce((a, b) => Math.abs(mm2 - b.mm2) < Math.abs(mm2 - a.mm2) ? b : a); }
+
+    function skinEff(rho, Amm2, freq) {
+      if (!freq) return 0;
+      const Rdc = rho / (Amm2 * 1e-6);
+      const xs2 = (8 * Math.PI * freq * 1e-7) / Rdc;
+      const xs4 = xs2 * xs2;
+      return xs4 / (192 + 0.8 * xs4);
+    }
+
+    function ri(lbl, val, unit, cls = '', note = '') {
+      return `<div class="ritem ${cls}"><div class="rlabel">${lbl}</div><div class="rval">${val}<span class="runit">${unit}</span></div>${note ? `<div class="rnote">${note}</div>` : ''}</div>`;
+    }
+
+    function pbar(lbl, pct) {
+      const cls = pct < 60 ? 'ok' : pct < 80 ? 'mid' : pct < 95 ? 'warn' : 'err';
+      const w = Math.min(Math.max(pct, 0), 100);
+      return `<div class="prog-wrap"><div class="prog-head"><span>${lbl}</span><span>${fmt(pct, 1)}%</span></div><div class="prog-bg"><div class="prog-fill ${cls}" style="width:${w}%"></div></div></div>`;
+    }
+
+    function abox(type, msg) { return `<div class="alert ${type}">${msg}</div>`; }
+
+    function showPanel(name, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + name).classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+
+    function initGeomDrop() {
+      const sel = document.getElementById('g-std');
+      sel.innerHTML = '<option value="">— Pilih ukuran standar IEC —</option>';
+      IEC_SIZES.forEach(s => {
+        const d = (2 * Math.sqrt(s / Math.PI)).toFixed(2);
+        const o = document.createElement('option');
+        o.value = s; o.text = `${s} mm²  (⌀ ≈ ${d} mm)`;
+        sel.appendChild(o);
+      });
+    }
+
+    function pickStdSize() {
+      const s = parseFloat(document.getElementById('g-std').value);
+      if (isNaN(s)) return;
+      const mode = document.getElementById('g-mode').value;
+      if (mode === 'dia') document.getElementById('g-dia').value = (2 * Math.sqrt(s / Math.PI)).toFixed(3);
+      else document.getElementById('g-area-in').value = s;
+      calcGeom();
+    }
+
+    function calcGeom() {
+      const mode = document.getElementById('g-mode').value;
+      document.getElementById('g-dia-grp').style.display = mode === 'dia' ? '' : 'none';
+      document.getElementById('g-area-grp').style.display = mode === 'area' ? '' : 'none';
+      let dia, area;
+      if (mode === 'dia') { dia = parseFloat(document.getElementById('g-dia').value) || 0; area = Math.PI / 4 * dia * dia; }
+      else { area = parseFloat(document.getElementById('g-area-in').value) || 0; dia = 2 * Math.sqrt(area / Math.PI); }
+      const r = dia / 2, circ = Math.PI * dia, iec = nearIEC(area), awg = nearAWG(area);
+      const c1 = mode === 'area' ? 'accent' : '', c2 = mode === 'dia' ? 'accent' : '';
+      document.getElementById('geom-res').innerHTML =
+        ri('Diameter', fmt(dia, 3), 'mm', c1) + ri('Radius', fmt(r, 3), 'mm') +
+        ri('Luas Penampang', fmt(area, 4), 'mm²', c2) + ri('Keliling', fmt(circ, 3), 'mm') +
+        ri('IEC Terdekat', iec, 'mm²', 'success', `Selisih: ${fmt(Math.abs(area - iec), 3)} mm²`) +
+        ri('AWG Terdekat', `AWG ${awg.awg}`, '', '', `${awg.mm2} mm² — ${awg.kcmil} kcmil`);
+      document.getElementById('geom-fml').textContent = mode === 'dia'
+        ? `A = (π/4) × d² = (π/4) × ${fmt(dia, 3)}² = ${fmt(area, 4)} mm²`
+        : `d = 2 × √(A/π) = 2 × √(${fmt(area, 4)}/π) = ${fmt(dia, 3)} mm`;
+      document.getElementById('g-awg').innerHTML =
+        `<strong>AWG ${awg.awg}</strong> &nbsp;|&nbsp; ${awg.mm2} mm² &nbsp;|&nbsp; ⌀ ${awg.dia} mm &nbsp;|&nbsp; ${awg.kcmil} kcmil<br>` +
+        `<small style="color:var(--text-3)">Selisih: ${fmt(Math.abs(area - awg.mm2), 4)} mm² (${fmt(Math.abs(area - awg.mm2) / Math.max(area, 0.001) * 100, 2)}%)</small>`;
+      drawCanvas(dia, area);
+    }
+
+    function drawCanvas(dia, area) {
+      const cv = document.getElementById('geom-cv');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      const W = cv.width, H = cv.height;
+
+      ctx.clearRect(0, 0, W, H);
+
+      const cType = document.getElementById('g-type') ? document.getElementById('g-type').value : 'stranded';
+      const cMat = document.getElementById('g-mat') ? document.getElementById('g-mat').value : 'cu_pvc';
+
+      const hasJacket = !cMat.includes('bare');
+      const isAl = cMat.includes('al');
+
+      const cx = W / 2;
+      const cy = 112;
+
+      const maxR = Math.min(W, H) * 0.23;
+      const scale = maxR / Math.max(dia / 2, 0.5);
+      const condR = Math.min(maxR, Math.max(16, (dia / 2) * scale));
+      const jacketThick = hasJacket ? Math.max(8, condR * 0.20) : 0;
+      const outerR = condR + jacketThick;
+
+      // Outer Sheath
+      if (hasJacket) {
+        ctx.shadowColor = 'rgba(0,0,0,0.12)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetY = 3;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+        const jGrad = ctx.createRadialGradient(cx - outerR * 0.3, cy - outerR * 0.3, outerR * 0.1, cx, cy, outerR);
+        jGrad.addColorStop(0, '#3A424D');
+        jGrad.addColorStop(0.7, '#1E232A');
+        jGrad.addColorStop(1, '#121519');
+        ctx.fillStyle = jGrad;
+        ctx.fill();
+
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, condR + 0.8, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(0,0,0,0.35)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      // Conductor Colors
+      const colors = isAl ? {
+        light: '#F4F7FA', mid: '#B4C4D4', dark: '#687888', border: '#485868'
+      } : {
+        light: '#FFE2B8', mid: '#E67E22', dark: '#9C3E00', border: '#702400'
+      };
+
+      if (cType === 'solid') {
+        ctx.beginPath();
+        ctx.arc(cx, cy, condR, 0, Math.PI * 2);
+        const cGrad = ctx.createRadialGradient(cx - condR * 0.35, cy - condR * 0.35, condR * 0.05, cx, cy, condR);
+        cGrad.addColorStop(0, colors.light);
+        cGrad.addColorStop(0.5, colors.mid);
+        cGrad.addColorStop(1, colors.dark);
+        ctx.fillStyle = cGrad;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, condR, 0, Math.PI * 2);
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      } else {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, condR, 0, Math.PI * 2);
+        ctx.fillStyle = colors.dark;
+        ctx.fill();
+
+        const strandCount = area > 50 ? 19 : 7;
+        const strandR = condR / (strandCount === 19 ? 5 : 3);
+
+        const drawStrand = (sx, sy, sr) => {
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr - 0.3, 0, Math.PI * 2);
+          const sGrad = ctx.createRadialGradient(sx - sr * 0.3, sy - sr * 0.3, sr * 0.1, sx, sy, sr);
+          sGrad.addColorStop(0, colors.light);
+          sGrad.addColorStop(0.6, colors.mid);
+          sGrad.addColorStop(1, colors.dark);
+          ctx.fillStyle = sGrad;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(sx, sy, sr - 0.3, 0, Math.PI * 2);
+          ctx.strokeStyle = colors.border;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        };
+
+        drawStrand(cx, cy, strandR);
+
+        const dist1 = strandR * 2 - 0.4;
+        for (let i = 0; i < 6; i++) {
+          const ang = (i * Math.PI) / 3;
+          drawStrand(cx + Math.cos(ang) * dist1, cy + Math.sin(ang) * dist1, strandR);
+        }
+
+        if (strandCount === 19) {
+          const dist2 = strandR * 4 - 0.8;
+          for (let i = 0; i < 12; i++) {
+            const ang = (i * Math.PI) / 6;
+            drawStrand(cx + Math.cos(ang) * dist2, cy + Math.sin(ang) * dist2, strandR);
+          }
+        }
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, condR, 0, Math.PI * 2);
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      }
+
+      // Area Badge Pill (Center of conductor)
+      const areaStr = `${area.toFixed(2)} mm²`;
+      ctx.font = 'bold 12px "Segoe UI Variable", system-ui, sans-serif';
+      const atw = ctx.measureText(areaStr).width;
+
+      const apy = cy - 10;
+      const apx = cx - atw / 2 - 8, apw = atw + 16, aph = 20;
+
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(apx, apy, apw, aph, 10); else ctx.rect(apx, apy, apw, aph);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.94)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)'; ctx.lineWidth = 1; ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#1A1A1A';
+      ctx.fillText(areaStr, cx, apy + aph / 2);
+
+      // Dimension Arrow
+      const dimY = cy + (hasJacket ? outerR : condR) + 16;
+
+      ctx.beginPath();
+      ctx.moveTo(cx - condR, dimY); ctx.lineTo(cx + condR, dimY);
+      ctx.strokeStyle = '#0067C0'; ctx.lineWidth = 1.5; ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(cx - condR, dimY - 4); ctx.lineTo(cx - condR, dimY + 4);
+      ctx.moveTo(cx + condR, dimY - 4); ctx.lineTo(cx + condR, dimY + 4);
+      ctx.strokeStyle = '#0067C0'; ctx.lineWidth = 1.5; ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(cx - condR, cy + condR + 2); ctx.lineTo(cx - condR, dimY - 2);
+      ctx.moveTo(cx + condR, cy + condR + 2); ctx.lineTo(cx + condR, dimY - 2);
+      ctx.setLineDash([2, 3]);
+      ctx.strokeStyle = 'rgba(0,103,192,0.3)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.setLineDash([]);
+
+      const asz = 4;
+      [[cx - condR, dimY, 1], [cx + condR, dimY, -1]].forEach(([x, y, dir]) => {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + dir * asz * 1.8, y - 3);
+        ctx.lineTo(x + dir * asz * 1.8, y + 3);
+        ctx.closePath();
+        ctx.fillStyle = '#0067C0'; ctx.fill();
+      });
+
+      // Dimension Text Pill Badge
+      const textStr = `⌀ ${dia.toFixed(2)} mm`;
+      ctx.font = 'bold 11.5px "Segoe UI Variable", system-ui, sans-serif';
+      const tw = ctx.measureText(textStr).width;
+
+      const px = cx - tw / 2 - 7, py = dimY + 4, pw = tw + 14, ph = 18;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(px, py, pw, ph, 9); else ctx.rect(px, py, pw, ph);
+      ctx.fillStyle = '#EBF4FF'; ctx.fill();
+      ctx.strokeStyle = '#B3D4F7'; ctx.lineWidth = 1; ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#005A9E';
+      ctx.fillText(textStr, cx, py + ph / 2);
+
+      // Bottom Legend Box
+      const legY = H - 15;
+      ctx.font = '500 11px "Segoe UI Variable", system-ui, sans-serif';
+      ctx.textBaseline = 'middle';
+
+      const legOffset = hasJacket ? 65 : 45;
+
+      ctx.beginPath();
+      ctx.arc(cx - legOffset, legY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = isAl ? '#B4C4D4' : '#E67E22'; ctx.fill();
+      ctx.textAlign = 'left';
+      ctx.fillStyle = '#5C5C5C';
+      ctx.fillText(isAl ? 'Konduktor Al' : 'Konduktor Cu', cx - legOffset + 8, legY);
+
+      if (hasJacket) {
+        ctx.beginPath();
+        ctx.arc(cx + 20, legY, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#2A3038'; ctx.fill();
+        ctx.fillText('Isolasi Sheath', cx + 28, legY);
+      }
+    }
 
 
-function calcResist(){
-  const A=parseFloat(document.getElementById('r-area').value)||1;
-  const L=parseFloat(document.getElementById('r-len').value)||0;
-  const mk=document.getElementById('r-mat').value;
-  const T=parseFloat(document.getElementById('r-temp').value)||20;
-  const f=parseFloat(document.getElementById('r-freq').value);
-  const {rho,alpha}=MAT[mk];
-  const R20=rho/(A*1e-6);
-  const RT=R20*(1+alpha*(T-20));
-  const Rtot=RT*L;
-  const Rkm=RT*1000;
-  const ys=skinEff(rho*(1+alpha*(T-20)),A,f);
-  const RacT=RT*(1+ys);
-  const Ract=RacT*L;
-  const G=Rtot>0?1/Rtot:0;
-  const sc=ys>0.02?'warning':'';
-  document.getElementById('resist-res').innerHTML=
-    ri('ρ Material',fmt(rho*1e8,3),'×10⁻⁸ Ω·m','',MAT[mk].name)+
-    ri('R_DC @ 20°C',fmt(R20*1000,4),'mΩ/m','','Suhu referensi')+
-    ri(`R_DC @ ${T}°C`,fmt(RT*1000,4),'mΩ/m')+
-    ri('R_DC per km',fmt(Rkm*1000,3),'mΩ/km')+
-    ri('R_DC Total',fmt(Rtot*1000,4),'mΩ','accent',`untuk ${L} m`)+
-    ri('Faktor Kulit y_s',fmt(ys,6),'',sc,f?`pada ${f} Hz`:'DC mode')+
-    ri('R_AC Total',fmt(Ract*1000,4),'mΩ',sc)+
-    ri('Konduktansi G',fmt(G,5),'S');
-  document.getElementById('resist-fml').textContent=
-    `R_DC = ρ × L / A × [1 + α(T−20)]
-     = ${fmt(rho*1e8,3)}×10⁻⁸ × ${L} / (${A}×10⁻⁶) × [1 + ${alpha} × (${T}−20)]
-     = ${fmt(Rtot*1000,4)} mΩ`+
-    (f?`
+    function calcResist() {
+      const A = parseFloat(document.getElementById('r-area').value) || 1;
+      const L = parseFloat(document.getElementById('r-len').value) || 0;
+      const mk = document.getElementById('r-mat').value;
+      const T = parseFloat(document.getElementById('r-temp').value) || 20;
+      const f = parseFloat(document.getElementById('r-freq').value);
+      const { rho, alpha } = MAT[mk];
+      const R20 = rho / (A * 1e-6);
+      const RT = R20 * (1 + alpha * (T - 20));
+      const Rtot = RT * L;
+      const Rkm = RT * 1000;
+      const ys = skinEff(rho * (1 + alpha * (T - 20)), A, f);
+      const RacT = RT * (1 + ys);
+      const Ract = RacT * L;
+      const G = Rtot > 0 ? 1 / Rtot : 0;
+      const sc = ys > 0.02 ? 'warning' : '';
+      document.getElementById('resist-res').innerHTML =
+        ri('ρ Material', fmt(rho * 1e8, 3), '×10⁻⁸ Ω·m', '', MAT[mk].name) +
+        ri('R_DC @ 20°C', fmt(R20 * 1000, 4), 'mΩ/m', '', 'Suhu referensi') +
+        ri(`R_DC @ ${T}°C`, fmt(RT * 1000, 4), 'mΩ/m') +
+        ri('R_DC per km', fmt(Rkm * 1000, 3), 'mΩ/km') +
+        ri('R_DC Total', fmt(Rtot * 1000, 4), 'mΩ', 'accent', `untuk ${L} m`) +
+        ri('Faktor Kulit y_s', fmt(ys, 6), '', sc, f ? `pada ${f} Hz` : 'DC mode') +
+        ri('R_AC Total', fmt(Ract * 1000, 4), 'mΩ', sc) +
+        ri('Konduktansi G', fmt(G, 5), 'S');
+      document.getElementById('resist-fml').textContent =
+        `R_DC = ρ × L / A × [1 + α(T−20)]
+     = ${fmt(rho * 1e8, 3)}×10⁻⁸ × ${L} / (${A}×10⁻⁶) × [1 + ${alpha} × (${T}−20)]
+     = ${fmt(Rtot * 1000, 4)} mΩ` +
+        (f ? `
 
-R_AC = R_DC × (1 + y_s) = ${fmt(Rtot*1000,4)} × (1 + ${fmt(ys,6)}) = ${fmt(Ract*1000,4)} mΩ`:'');
-}
+R_AC = R_DC × (1 + y_s) = ${fmt(Rtot * 1000, 4)} × (1 + ${fmt(ys, 6)}) = ${fmt(Ract * 1000, 4)} mΩ` : '');
+    }
 
-function calcVdrop(){
-  const A=parseFloat(document.getElementById('vd-area').value)||1;
-  const L=parseFloat(document.getElementById('vd-len').value)||0;
-  const I=parseFloat(document.getElementById('vd-curr').value)||0;
-  const Vn=parseFloat(document.getElementById('vd-vnom').value)||1;
-  const sys=document.getElementById('vd-sys').value;
-  const mk=document.getElementById('vd-mat').value;
-  const pf=parseFloat(document.getElementById('vd-pf').value)||1;
-  const T=parseFloat(document.getElementById('vd-temp').value)||20;
-  const {rho,alpha}=MAT[mk];
-  const R=rho*(1+alpha*(T-20))/(A*1e-6)*L;
-  const k=sys==='1p'?2:Math.sqrt(3);
-  const dV=k*I*R*pf;
-  const pct=(dV/Vn)*100;
-  const Vo=Vn-dV;
-  const nc=sys==='1p'?2:3;
-  const Pl=I*I*R*nc;
-  const vc=pct<3?'success':pct<5?'warning':'danger';
-  document.getElementById('vdrop-res').innerHTML=
-    ri('R per Konduktor',fmt(R*1000,3),'mΩ','',`${A}mm², ${L}m, ${T}°C`)+
-    ri('Voltage Drop ΔV',fmt(dV,3),'V',vc)+
-    ri('% Voltage Drop',fmt(pct,2),'%',vc)+
-    ri('Tegangan Terima',fmt(Vo,2),'V')+
-    ri('Rugi Daya',fmt(Pl,2),'W','',`${nc} konduktor`)+
-    ri('Efisiensi',fmt((Vo/Vn)*100,2),'%');
-  const bc=pct<3?'ok':pct<5?'mid':'err';
-  document.getElementById('vdrop-bar').innerHTML=
-    `<div class="prog-wrap">
-      <div class="prog-head"><span>Persentase Voltage Drop</span><span>${fmt(pct,2)}%</span></div>
-      <div class="prog-bg"><div class="prog-fill ${bc}" style="width:${Math.min(pct,100)}%"></div></div>
+    function calcVdrop() {
+      const A = parseFloat(document.getElementById('vd-area').value) || 1;
+      const L = parseFloat(document.getElementById('vd-len').value) || 0;
+      const I = parseFloat(document.getElementById('vd-curr').value) || 0;
+      const Vn = parseFloat(document.getElementById('vd-vnom').value) || 1;
+      const sys = document.getElementById('vd-sys').value;
+      const mk = document.getElementById('vd-mat').value;
+      const pf = parseFloat(document.getElementById('vd-pf').value) || 1;
+      const T = parseFloat(document.getElementById('vd-temp').value) || 20;
+      const { rho, alpha } = MAT[mk];
+      const R = rho * (1 + alpha * (T - 20)) / (A * 1e-6) * L;
+      const k = sys === '1p' ? 2 : Math.sqrt(3);
+      const dV = k * I * R * pf;
+      const pct = (dV / Vn) * 100;
+      const Vo = Vn - dV;
+      const nc = sys === '1p' ? 2 : 3;
+      const Pl = I * I * R * nc;
+      const vc = pct < 3 ? 'success' : pct < 5 ? 'warning' : 'danger';
+      document.getElementById('vdrop-res').innerHTML =
+        ri('R per Konduktor', fmt(R * 1000, 3), 'mΩ', '', `${A}mm², ${L}m, ${T}°C`) +
+        ri('Voltage Drop ΔV', fmt(dV, 3), 'V', vc) +
+        ri('% Voltage Drop', fmt(pct, 2), '%', vc) +
+        ri('Tegangan Terima', fmt(Vo, 2), 'V') +
+        ri('Rugi Daya', fmt(Pl, 2), 'W', '', `${nc} konduktor`) +
+        ri('Efisiensi', fmt((Vo / Vn) * 100, 2), '%');
+      const bc = pct < 3 ? 'ok' : pct < 5 ? 'mid' : 'err';
+      document.getElementById('vdrop-bar').innerHTML =
+        `<div class="prog-wrap">
+      <div class="prog-head"><span>Persentase Voltage Drop</span><span>${fmt(pct, 2)}%</span></div>
+      <div class="prog-bg"><div class="prog-fill ${bc}" style="width:${Math.min(pct, 100)}%"></div></div>
       <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-3);margin-top:4px">
         <span>0%</span><span style="color:var(--success)">3% IEC</span><span style="color:#CA5010">5% NEC</span><span>10%</span>
       </div>
     </div>`;
-  document.getElementById('vdrop-fml').textContent=
-    `ΔV = ${sys==='1p'?'2':'√3'} × I × R × cosφ
-     = ${fmt(k,4)} × ${I} A × ${fmt(R*1000,4)}×10⁻³ Ω × ${pf}
-     = ${fmt(dV,3)} V`;
-  const ae=document.getElementById('vdrop-alert');
-  if(pct>5) ae.innerHTML=abox('danger',`✗ Voltage drop <strong>${fmt(pct,2)}%</strong> melebihi batas NEC (5%) dan IEC (3%). Perbesar penampang atau kurangi panjang kabel.`);
-  else if(pct>3) ae.innerHTML=abox('warning',`⚠ Voltage drop <strong>${fmt(pct,2)}%</strong> melebihi batas IEC (3%) namun masih dalam batas NEC (5%).`);
-  else ae.innerHTML=abox('success',`✓ Voltage drop <strong>${fmt(pct,2)}%</strong> memenuhi persyaratan IEC (&lt;3%) dan NEC (&lt;5%).`);
-}
-
-function initAmpDrop(){
-  const sel=document.getElementById('amp-size');
-  IEC_SIZES.forEach((s,i)=>{
-    const o=document.createElement('option');
-    o.value=i;o.text=`${s} mm²`;
-    if(s===50)o.selected=true;
-    sel.appendChild(o);
-  });
-}
-
-function calcAmp(){
-  const idx=parseInt(document.getElementById('amp-size').value);
-  const mat=document.getElementById('amp-mat').value;
-  const ins=document.getElementById('amp-ins').value;
-  const meth=document.getElementById('amp-method').value;
-  const amb=parseFloat(document.getElementById('amp-temp').value)||30;
-  const gn=document.getElementById('amp-group').value;
-  const Il=parseFloat(document.getElementById('amp-load').value)||0;
-  const base=getAmp(mat,ins,meth,idx);
-  if(base===null){
-    document.getElementById('amp-res').innerHTML=abox('warning','⚠ Data tidak tersedia untuk '+mat+' '+ins+' pada ukuran ini. Minimum ukuran Al adalah 16 mm².');
-    document.getElementById('amp-bar').innerHTML='';
-    document.getElementById('amp-alert').innerHTML='';
-    return;
-  }
-  const Kt=interp(ins==='PVC'?TC_PVC:TC_XLPE,amb);
-  const Kg=getGF(gn);
-  const Im=base*Kt*Kg;
-  const pct=Il>0?(Il/Im)*100:0;
-  const uc=pct<60?'success':pct<85?'':pct<100?'warning':'danger';
-  document.getElementById('amp-res').innerHTML=
-    ri('KHA Dasar (I_b)',fmt(base,1),'A','',`${mat} ${ins} Metode ${meth}, Ref 30°C`)+
-    ri('Faktor Suhu Kt',fmt(Kt,3),'','',`Ambient ${amb}°C`)+
-    ri('Faktor Grouping Kg',fmt(Kg,2),'','',`${gn} kabel`)+
-    ri('KHA Terkoreksi I_max',fmt(Im,1),'A','accent',`${fmt(base,1)} × ${fmt(Kt,3)} × ${fmt(Kg,2)}`)+
-    ri('Arus Operasi',fmt(Il,1),'A',uc)+
-    ri('Utilisasi',fmt(pct,1),'%',uc);
-  document.getElementById('amp-bar').innerHTML=pbar(`Utilisasi KHA — ${fmt(Il,1)}A / ${fmt(Im,1)}A`,pct);
-  const ae=document.getElementById('amp-alert');
-  if(Il>Im) ae.innerHTML=abox('danger',`✗ Arus operasi <strong>${fmt(Il,1)} A</strong> melebihi KHA terkoreksi <strong>${fmt(Im,1)} A</strong>. Pilih penampang lebih besar.`);
-  else if(pct>85) ae.innerHTML=abox('warning',`⚠ Utilisasi tinggi (${fmt(pct,1)}%). Pertimbangkan satu tingkat lebih besar untuk safety margin.`);
-  else if(Il>0) ae.innerHTML=abox('success',`✓ Arus operasi aman. Utilisasi: ${fmt(pct,1)}%`);
-  else ae.innerHTML='';
-}
-
-function calcAdvisor(){
-  const P=(parseFloat(document.getElementById('sa-power').value)||0)*1000;
-  const pf=parseFloat(document.getElementById('sa-pf').value)||1;
-  const V=parseFloat(document.getElementById('sa-volt').value)||1;
-  const sys=document.getElementById('sa-sys').value;
-  const L=parseFloat(document.getElementById('sa-len').value)||0;
-  const mvd=parseFloat(document.getElementById('sa-maxvd').value)||3;
-  const mat=document.getElementById('sa-mat').value;
-  const ins=document.getElementById('sa-ins').value;
-  const meth=document.getElementById('sa-method').value;
-  const amb=parseFloat(document.getElementById('sa-temp').value)||30;
-  const gn=document.getElementById('sa-group').value;
-  const mk=mat.toLowerCase();
-  const {rho,alpha}=MAT[mk];
-  const kI=sys==='1p'?1:Math.sqrt(3);
-  const Ir=P/(kI*V*pf);
-  const kVD=sys==='1p'?2:Math.sqrt(3);
-  const Kt=interp(ins==='PVC'?TC_PVC:TC_XLPE,amb);
-  const Kg=getGF(gn);
-  const Tmax=ins==='PVC'?70:90;
-  const Rf=1+alpha*(Tmax-20);
-  let rs=null,ri2=null,rIm=null,rVD=null;
-  const tb=document.getElementById('sa-tbody');
-  tb.innerHTML='';
-  IEC_SIZES.forEach((size,idx)=>{
-    const base=getAmp(mat,ins,meth,idx);
-    if(base===null)return;
-    const Im=base*Kt*Kg;
-    const aOK=Im>=Ir;
-    const Rpm=rho*Rf/(size*1e-6);
-    const R=Rpm*L;
-    const dV=kVD*Ir*R*pf;
-    const pvd=(dV/V)*100;
-    const vOK=pvd<=mvd;
-    const ok=aOK&&vOK;
-    if(ok&&rs===null){rs=size;ri2=idx;rIm=Im;rVD=pvd;}
-    const isR=idx===ri2;
-    const tr=document.createElement('tr');
-    if(isR)tr.className='rec-row';
-    tr.innerHTML=`<td><strong>${size} mm²</strong>${isR?' ⭐':''}</td>`+
-      `<td>${fmt(Im,1)} A</td><td>${fmt(dV,2)} V</td>`+
-      `<td style="color:${vOK?'var(--success)':'var(--danger)'};font-weight:600">${fmt(pvd,2)}%</td>`+
-      `<td><span class="sbadge ${aOK?'ok':'err'}">${aOK?'✓ Ya':'✗ Tidak'}</span></td>`+
-      `<td><span class="sbadge ${vOK?'ok':'err'}">${vOK?'✓ Ya':'✗ Tidak'}</span></td>`+
-      `<td><span class="sbadge ${ok?'ok':'err'}">${ok?'✓ Lolos':'✗ Gagal'}</span></td>`;
-    tb.appendChild(tr);
-  });
-  const rd=document.getElementById('advisor-rec');
-  rd.style.display='';
-  if(rs!==null){
-    document.getElementById('sa-val').textContent=rs;
-    document.getElementById('sa-unit').textContent='mm²';
-    document.getElementById('sa-note').innerHTML=
-      `I req: <strong>${fmt(Ir,1)} A</strong> &nbsp;|&nbsp; KHA: <strong>${fmt(rIm,1)} A</strong> &nbsp;|&nbsp; VD: <strong>${fmt(rVD,2)}%</strong>`+
-      `<br>${mat} ${ins}, Metode ${meth}, Ambient ${amb}°C, Kt=${fmt(Kt,3)}, Kg=${fmt(Kg,2)}`;
-    document.getElementById('sa-res').innerHTML=
-      ri('Arus Dibutuhkan',fmt(Ir,1),'A','accent')+
-      ri('KHA Terkoreksi',fmt(rIm,1),'A','success',`Kt=${fmt(Kt,3)} Kg=${fmt(Kg,2)}`)+
-      ri('Voltage Drop',fmt(rVD,2),'%',rVD<3?'success':'warning')+
-      ri('Hasil Sizing',`${rs}`,'mm²','accent');
-  } else {
-    document.getElementById('sa-val').textContent='> 630';
-    document.getElementById('sa-unit').textContent='';
-    document.getElementById('sa-note').textContent='Tidak ada ukuran tunggal yang memenuhi — pertimbangkan kabel paralel.';
-    document.getElementById('sa-res').innerHTML=ri('Arus Dibutuhkan',fmt(Ir,1),'A','accent');
-  }
-}
-
-function buildAWG(){
-  const tb=document.getElementById('awg-body');
-  AWG_DATA.forEach(a=>{
-    const rCu=(MAT.cu.rho/(a.mm2*1e-6))*1000;
-    const rAl=(MAT.al.rho/(a.mm2*1e-6))*1000;
-    const iec=nearIEC(a.mm2);
-    const tr=document.createElement('tr');
-    const labelStr = a.awg.includes('kcmil') ? a.awg : 'AWG ' + a.awg;
-    tr.innerHTML=`<td><strong>${labelStr}</strong></td><td>${a.kcmil}</td><td>${a.dia} mm</td><td>${a.mm2} mm²</td><td>${iec} mm²</td><td>${fmt(rCu,3)}</td><td>${fmt(rAl,3)}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
-function switchDeratingBrand(brand){
-  const secKabelindo = document.getElementById('section-kabelindo');
-  const secJembo = document.getElementById('section-jembo');
-  const btnAll = document.getElementById('btn-brand-all');
-  const btnKabelindo = document.getElementById('btn-brand-kabelindo');
-  const btnJembo = document.getElementById('btn-brand-jembo');
-
-  [btnAll, btnKabelindo, btnJembo].forEach(btn => {
-    if (btn) {
-      btn.style.borderColor = 'var(--line-bright)';
-      btn.style.background = 'var(--panel2)';
-      btn.style.color = 'var(--text)';
+      document.getElementById('vdrop-fml').textContent =
+        `ΔV = ${sys === '1p' ? '2' : '√3'} × I × R × cosφ
+     = ${fmt(k, 4)} × ${I} A × ${fmt(R * 1000, 4)}×10⁻³ Ω × ${pf}
+     = ${fmt(dV, 3)} V`;
+      const ae = document.getElementById('vdrop-alert');
+      if (pct > 5) ae.innerHTML = abox('danger', `✗ Voltage drop <strong>${fmt(pct, 2)}%</strong> melebihi batas NEC (5%) dan IEC (3%). Perbesar penampang atau kurangi panjang kabel.`);
+      else if (pct > 3) ae.innerHTML = abox('warning', `⚠ Voltage drop <strong>${fmt(pct, 2)}%</strong> melebihi batas IEC (3%) namun masih dalam batas NEC (5%).`);
+      else ae.innerHTML = abox('success', `✓ Voltage drop <strong>${fmt(pct, 2)}%</strong> memenuhi persyaratan IEC (&lt;3%) dan NEC (&lt;5%).`);
     }
-  });
 
-  if(brand === 'kabelindo'){
-    secKabelindo.style.display = 'block';
-    secJembo.style.display = 'none';
-    btnKabelindo.style.borderColor = '#e11d48';
-    btnKabelindo.style.background = 'rgba(225,29,72,0.12)';
-    btnKabelindo.style.color = '#e11d48';
-  } else if(brand === 'jembo'){
-    secKabelindo.style.display = 'none';
-    secJembo.style.display = 'block';
-    btnJembo.style.borderColor = '#0284c7';
-    btnJembo.style.background = 'rgba(2,132,199,0.12)';
-    btnJembo.style.color = '#0284c7';
-  } else {
-    secKabelindo.style.display = 'block';
-    secJembo.style.display = 'block';
-    btnAll.style.borderColor = 'var(--accent)';
-    btnAll.style.background = 'var(--accent-glow)';
-    btnAll.style.color = 'var(--accent)';
-  }
-}
+    function initAmpDrop() {
+      const sel = document.getElementById('amp-size');
+      IEC_SIZES.forEach((s, i) => {
+        const o = document.createElement('option');
+        o.value = i; o.text = `${s} mm²`;
+        if (s === 50) o.selected = true;
+        sel.appendChild(o);
+      });
+    }
 
-(function(){
-  initGeomDrop();
-  initAmpDrop();
-  buildAWG();
-  calcGeom();
-  calcResist();
-  calcVdrop();
-  calcAmp();
-  calcAdvisor();
-})();
-</script>
+    function calcAmp() {
+      const idx = parseInt(document.getElementById('amp-size').value);
+      const mat = document.getElementById('amp-mat').value;
+      const ins = document.getElementById('amp-ins').value;
+      const meth = document.getElementById('amp-method').value;
+      const amb = parseFloat(document.getElementById('amp-temp').value) || 30;
+      const gn = document.getElementById('amp-group').value;
+      const Il = parseFloat(document.getElementById('amp-load').value) || 0;
+      const base = getAmp(mat, ins, meth, idx);
+      if (base === null) {
+        document.getElementById('amp-res').innerHTML = abox('warning', '⚠ Data tidak tersedia untuk ' + mat + ' ' + ins + ' pada ukuran ini. Minimum ukuran Al adalah 16 mm².');
+        document.getElementById('amp-bar').innerHTML = '';
+        document.getElementById('amp-alert').innerHTML = '';
+        return;
+      }
+      const Kt = interp(ins === 'PVC' ? TC_PVC : TC_XLPE, amb);
+      const Kg = getGF(gn);
+      const Im = base * Kt * Kg;
+      const pct = Il > 0 ? (Il / Im) * 100 : 0;
+      const uc = pct < 60 ? 'success' : pct < 85 ? '' : pct < 100 ? 'warning' : 'danger';
+      document.getElementById('amp-res').innerHTML =
+        ri('KHA Dasar (I_b)', fmt(base, 1), 'A', '', `${mat} ${ins} Metode ${meth}, Ref 30°C`) +
+        ri('Faktor Suhu Kt', fmt(Kt, 3), '', '', `Ambient ${amb}°C`) +
+        ri('Faktor Grouping Kg', fmt(Kg, 2), '', '', `${gn} kabel`) +
+        ri('KHA Terkoreksi I_max', fmt(Im, 1), 'A', 'accent', `${fmt(base, 1)} × ${fmt(Kt, 3)} × ${fmt(Kg, 2)}`) +
+        ri('Arus Operasi', fmt(Il, 1), 'A', uc) +
+        ri('Utilisasi', fmt(pct, 1), '%', uc);
+      document.getElementById('amp-bar').innerHTML = pbar(`Utilisasi KHA — ${fmt(Il, 1)}A / ${fmt(Im, 1)}A`, pct);
+      const ae = document.getElementById('amp-alert');
+      if (Il > Im) ae.innerHTML = abox('danger', `✗ Arus operasi <strong>${fmt(Il, 1)} A</strong> melebihi KHA terkoreksi <strong>${fmt(Im, 1)} A</strong>. Pilih penampang lebih besar.`);
+      else if (pct > 85) ae.innerHTML = abox('warning', `⚠ Utilisasi tinggi (${fmt(pct, 1)}%). Pertimbangkan satu tingkat lebih besar untuk safety margin.`);
+      else if (Il > 0) ae.innerHTML = abox('success', `✓ Arus operasi aman. Utilisasi: ${fmt(pct, 1)}%`);
+      else ae.innerHTML = '';
+    }
+
+    function calcAdvisor() {
+      const P = (parseFloat(document.getElementById('sa-power').value) || 0) * 1000;
+      const pf = parseFloat(document.getElementById('sa-pf').value) || 1;
+      const V = parseFloat(document.getElementById('sa-volt').value) || 1;
+      const sys = document.getElementById('sa-sys').value;
+      const L = parseFloat(document.getElementById('sa-len').value) || 0;
+      const mvd = parseFloat(document.getElementById('sa-maxvd').value) || 3;
+      const mat = document.getElementById('sa-mat').value;
+      const ins = document.getElementById('sa-ins').value;
+      const meth = document.getElementById('sa-method').value;
+      const amb = parseFloat(document.getElementById('sa-temp').value) || 30;
+      const gn = document.getElementById('sa-group').value;
+      const mk = mat.toLowerCase();
+      const { rho, alpha } = MAT[mk];
+      const kI = sys === '1p' ? 1 : Math.sqrt(3);
+      const Ir = P / (kI * V * pf);
+      const kVD = sys === '1p' ? 2 : Math.sqrt(3);
+      const Kt = interp(ins === 'PVC' ? TC_PVC : TC_XLPE, amb);
+      const Kg = getGF(gn);
+      const Tmax = ins === 'PVC' ? 70 : 90;
+      const Rf = 1 + alpha * (Tmax - 20);
+      let rs = null, ri2 = null, rIm = null, rVD = null;
+      const tb = document.getElementById('sa-tbody');
+      tb.innerHTML = '';
+      IEC_SIZES.forEach((size, idx) => {
+        const base = getAmp(mat, ins, meth, idx);
+        if (base === null) return;
+        const Im = base * Kt * Kg;
+        const aOK = Im >= Ir;
+        const Rpm = rho * Rf / (size * 1e-6);
+        const R = Rpm * L;
+        const dV = kVD * Ir * R * pf;
+        const pvd = (dV / V) * 100;
+        const vOK = pvd <= mvd;
+        const ok = aOK && vOK;
+        if (ok && rs === null) { rs = size; ri2 = idx; rIm = Im; rVD = pvd; }
+        const isR = idx === ri2;
+        const tr = document.createElement('tr');
+        if (isR) tr.className = 'rec-row';
+        tr.innerHTML = `<td><strong>${size} mm²</strong>${isR ? ' ⭐' : ''}</td>` +
+          `<td>${fmt(Im, 1)} A</td><td>${fmt(dV, 2)} V</td>` +
+          `<td style="color:${vOK ? 'var(--success)' : 'var(--danger)'};font-weight:600">${fmt(pvd, 2)}%</td>` +
+          `<td><span class="sbadge ${aOK ? 'ok' : 'err'}">${aOK ? '✓ Ya' : '✗ Tidak'}</span></td>` +
+          `<td><span class="sbadge ${vOK ? 'ok' : 'err'}">${vOK ? '✓ Ya' : '✗ Tidak'}</span></td>` +
+          `<td><span class="sbadge ${ok ? 'ok' : 'err'}">${ok ? '✓ Lolos' : '✗ Gagal'}</span></td>`;
+        tb.appendChild(tr);
+      });
+      const rd = document.getElementById('advisor-rec');
+      rd.style.display = '';
+      if (rs !== null) {
+        document.getElementById('sa-val').textContent = rs;
+        document.getElementById('sa-unit').textContent = 'mm²';
+        document.getElementById('sa-note').innerHTML =
+          `I req: <strong>${fmt(Ir, 1)} A</strong> &nbsp;|&nbsp; KHA: <strong>${fmt(rIm, 1)} A</strong> &nbsp;|&nbsp; VD: <strong>${fmt(rVD, 2)}%</strong>` +
+          `<br>${mat} ${ins}, Metode ${meth}, Ambient ${amb}°C, Kt=${fmt(Kt, 3)}, Kg=${fmt(Kg, 2)}`;
+        document.getElementById('sa-res').innerHTML =
+          ri('Arus Dibutuhkan', fmt(Ir, 1), 'A', 'accent') +
+          ri('KHA Terkoreksi', fmt(rIm, 1), 'A', 'success', `Kt=${fmt(Kt, 3)} Kg=${fmt(Kg, 2)}`) +
+          ri('Voltage Drop', fmt(rVD, 2), '%', rVD < 3 ? 'success' : 'warning') +
+          ri('Hasil Sizing', `${rs}`, 'mm²', 'accent');
+      } else {
+        document.getElementById('sa-val').textContent = '> 630';
+        document.getElementById('sa-unit').textContent = '';
+        document.getElementById('sa-note').textContent = 'Tidak ada ukuran tunggal yang memenuhi — pertimbangkan kabel paralel.';
+        document.getElementById('sa-res').innerHTML = ri('Arus Dibutuhkan', fmt(Ir, 1), 'A', 'accent');
+      }
+    }
+
+    function buildAWG() {
+      const tb = document.getElementById('awg-body');
+      AWG_DATA.forEach(a => {
+        const rCu = (MAT.cu.rho / (a.mm2 * 1e-6)) * 1000;
+        const rAl = (MAT.al.rho / (a.mm2 * 1e-6)) * 1000;
+        const iec = nearIEC(a.mm2);
+        const tr = document.createElement('tr');
+        const labelStr = a.awg.includes('kcmil') ? a.awg : 'AWG ' + a.awg;
+        tr.innerHTML = `<td><strong>${labelStr}</strong></td><td>${a.kcmil}</td><td>${a.dia} mm</td><td>${a.mm2} mm²</td><td>${iec} mm²</td><td>${fmt(rCu, 3)}</td><td>${fmt(rAl, 3)}</td>`;
+        tb.appendChild(tr);
+      });
+    }
+
+    function switchDeratingBrand(brand) {
+      const secKabelindo = document.getElementById('section-kabelindo');
+      const secJembo = document.getElementById('section-jembo');
+      const btnAll = document.getElementById('btn-brand-all');
+      const btnKabelindo = document.getElementById('btn-brand-kabelindo');
+      const btnJembo = document.getElementById('btn-brand-jembo');
+
+      [btnAll, btnKabelindo, btnJembo].forEach(btn => {
+        if (btn) {
+          btn.style.borderColor = 'var(--line-bright)';
+          btn.style.background = 'var(--panel2)';
+          btn.style.color = 'var(--text)';
+        }
+      });
+
+      if (brand === 'kabelindo') {
+        secKabelindo.style.display = 'block';
+        secJembo.style.display = 'none';
+        btnKabelindo.style.borderColor = '#e11d48';
+        btnKabelindo.style.background = 'rgba(225,29,72,0.12)';
+        btnKabelindo.style.color = '#e11d48';
+      } else if (brand === 'jembo') {
+        secKabelindo.style.display = 'none';
+        secJembo.style.display = 'block';
+        btnJembo.style.borderColor = '#0284c7';
+        btnJembo.style.background = 'rgba(2,132,199,0.12)';
+        btnJembo.style.color = '#0284c7';
+      } else {
+        secKabelindo.style.display = 'block';
+        secJembo.style.display = 'block';
+        btnAll.style.borderColor = 'var(--accent)';
+        btnAll.style.background = 'var(--accent-glow)';
+        btnAll.style.color = 'var(--accent)';
+      }
+    }
+
+    (function () {
+      initGeomDrop();
+      initAmpDrop();
+      buildAWG();
+      calcGeom();
+      calcResist();
+      calcVdrop();
+      calcAmp();
+      calcAdvisor();
+    })();
+  </script>
 </body>
+
 </html>
