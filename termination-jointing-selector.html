@@ -588,62 +588,80 @@
       <div class="card-title">
         <span class="icon-box">🛡️</span> Uji Kualifikasi Terminasi &amp; Jointing (IEEE Std 48 / IEEE Std 404 Guide)
       </div>
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:14px;">
-        Panduan lengkap nilai tegangan uji laboratorium standar <b>IEEE Std 48</b> &amp; <b>IEEE Std 404</b> untuk membuktikan keandalan aksesoris kabel sebelum dipasang di lapangan:
-      </p>
+      
+      <!-- Critical Explanation Callout Box -->
+      <div style="background:rgba(255,138,61,0.08); border:1px solid var(--accent); padding:14px 16px; border-radius:8px; margin-bottom:16px; font-size:12.5px;">
+        <div style="font-weight:700; color:var(--accent); text-transform:uppercase; font-family:var(--mono); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+          💡 Penjelasan Maksud Angka kV Pada Tabel &amp; Pembacaan Alat Uji
+        </div>
+        <ul style="margin-left:18px; color:var(--text); line-height:1.6;">
+          <li><b>Angka kV pada Kolom Sistem (12kV, 24kV, 36kV) = SETTING TEGANGAN INJEKSI ALAT UJI (Test Voltage Setting):</b> Merupakan tegangan listrik tinggi (AC/DC/Impuls) yang disetting pada alat uji untuk <b>diinjeksikan secara sengaja</b> ke kabel/terminasi selama durasi tertentu.</li>
+          <li><b>Hasil Terbaca di Alat Uji (Syarat Lulus):</b>
+            <br>• <b>Uji Withstand (1-min AC / 15-min DC):</b> Alat membaca bahwa insulasi <b>dapat MENAHAN tegangan tersebut tanpa tembus (no breakdown/flashover)</b>, dan arus bocor (<i>leakage current</i>) yang dibaca di micro-ammeter <b>stabil dalam $\mu\text{A}$</b>.
+            <br>• <b>Uji Partial Discharge (PD):</b> Alat PD Detector membaca bahwa peluahan parsial padam/di bawah <b>$\le 3\text{ pC}$ (pico-Coulomb)</b>.
+            <br>• <b>Uji Tahanan Isolasi (Megger):</b> Alat Insulation Tester disetting <b>2.500V – 5.000V DC</b>, dan pembacaan Tahanan Isolasi di meter <b>HARUS LEBIH DARI $5.000\text{ M}\Omega$ ($5\text{ G}\Omega$)</b>.
+          </li>
+        </ul>
+      </div>
 
       <div style="overflow-x:auto;">
         <table class="styled-table">
           <thead>
             <tr>
               <th>Jenis Pengujian (Test Type)</th>
+              <th>Nama &amp; Jenis Alat Uji Referensi</th>
               <th>Maksud &amp; Tujuan Pengujian</th>
-              <th>Sistem 12 kV</th>
-              <th>Sistem 20/24 kV</th>
-              <th>Sistem 36 kV</th>
-              <th>Hasil Syarat Lulus</th>
+              <th>Setting Injeksi (12 kV)</th>
+              <th>Setting Injeksi (20/24 kV)</th>
+              <th>Setting Injeksi (36 kV)</th>
+              <th>Indikasi Pembacaan Alat (Lulus)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><b>1. Power Frequency 1-Min Dry Withstand</b></td>
+              <td><span class="badge warn">High Voltage AC Test Set / AC Hi-Pot</span><br><small style="color:var(--text-dim);">Phenix / Megger HPA</small></td>
               <td>Uji tegangan AC tinggi kondisi kering selama 1 menit untuk memastikan ketahanan isolasi utama.</td>
-              <td>35 kV</td>
-              <td>65 kV</td>
-              <td><b>90 kV</b></td>
-              <td><span class="badge ok">LULUS (Tanpa Spark/Breakdown)</span></td>
+              <td>35 kV AC</td>
+              <td>65 kV AC</td>
+              <td><b>90 kV AC</b></td>
+              <td><span class="badge ok">LULUS (Tanpa Spark / Breakdown)</span></td>
             </tr>
             <tr>
               <td><b>2. Power Frequency 10-Sec Wet Withstand</b></td>
-              <td>Uji tegangan AC kondisi hujan/embun lebat selama 10 detik untuk menguji keandalan <i>weathershed/skirt</i>.</td>
-              <td>30 kV</td>
-              <td>60 kV</td>
-              <td><b>80 kV</b></td>
-              <td><span class="badge ok">LULUS (Tanpa Flashover)</span></td>
+              <td><span class="badge warn">AC Test Set + Rain Spray Nozzle</span><br><small style="color:var(--text-dim);">IEC 60060-1 Wet Spray</small></td>
+              <td>Uji tegangan AC kondisi hujan/embun lebat 10 detik untuk menguji keandalan <i>weathershed/skirt</i>.</td>
+              <td>30 kV AC</td>
+              <td>60 kV AC</td>
+              <td><b>80 kV AC</b></td>
+              <td><span class="badge ok">LULUS (Tanpa Flashover Skirt)</span></td>
             </tr>
             <tr>
               <td><b>3. Direct Voltage 15-Min Dry Withstand</b></td>
+              <td><span class="badge warn">DC High Voltage Generator / DC Hi-Pot</span><br><small style="color:var(--text-dim);">Megger 220000 / SebaKMT</small></td>
               <td>Uji tegangan searah (DC Hi-Pot) selama 15 menit untuk mengukur arus bocor insulasi.</td>
-              <td>65 kV</td>
-              <td>105 kV</td>
-              <td><b>140 kV</b></td>
-              <td><span class="badge ok">LULUS (Arus Bocor Stabil)</span></td>
+              <td>65 kV DC</td>
+              <td>105 kV DC</td>
+              <td><b>140 kV DC</b></td>
+              <td><span class="badge ok">LULUS (Arus Bocor μA Stabil)</span></td>
             </tr>
             <tr>
               <td><b>4. Lightning Impulse Voltage (BIL)</b></td>
+              <td><span class="badge warn">Impulse Voltage Generator (IVG) &amp; Storage Oscilloscope</span><br><small style="color:var(--text-dim);">Haefely IVG 1.2/50μs</small></td>
               <td>Uji gelombang impuls petir 1.2/50 µs (10 kali gelombang positif &amp; negatif).</td>
               <td>95 kV BIL</td>
               <td>150 kV BIL</td>
               <td><b>200 kV BIL</b></td>
-              <td><span class="badge ok">LULUS (Tahan Impuls Petir)</span></td>
+              <td><span class="badge ok">LULUS (Gelombang Utuh No Breakdown)</span></td>
             </tr>
             <tr>
               <td><b>5. Partial Discharge Extinction (@ 3 pC)</b></td>
+              <td><span class="badge warn">VLF PD Diagnostic System / PD Detector</span><br><small style="color:var(--text-dim);">Omicron MPD 800 / Megger TDS</small></td>
               <td>Mengukur tegangan saat peluahan parsial (PD) padam di bawah tingkat 3 pC.</td>
-              <td>7.5 kV</td>
-              <td>21.5 kV</td>
-              <td><b>30 kV</b></td>
-              <td><span class="badge ok">LULUS (Bebas Void PD)</span></td>
+              <td>7.5 kV AC</td>
+              <td>21.5 kV AC</td>
+              <td><b>30 kV AC</b></td>
+              <td><span class="badge ok">LULUS (Meter PD ≤ 3 pC)</span></td>
             </tr>
           </tbody>
         </table>
@@ -652,30 +670,47 @@
       <!-- Accordion: Detailed Insulation Resistance Megger -->
       <div class="accordion-item active" style="margin-top:20px;">
         <div class="accordion-header" onclick="toggleAccordion(this)">
-          <span>1. Uji Tahanan Isolasi Lapangan (Megger Test) — Terverifikasi IEEE 400 &amp; NETA MTS-2023</span>
+          <span>1. Uji Tahanan Isolasi Lapangan (Megger Test) — Referensi Instrument Insulation Tester</span>
           <span>▼</span>
         </div>
         <div class="accordion-body">
           <div style="display:flex; align-items:flex-start; gap:8px; margin-bottom:14px; padding:10px 14px; background:rgba(56,189,248,0.08); border:1px solid var(--cyan); border-radius:8px;">
             <span style="font-size:15px; margin-top:1px;">✅</span>
             <div>
-              <div style="font-size:11px; font-weight:700; color:var(--cyan); font-family:var(--mono); text-transform:uppercase;">Terverifikasi — IEEE 400 · NETA MTS-2023 · IEEE 43-2013 · IEC 60502-2</div>
+              <div style="font-size:11px; font-weight:700; color:var(--cyan); font-family:var(--mono); text-transform:uppercase;">Referensi Alat Uji Insulation Tester (Megger 5kV / Fluke 1555 / Chauvin Arnoux)</div>
               <div style="font-size:11px; color:var(--text-dim); margin-top:2px;">Pengujian dilakukan antara Fasa ke Fasa dan Fasa ke Ground (Earth Braid) sebelum dan sesudah terminasi/jointing dipasang.</div>
             </div>
           </div>
 
           <table class="styled-table" style="margin-bottom:14px;">
-            <thead><tr><th>Kelas Tegangan Kabel</th><th>Tegangan Uji Megger DC</th><th>Minimum IR (1 Menit, 20°C)</th><th>Hasil Lulus</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Kelas Tegangan Kabel</th>
+                <th>Alat Uji &amp; Tegangan Injeksi DC</th>
+                <th>Syarat Pembacaan Meter Tahanan Isolasi (IR)</th>
+                <th>Hasil Syarat Lulus</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr><td><b>12/20 kV (15 kV class)</b></td><td><span class="badge ok">2.500 V DC</span></td><td>5.000 MΩ (5 GΩ)</td><td><span class="badge ok">LULUS</span></td></tr>
-              <tr><td><b>18/30 kV (35 kV class)</b></td><td><span class="badge ok">5.000 V DC</span></td><td>10.000 MΩ (10 GΩ)</td><td><span class="badge ok">LULUS</span></td></tr>
+              <tr>
+                <td><b>12/20 kV (15 kV class)</b></td>
+                <td><b>Megger 5kV Insulation Tester</b> (Injeksi: 2.500 V DC)</td>
+                <td><b>Meter Terbaca &gt; 5.000 MΩ (5 GΩ)</b></td>
+                <td><span class="badge ok">LULUS (IR &gt; 5 GΩ)</span></td>
+              </tr>
+              <tr>
+                <td><b>18/30 kV (35 kV class)</b></td>
+                <td><b>Megger 10kV Insulation Tester</b> (Injeksi: 5.000 V DC)</td>
+                <td><b>Meter Terbaca &gt; 10.000 MΩ (10 GΩ)</b></td>
+                <td><span class="badge ok">LULUS (IR &gt; 10 GΩ)</span></td>
+              </tr>
             </tbody>
           </table>
 
           <div style="padding:10px 14px; background:rgba(61,220,132,0.07); border:1px solid var(--ok); border-radius:8px;">
             <div style="font-size:11px; font-weight:700; color:var(--ok); font-family:var(--mono); text-transform:uppercase; margin-bottom:4px;">✅ Metode VLF (Very Low Frequency 0.1Hz) Acceptance Test</div>
             <div style="font-size:12px; color:var(--text-dim); line-height:1.6;">
-              Untuk kabel XLPE baru setelah terminasi/jointing dipasang, IEEE 400.2 merekomendasikan <b>VLF AC Withstand Test (0,1 Hz)</b>:
+              Untuk kabel XLPE baru setelah terminasi/jointing dipasang, IEEE 400.2 merekomendasikan <b>VLF AC Withstand Test (0,1 Hz)</b> menggunakan alat uji VLF (seperti <i>Megger VLF Sine 45 / SebaKMT VLF / baur frida</i>):
               <br>• <b>24 kV class (U₀ = 12 kV):</b> Injeksi 1.5 × U₀ = 18 kV VLF selama 60 menit.
             </div>
           </div>
