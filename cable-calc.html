@@ -1698,9 +1698,8 @@
           <div class="page-header">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
               <div>
-                <h1 class="page-title">🌡️ Derating Factor (Faktor Koreksi KHA Pabrikan)</h1>
-                <p class="page-sub">Faktor Koreksi KHA Resmi Katalog Kabelindo (PT Kabelindo Murni Tbk) &amp; Jembo (PT
-                  Jembo Cable Company Tbk)</p>
+                <h1 class="page-title">🌡️ Derating Factor</h1>
+                <p class="page-sub">Faktor koreksi KHA nominal kabel berdasarkan penyesuaian kondisi lingkungan instalasi lapangan (IEC 60287 / SPLN 43-5)</p>
               </div>
               <div style="display:flex; gap:8px;">
                 <button class="theme-toggle-btn active" id="btn-brand-all" onclick="switchDeratingBrand('all')"
@@ -1713,6 +1712,18 @@
                 <button class="theme-toggle-btn" id="btn-brand-jembo" onclick="switchDeratingBrand('jembo')">
                   🔵 PT Jembo Cable Co Tbk
                 </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Derating Explanation Box -->
+          <div class="card" style="background:var(--surface-alt); border-left:4px solid var(--accent); margin-bottom:18px;">
+            <div class="card-body" style="padding:14px 18px;">
+              <div style="font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-family:var(--mono);">
+                💡 Apa itu Derating Factor?
+              </div>
+              <div style="font-size:13px; color:var(--text); line-height:1.5;">
+                <b>Derating Factor (Faktor Koreksi KHA)</b> adalah koefisien pengali penurunan kapasitas arus maksimum yang dapat dialirkan kabel secara aman tanpa merusak lapisan isolasi. Nilai KHA nominal pada datasheet pabrikan diuji pada kondisi standar laboratorium (Suhu Tanah 20°C / Udara 30°C, Kedalaman Tanam 0.8m, Resistivitas Termal 1.5 K·m/W). Apabila kondisi lingkungan riil di lapangan lebih panas, tertanam lebih dalam, atau kabel dipasang berdempetan dalam kelompok, KHA kabel harus dikoreksi: <b>KHA Terkoreksi = KHA Nominal × (Kt × Kd × Kg × Kr)</b>.
               </div>
             </div>
           </div>
