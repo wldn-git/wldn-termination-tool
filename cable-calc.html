@@ -939,130 +939,297 @@ canvas { display: block; }
   </div>
 </div>
 
-<!-- PANEL DERATING FACTOR JEMBO -->
+<!-- PANEL DERATING FACTOR KABELINDO VS JEMBO -->
 <div id="panel-derating" class="panel">
   <div class="page-header">
-    <h1 class="page-title">🌡️ Derating Factor (Tabel Koreksi Katalog Jembo)</h1>
-    <p class="page-sub">Faktor Koreksi KHA berdasarkan Suhu Tanah, Kedalaman Tanam, Resistivitas Termal, dan Pengelompokan Kabel</p>
-  </div>
-
-  <div class="card">
-    <div class="card-hd"><span class="card-title">1. Koreksi Suhu Tanah Lingkungan (Standar Base 20°C)</span></div>
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Suhu Tanah (°C)</th>
-              <th>10°C</th>
-              <th>15°C</th>
-              <th>20°C (Base)</th>
-              <th>25°C</th>
-              <th>30°C</th>
-              <th>35°C</th>
-              <th>40°C</th>
-              <th>45°C</th>
-              <th>50°C</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Faktor Koreksi (Kt)</strong></td>
-              <td>1.07</td>
-              <td>1.04</td>
-              <td><strong>1.00</strong></td>
-              <td>0.96</td>
-              <td>0.93</td>
-              <td>0.89</td>
-              <td>0.85</td>
-              <td>0.80</td>
-              <td>0.76</td>
-            </tr>
-          </tbody>
-        </table>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+      <div>
+        <h1 class="page-title">🌡️ Derating Factor (Faktor Koreksi KHA Pabrikan)</h1>
+        <p class="page-sub">Faktor Koreksi KHA Resmi Katalog Kabelindo (PT Kabelindo Murni Tbk) &amp; Jembo (PT Jembo Cable Company Tbk)</p>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button class="theme-toggle-btn active" id="btn-brand-all" onclick="switchDeratingBrand('all')" style="border-color:var(--accent); background:var(--accent-glow); color:var(--accent);">
+          🏢 Kabelindo &amp; Jembo (Semua)
+        </button>
+        <button class="theme-toggle-btn" id="btn-brand-kabelindo" onclick="switchDeratingBrand('kabelindo')">
+          🔴 PT Kabelindo Murni Tbk
+        </button>
+        <button class="theme-toggle-btn" id="btn-brand-jembo" onclick="switchDeratingBrand('jembo')">
+          🔵 PT Jembo Cable Co Tbk
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam Galian Direct Buried (Standar Base 0.8m)</span></div>
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Kedalaman Tanam (m)</th>
-              <th>0.5 m</th>
-              <th>0.6 m</th>
-              <th>0.8 m (Base)</th>
-              <th>1.0 m</th>
-              <th>1.25 m</th>
-              <th>1.5 m</th>
-              <th>2.0 m</th>
-              <th>3.0 m</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>3-Core Cable</strong></td>
-              <td>1.04</td>
-              <td>1.02</td>
-              <td><strong>1.00</strong></td>
-              <td>0.98</td>
-              <td>0.96</td>
-              <td>0.95</td>
-              <td>0.93</td>
-              <td>0.90</td>
-            </tr>
-            <tr>
-              <td><strong>1-Core Cable (&le;185mm²)</strong></td>
-              <td>1.04</td>
-              <td>1.02</td>
-              <td><strong>1.00</strong></td>
-              <td>0.98</td>
-              <td>0.96</td>
-              <td>0.95</td>
-              <td>0.93</td>
-              <td>0.90</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- KABELINDO SECTION -->
+  <div id="section-kabelindo" class="brand-section">
+    <div style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#e11d48; background:rgba(225,29,72,0.1); border:1px solid rgba(225,29,72,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; font-weight:700;">
+      🔴 PT Kabelindo Murni Tbk — MV Cable Derating Technical Data
+    </div>
+
+    <!-- 1. Suhu Udara Terbuka & Tanah Kabelindo -->
+    <div class="card">
+      <div class="card-hd"><span class="card-title">1. Koreksi Suhu Lingkungan (Kabelindo — Udara Terbuka &amp; Dalam Tanah)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kondisi Lingkungan</th>
+                <th>10°C</th>
+                <th>15°C</th>
+                <th>20°C</th>
+                <th>25°C</th>
+                <th>30°C (Base Air)</th>
+                <th>35°C</th>
+                <th>40°C</th>
+                <th>45°C</th>
+                <th>50°C</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kabelindo — Suhu Udara (Ambient Air 30°C Base)</strong></td>
+                <td>1.15</td>
+                <td>1.12</td>
+                <td>1.08</td>
+                <td>1.04</td>
+                <td><strong>1.00</strong></td>
+                <td>0.96</td>
+                <td>0.91</td>
+                <td>0.87</td>
+                <td>0.82</td>
+              </tr>
+              <tr>
+                <td><strong>Kabelindo — Suhu Tanah (Ground Temp 20°C Base)</strong></td>
+                <td>1.07</td>
+                <td>1.04</td>
+                <td><strong>1.00</strong></td>
+                <td>0.96</td>
+                <td>0.93</td>
+                <td>0.89</td>
+                <td>0.85</td>
+                <td>0.80</td>
+                <td>0.76</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Kedalaman Tanam Direct Buried & Pipe Duct Kabelindo -->
+    <div class="card">
+      <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam (Kabelindo — Direct Buried vs Underground Pipe Duct)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Metode Penanaman (Kabelindo)</th>
+                <th>0.5 m</th>
+                <th>0.6 m</th>
+                <th>0.8 m (Base)</th>
+                <th>1.0 m</th>
+                <th>1.25 m</th>
+                <th>1.5 m</th>
+                <th>2.0 m</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Tanam Langsung (Direct Buried 3-Core)</strong></td>
+                <td>1.04</td>
+                <td>1.02</td>
+                <td><strong>1.00</strong></td>
+                <td>0.98</td>
+                <td>0.96</td>
+                <td>0.95</td>
+                <td>0.93</td>
+              </tr>
+              <tr>
+                <td><b>Dalam Pipa / Conduit (Underground Pipe Duct)</b></td>
+                <td>1.03</td>
+                <td>1.01</td>
+                <td><strong>1.00</strong></td>
+                <td>0.97</td>
+                <td>0.95</td>
+                <td>0.93</td>
+                <td>0.90</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Grouping Factors Kabelindo -->
+    <div class="card">
+      <div class="card-hd"><span class="card-title">3. Faktor Pengelompokan Kabel Sejajar (Kabelindo Group Rating Factors)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Formasi &amp; Jarak Antar Kabel (Kabelindo)</th>
+                <th>1 Kabel</th>
+                <th>2 Kabel</th>
+                <th>3 Kabel</th>
+                <th>4 Kabel</th>
+                <th>5 Kabel</th>
+                <th>6 Kabel</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Formasi Menempel (Touching Spacing)</strong></td>
+                <td><strong>1.00</strong></td>
+                <td>0.80</td>
+                <td>0.70</td>
+                <td>0.65</td>
+                <td>0.60</td>
+                <td>0.57</td>
+              </tr>
+              <tr>
+                <td><b>Formasi Berjarak (1x Diameter Clearance)</b></td>
+                <td><strong>1.00</strong></td>
+                <td>0.85</td>
+                <td>0.76</td>
+                <td>0.72</td>
+                <td>0.68</td>
+                <td>0.65</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-hd"><span class="card-title">3. Koreksi Resistivitas Termal Tanah (Soil Thermal Resistivity K·m/W)</span></div>
-    <div class="card-body" style="padding:0">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Soil Resistivity (K·m/W)</th>
-              <th>0.7</th>
-              <th>0.8</th>
-              <th>0.9</th>
-              <th>1.0</th>
-              <th>1.5 (Base)</th>
-              <th>2.0</th>
-              <th>2.5</th>
-              <th>3.0</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Direct Buried 3-Core</strong></td>
-              <td>1.23</td>
-              <td>1.19</td>
-              <td>1.16</td>
-              <td>1.13</td>
-              <td><strong>1.00</strong></td>
-              <td>0.91</td>
-              <td>0.84</td>
-              <td>0.78</td>
-            </tr>
-          </tbody>
-        </table>
+  <!-- JEMBO SECTION -->
+  <div id="section-jembo" class="brand-section">
+    <div style="display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11px; text-transform:uppercase; color:#0284c7; background:rgba(2,132,199,0.1); border:1px solid rgba(2,132,199,0.3); padding:4px 12px; border-radius:20px; margin-bottom:12px; margin-top:8px; font-weight:700;">
+      🔵 PT Jembo Cable Company Tbk — MV Cable Derating Reference Data
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><span class="card-title">1. Koreksi Suhu Tanah Lingkungan (Jembo — Base 20°C)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Suhu Tanah (°C)</th>
+                <th>10°C</th>
+                <th>15°C</th>
+                <th>20°C (Base)</th>
+                <th>25°C</th>
+                <th>30°C</th>
+                <th>35°C</th>
+                <th>40°C</th>
+                <th>45°C</th>
+                <th>50°C</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Faktor Koreksi (Kt)</strong></td>
+                <td>1.07</td>
+                <td>1.04</td>
+                <td><strong>1.00</strong></td>
+                <td>0.96</td>
+                <td>0.93</td>
+                <td>0.89</td>
+                <td>0.85</td>
+                <td>0.80</td>
+                <td>0.76</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><span class="card-title">2. Koreksi Kedalaman Tanam Galian Direct Buried (Jembo — Base 0.8m)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Kedalaman Tanam (m)</th>
+                <th>0.5 m</th>
+                <th>0.6 m</th>
+                <th>0.8 m (Base)</th>
+                <th>1.0 m</th>
+                <th>1.25 m</th>
+                <th>1.5 m</th>
+                <th>2.0 m</th>
+                <th>3.0 m</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>3-Core Cable</strong></td>
+                <td>1.04</td>
+                <td>1.02</td>
+                <td><strong>1.00</strong></td>
+                <td>0.98</td>
+                <td>0.96</td>
+                <td>0.95</td>
+                <td>0.93</td>
+                <td>0.90</td>
+              </tr>
+              <tr>
+                <td><strong>1-Core Cable (&le;185mm²)</strong></td>
+                <td>1.04</td>
+                <td>1.02</td>
+                <td><strong>1.00</strong></td>
+                <td>0.98</td>
+                <td>0.96</td>
+                <td>0.95</td>
+                <td>0.93</td>
+                <td>0.90</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><span class="card-title">3. Koreksi Resistivitas Termal Tanah (Jembo — Soil Thermal Resistivity K·m/W)</span></div>
+      <div class="card-body" style="padding:0">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Soil Resistivity (K·m/W)</th>
+                <th>0.7</th>
+                <th>0.8</th>
+                <th>0.9</th>
+                <th>1.0</th>
+                <th>1.5 (Base)</th>
+                <th>2.0</th>
+                <th>2.5</th>
+                <th>3.0</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Direct Buried 3-Core</strong></td>
+                <td>1.23</td>
+                <td>1.19</td>
+                <td>1.16</td>
+                <td>1.13</td>
+                <td><strong>1.00</strong></td>
+                <td>0.91</td>
+                <td>0.84</td>
+                <td>0.78</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -1674,6 +1841,42 @@ function buildAWG(){
     tr.innerHTML=`<td><strong>${labelStr}</strong></td><td>${a.kcmil}</td><td>${a.dia} mm</td><td>${a.mm2} mm²</td><td>${iec} mm²</td><td>${fmt(rCu,3)}</td><td>${fmt(rAl,3)}</td>`;
     tb.appendChild(tr);
   });
+}
+
+function switchDeratingBrand(brand){
+  const secKabelindo = document.getElementById('section-kabelindo');
+  const secJembo = document.getElementById('section-jembo');
+  const btnAll = document.getElementById('btn-brand-all');
+  const btnKabelindo = document.getElementById('btn-brand-kabelindo');
+  const btnJembo = document.getElementById('btn-brand-jembo');
+
+  [btnAll, btnKabelindo, btnJembo].forEach(btn => {
+    if (btn) {
+      btn.style.borderColor = 'var(--line-bright)';
+      btn.style.background = 'var(--panel2)';
+      btn.style.color = 'var(--text)';
+    }
+  });
+
+  if(brand === 'kabelindo'){
+    secKabelindo.style.display = 'block';
+    secJembo.style.display = 'none';
+    btnKabelindo.style.borderColor = '#e11d48';
+    btnKabelindo.style.background = 'rgba(225,29,72,0.12)';
+    btnKabelindo.style.color = '#e11d48';
+  } else if(brand === 'jembo'){
+    secKabelindo.style.display = 'none';
+    secJembo.style.display = 'block';
+    btnJembo.style.borderColor = '#0284c7';
+    btnJembo.style.background = 'rgba(2,132,199,0.12)';
+    btnJembo.style.color = '#0284c7';
+  } else {
+    secKabelindo.style.display = 'block';
+    secJembo.style.display = 'block';
+    btnAll.style.borderColor = 'var(--accent)';
+    btnAll.style.background = 'var(--accent-glow)';
+    btnAll.style.color = 'var(--accent)';
+  }
 }
 
 (function(){
