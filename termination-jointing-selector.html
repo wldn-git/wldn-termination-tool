@@ -960,16 +960,44 @@
 
   const MM3_DB = {
     "12": {
-      "1": { in: "7624-T-110", out_light: "7622-S-2", out_med: "7692-S-4", out_heavy: "7683-S-8", od: "16.3–27.4 mm" },
-      "3": { in: "7624-T-110-3G", out_light: "7622-S-2-3W", out_med: "7692-S-4-3W", out_heavy: "7683-S-8-3W", od: "17.8–23.4 mm" }
+      single: [
+        { min:10, max:35, in:"7622-T-110", out_light:"7622-S-2", out_med:"7622-S-2", out_heavy:"7683-S-8", od:"16.3–27.4 mm" },
+        { min:35, max:95, in:"7623-T-110", out_light:"7622-S-2", out_med:"7692-S-4", out_heavy:"7683-S-8", od:"18.3–32.8 mm" },
+        { min:95, max:185, in:"7624-T-110", out_light:"7624-S-2", out_med:"7693-S-4", out_heavy:"7684-S-8", od:"21.1–38.9 mm" },
+        { min:185, max:500, in:"7625-T-110", out_light:"7624-S-2", out_med:"7695-S-4", out_heavy:"7685-S-8", od:"26.7–45.7 mm" }
+      ],
+      three: [
+        { min:10, max:50, in:"7621-T-110-3G", out_light:"7621-S-2-3G", out_med:"7621-S-2-3G", out_heavy:"7684-S-8-3G", od:"12.7–17.8 mm" },
+        { min:50, max:95, in:"7622-T-110-3G", out_light:"7622-S-2-3G", out_med:"7692-S-4-3G", out_heavy:"7684-S-8-3G", od:"17.8–23.4 mm" },
+        { min:95, max:185, in:"7624-T-110-3G", out_light:"7624-S-2-3G", out_med:"7693-S-4-3G", out_heavy:"7685-S-8-3G", od:"23.4–30.0 mm" },
+        { min:185, max:500, in:"7625-T-110-3G", out_light:"7625-S-2-3G", out_med:"7695-S-4-3G", out_heavy:"7686-S-8-3G", od:"30.0–38.4 mm" }
+      ]
     },
     "24": {
-      "1": { in: "7693-T-150", out_light: "7692-S-4", out_med: "7694-S-4", out_heavy: "7685-S-8", od: "18.3–32.8 mm" },
-      "3": { in: "7693-T-150-3G", out_light: "7692-S-4-3W", out_med: "7693-S-4-3W", out_heavy: "7695-S-4-3W", od: "18.3–32.8 mm" }
+      single: [
+        { min:25, max:50, in:"7693-T-150", out_light:"7692-S-4", out_med:"7692-S-4", out_heavy:"7684-S-8", od:"18.3–32.8 mm" },
+        { min:50, max:120, in:"7693-T-150", out_light:"7693-S-4", out_med:"7693-S-4", out_heavy:"7684-S-8", od:"18.3–32.8 mm" },
+        { min:120, max:185, in:"7695-T-150", out_light:"7694-S-4", out_med:"7694-S-4", out_heavy:"7685-S-8", od:"21.1–38.9 mm" },
+        { min:185, max:400, in:"7695-T-150", out_light:"7695-S-4", out_med:"7695-S-4", out_heavy:"7685-S-8", od:"26.7–45.7 mm" }
+      ],
+      three: [
+        { min:25, max:70, in:"7622-T-110-3G", out_light:"7692-S-4-3G", out_med:"7692-S-4-3G", out_heavy:"7684-S-8-3G", od:"17.8–23.4 mm" },
+        { min:70, max:185, in:"7694-T-150-3G", out_light:"7693-S-4-3G", out_med:"7693-S-4-3G", out_heavy:"7684-S-8-3G", od:"23.4–30.0 mm" },
+        { min:185, max:400, in:"7695-T-150-3G", out_light:"7695-S-4-3G", out_med:"7695-S-4-3G", out_heavy:"7685-S-8-3G", od:"30.0–38.4 mm" }
+      ]
     },
     "36": {
-      "1": { in: "7695-T-150", out_light: "7695-S-4", out_med: "7695-S-4", out_heavy: "7686-S-8", od: "26.7–45.7 mm" },
-      "3": { in: "7695-T-150-3G", out_light: "7695-S-4-3W", out_med: "7695-S-4-3W", out_heavy: "7686-S-8-3W", od: "30.0–38.6 mm" }
+      single: [
+        { min:35, max:70, in:"7693-T-150", out_light:"7683-S-8", out_med:"7683-S-8", out_heavy:"7683-S-8", od:"18.3–32.8 mm" },
+        { min:70, max:120, in:"7695-T-150", out_light:"7684-S-8", out_med:"7684-S-8", out_heavy:"7684-S-8", od:"21.1–38.9 mm" },
+        { min:120, max:325, in:"7695-T-150", out_light:"7685-S-8", out_med:"7685-S-8", out_heavy:"7685-S-8", od:"26.7–45.7 mm" },
+        { min:325, max:800, in:"7696-T-150", out_light:"7686-S-8", out_med:"7686-S-8", out_heavy:"7686-S-8", od:"38.9–58.9 mm" }
+      ],
+      three: [
+        { min:35, max:95, in:"7694-T-150-3G", out_light:"7684-S-8-3G", out_med:"7684-S-8-3G", out_heavy:"7684-S-8-3G", od:"23.4–30.0 mm" },
+        { min:95, max:240, in:"7695-T-150-3G", out_light:"7685-S-8-3G", out_med:"7685-S-8-3G", out_heavy:"7685-S-8-3G", od:"30.0–38.4 mm" },
+        { min:240, max:500, in:"7696-T-150-3G", out_light:"7686-S-8-3G", out_med:"7686-S-8-3G", out_heavy:"7686-S-8-3G", od:"38.8–46.0 mm" }
+      ]
     }
   };
 
@@ -1003,10 +1031,11 @@
         codePrys = `Prysmian ColdFit™ CDTI-${core}C-${voltage}`;
       }
 
-      // 3. 3M Exact Sub-Variant Lookup Engine
-      const m3V = MM3_DB[voltage] ? MM3_DB[voltage][core] : null;
+      // 3. 3M Exact Sub-Variant Lookup Engine (PDF Verified)
+      const m3V = MM3_DB[voltage] ? MM3_DB[voltage][coreTypeKey] : null;
       if (m3V) {
-        let baseCode = isIndoor ? m3V.in : (pollution === 'light' ? m3V.out_light : (pollution === 'heavy' ? m3V.out_heavy : m3V.out_med));
+        const match = m3V.find(r => szNum >= r.min && szNum <= r.max) || m3V[m3V.length - 1];
+        let baseCode = isIndoor ? match.in : (pollution === 'light' ? match.out_light : (pollution === 'heavy' ? match.out_heavy : match.out_med));
 
         // Apply 3M Sub-Variant Suffix (3G, 3W, RJS, INV, TI, HSG)
         if (m3variant === 'rjs') {
