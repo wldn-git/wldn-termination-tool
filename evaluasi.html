@@ -291,8 +291,9 @@
       
       <div id="quizContainer"></div>
 
-      <div style="text-align:center; margin-top:20px;">
+      <div style="display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap;">
         <button class="btn primary" onclick="calculateQuizScore()">Hitung Skor Evaluasi</button>
+        <button class="btn" onclick="resetQuiz()">🔄 Reset / Ulangi Kuis</button>
       </div>
 
       <div id="scoreBox" class="score-box">
@@ -668,6 +669,25 @@
     } else {
       feedback.innerText = "⚠️ Masih Perlu Pendalaman. Pelajari Kembali Modul Teori Bab 1-4 Sebelum Praktik Lapangan.";
     }
+
+    // Clear pilihan jawaban & sorotan tombol setelah skor dihitung
+    for (let key in userAnswers) {
+      delete userAnswers[key];
+    }
+    document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+      btn.classList.remove('correct', 'wrong');
+    });
+    document.querySelectorAll('.quiz-explain').forEach(exp => {
+      exp.style.display = 'none';
+    });
+  }
+
+  function resetQuiz() {
+    for (let key in userAnswers) {
+      delete userAnswers[key];
+    }
+    renderQuiz();
+    document.getElementById('scoreBox').style.display = 'none';
   }
 
   renderQuiz();
