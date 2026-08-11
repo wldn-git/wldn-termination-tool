@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WLDN Technical Suite — Pelatihan Teknik Ketenagalistrikan MV 6 kV – 35 kV</title>
-  <meta name="description" content="Portal Aplikasi Teknik Ketenagalistrikan: Materi Pelatihan 7 Bab, Evaluasi Kuis & OJT, Medium Voltage Termination & Jointing Selector, serta Cable Sizing Calculator. Standar IEC, SNI, SPLN & Datasheet Vendor.">
+  <meta name="description"
+    content="Portal Aplikasi Teknik Ketenagalistrikan: Materi Pelatihan 7 Bab, Evaluasi Kuis & OJT, Medium Voltage Termination & Jointing Selector, serta Cable Sizing Calculator. Standar IEC, SNI, SPLN & Datasheet Vendor.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --bg: #0b0f17;
@@ -30,7 +34,11 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: var(--bg);
@@ -136,10 +144,21 @@
       transition: opacity 0.3s ease;
     }
 
-    .card-purple::before { background: linear-gradient(90deg, var(--accent-purple), #ec4899); }
-    .card-green::before  { background: linear-gradient(90deg, var(--accent-green), #10b981); }
-    .card-orange::before { background: linear-gradient(90deg, var(--accent-orange), #f59e0b); }
-    .card-cyan::before   { background: linear-gradient(90deg, var(--accent-cyan), #6366f1); }
+    .card-purple::before {
+      background: linear-gradient(90deg, var(--accent-purple), #ec4899);
+    }
+
+    .card-green::before {
+      background: linear-gradient(90deg, var(--accent-green), #10b981);
+    }
+
+    .card-orange::before {
+      background: linear-gradient(90deg, var(--accent-orange), #f59e0b);
+    }
+
+    .card-cyan::before {
+      background: linear-gradient(90deg, var(--accent-cyan), #6366f1);
+    }
 
     .tool-card:hover {
       transform: translateY(-6px);
@@ -147,7 +166,9 @@
       box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
     }
 
-    .tool-card:hover::before { opacity: 1; }
+    .tool-card:hover::before {
+      opacity: 1;
+    }
 
     .card-icon {
       width: 52px;
@@ -160,10 +181,29 @@
       font-size: 1.5rem;
     }
 
-    .card-purple .card-icon { background: var(--accent-purple-glow); color: var(--accent-purple); border: 1px solid rgba(168, 85, 247, 0.3); }
-    .card-green .card-icon  { background: var(--accent-green-glow); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.3); }
-    .card-orange .card-icon { background: var(--accent-orange-glow); color: var(--accent-orange); border: 1px solid rgba(255, 138, 61, 0.3); }
-    .card-cyan .card-icon   { background: var(--accent-cyan-glow); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .card-purple .card-icon {
+      background: var(--accent-purple-glow);
+      color: var(--accent-purple);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .card-green .card-icon {
+      background: var(--accent-green-glow);
+      color: var(--accent-green);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .card-orange .card-icon {
+      background: var(--accent-orange-glow);
+      color: var(--accent-orange);
+      border: 1px solid rgba(255, 138, 61, 0.3);
+    }
+
+    .card-cyan .card-icon {
+      background: var(--accent-cyan-glow);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
 
     .card-title {
       font-size: 1.3rem;
@@ -208,10 +248,29 @@
       transition: all 0.2s ease;
     }
 
-    .card-purple .btn-action { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
-    .card-green .btn-action  { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, 0.3); }
-    .card-orange .btn-action { background: rgba(255, 138, 61, 0.15); color: #ff9d5c; border: 1px solid rgba(255, 138, 61, 0.3); }
-    .card-cyan .btn-action   { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .card-purple .btn-action {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+    }
+
+    .card-green .btn-action {
+      background: rgba(52, 211, 153, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .card-orange .btn-action {
+      background: rgba(255, 138, 61, 0.15);
+      color: #ff9d5c;
+      border: 1px solid rgba(255, 138, 61, 0.3);
+    }
+
+    .card-cyan .btn-action {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
 
     .tool-card:hover .btn-action {
       background: var(--text-main);
@@ -232,19 +291,23 @@
       flex-wrap: wrap;
       margin-bottom: 2rem;
     }
+
     .info-strip-item {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
+
     .info-strip-icon {
       font-size: 1.8rem;
     }
+
     .info-strip-text h4 {
       font-size: 0.95rem;
       color: #fff;
       font-weight: 600;
     }
+
     .info-strip-text p {
       font-size: 0.82rem;
       color: var(--text-muted);
@@ -265,14 +328,31 @@
     }
 
     @media (max-width: 768px) {
-      body { padding: 1.25rem 1rem; }
-      header { margin-bottom: 2rem; }
-      .grid { grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2rem; }
-      .tool-card { padding: 1.5rem; }
-      .badge { font-size: 0.72rem; }
+      body {
+        padding: 1.25rem 1rem;
+      }
+
+      header {
+        margin-bottom: 2rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+      }
+
+      .tool-card {
+        padding: 1.5rem;
+      }
+
+      .badge {
+        font-size: 0.72rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -282,7 +362,8 @@
         WLDN Technical Suite — Pelatihan Teknik Ketenagalistrikan MV 6 kV – 35 kV
       </div>
       <h1>WLDN Engineering Tool Suite</h1>
-      <p class="subtitle">Portal interaktif pelatihan fasilitator & jointer TM: Modul Teori 7 Bab, Evaluasi & Kuis, Pemilah Kit Terminasi & Jointing, serta Kalkulator Spesifikasi Kabel.</p>
+      <p class="subtitle">Portal interaktif pelatihan fasilitator & jointer TM: Modul Teori 7 Bab, Evaluasi & Kuis,
+        Pemilah Kit Terminasi & Jointing, serta Kalkulator Spesifikasi Kabel.</p>
     </header>
 
     <main class="grid">
@@ -291,8 +372,9 @@
         <div>
           <div class="card-icon">📚</div>
           <h2 class="card-title">1. Materi & Modul Pelatihan</h2>
-          <p class="card-desc">Modul pembelajaran lengkap 7 Bab (Teknik Isolasi, Spesifikasi Kabel TM 20kV, Konstruksi Galian SKTM, Aksesoris Kit, SOP Praktek, Landasan OJT, dan Studi Kasus).</p>
-          
+          <p class="card-desc">Modul pembelajaran lengkap 7 Bab (Teknik Isolasi, Spesifikasi Kabel TM 20kV, Konstruksi
+            Galian SKTM, Aksesoris Kit, SOP Praktek, Landasan OJT, dan Studi Kasus).</p>
+
           <div class="feature-tags">
             <span class="tag">Teknik Isolasi</span>
             <span class="tag">PVC / XLPE / EPR</span>
@@ -313,8 +395,9 @@
         <div>
           <div class="card-icon">📝</div>
           <h2 class="card-title">2. Evaluasi & OJT Checklist</h2>
-          <p class="card-desc">Kuis Evaluasi Interaktif Bab 1–7 dengan skor otomatis, Form Checklist Kompetensi Praktik OJT (DIS.KON.016/029), Laporan Kegiatan OJT, dan Analisis Kegagalan Jointing.</p>
-          
+          <p class="card-desc">Kuis Evaluasi Interaktif Bab 1–7 dengan skor otomatis, Form Checklist Kompetensi Praktik
+            OJT (DIS.KON.016/029), Laporan Kegiatan OJT, dan Analisis Kegagalan Jointing.</p>
+
           <div class="feature-tags">
             <span class="tag">Evaluation Quiz</span>
             <span class="tag">DIS.KON.016(2)A</span>
@@ -335,8 +418,9 @@
         <div>
           <div class="card-icon">⚡</div>
           <h2 class="card-title">3. Kit Selector (Terminasi + Joint)</h2>
-          <p class="card-desc">Wizard khusus pemilihan kit aksesoris kabel Tegangan Menengah: Terminasi (Indoor/Outdoor) & Jointing Kit (Sambungan Lurus & Transisi 3M, Raychem, Prysmian) + Cutback Z.</p>
-          
+          <p class="card-desc">Wizard khusus pemilihan kit aksesoris kabel Tegangan Menengah: Terminasi (Indoor/Outdoor)
+            & Jointing Kit (Sambungan Lurus & Transisi 3M, Raychem, Prysmian) + Cutback Z.</p>
+
           <div class="feature-tags">
             <span class="tag">Terminasi 12-36kV</span>
             <span class="tag">Jointing Kit Lurus/Transisi</span>
@@ -357,8 +441,9 @@
         <div>
           <div class="card-icon">📐</div>
           <h2 class="card-title">4. Cable Specs & Sizing Calculator</h2>
-          <p class="card-desc">Kalkulator teknik penampang kabel: Kuat Hantar Arus (KHA), Voltage Drop, Resistansi DC/AC, Sizing Advisor, serta Perbandingan Datasheet Katalog Jembo vs Kabelindo.</p>
-          
+          <p class="card-desc">Kalkulator teknik penampang kabel: Kuat Hantar Arus (KHA), Voltage Drop, Resistansi
+            DC/AC, Sizing Advisor, serta Perbandingan Datasheet Katalog Jembo vs Kabelindo.</p>
+
           <div class="feature-tags">
             <span class="tag">Datasheet Jembo</span>
             <span class="tag">Datasheet Kabelindo</span>
@@ -396,9 +481,11 @@
 
   <footer>
     <div class="container">
-      <p>&copy; 2026 WLDN Technical Suite — Pelatihan Teknik Ketenagalistrikan MV 6 kV – 35 kV. Deployed via <code>Vercel</code>.</p>
+      <p>&copy; 2026 WLDN Technical Suite — Pelatihan Teknik Ketenagalistrikan MV 6 kV – 35 kV. Deployed via
+        <code>Vercel</code>.</p>
     </div>
   </footer>
 
 </body>
+
 </html>

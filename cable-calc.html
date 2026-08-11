@@ -972,7 +972,8 @@
         <div id="panel-geom" class="panel active">
           <div class="page-header">
             <h1 class="page-title">📐 Geometri Penampang</h1>
-            <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, ukuran standar IEC, serta Kalkulator Bending Radius kabel TM</p>
+            <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, ukuran standar IEC, serta
+              Kalkulator Bending Radius kabel TM</p>
           </div>
           <div class="two-col">
             <div>
@@ -1053,7 +1054,8 @@
 
           <!-- Bending Radius Calculator Card -->
           <div class="card" style="margin-top:16px">
-            <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <div class="card-hd"
+              style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
               <div style="display:flex;align-items:center;gap:8px">
                 <span class="card-title">⭕ Bending Radius Kabel (Radius Lengkung Minimum)</span>
                 <span class="card-pill">Standar XLPE TM / IEC 60502-2 / IEEE</span>
@@ -1496,9 +1498,13 @@
                   ©️
                 </div>
                 <div style="flex:1;">
-                  <div style="font-size:13px; font-weight:700; color:var(--text);">© 2026 WLDN Technical &amp; Training Suite. All Rights Reserved.</div>
-                  <div style="font-size:12px; color:var(--text-2); margin-top:2px;">Disusun &amp; Dikembangkan oleh <strong>Wildan Maradona, S.T.</strong> — Facilitator &amp; Technical Specialist (Digunakan dalam pelatihan ketenagalistrikan umum, industri, &amp; kemitraan seperti Diorama Training).</div>
-                  <div style="font-size:11px; color:var(--text-3); margin-top:4px;">Cable Calculator v2.4 (Fluent Edition) · WLDN Technical Reference Series</div>
+                  <div style="font-size:13px; font-weight:700; color:var(--text);">© 2026 WLDN Technical &amp; Training
+                    Suite. All Rights Reserved.</div>
+                  <div style="font-size:12px; color:var(--text-2); margin-top:2px;">Disusun &amp; Dikembangkan oleh
+                    <strong>Wildan Maradona, S.T.</strong> — Facilitator &amp; Technical Specialist (Digunakan dalam
+                    pelatihan ketenagalistrikan umum, industri, &amp; kemitraan seperti Diorama Training).</div>
+                  <div style="font-size:11px; color:var(--text-3); margin-top:4px;">Cable Calculator v2.4 (Fluent
+                    Edition) · WLDN Technical Reference Series</div>
                 </div>
               </div>
             </div>
@@ -1744,7 +1750,8 @@
             <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
               <div>
                 <h1 class="page-title">🌡️ Derating Factor</h1>
-                <p class="page-sub">Faktor koreksi KHA nominal kabel berdasarkan penyesuaian kondisi lingkungan instalasi lapangan (IEC 60287 / SPLN 43-5)</p>
+                <p class="page-sub">Faktor koreksi KHA nominal kabel berdasarkan penyesuaian kondisi lingkungan
+                  instalasi lapangan (IEC 60287 / SPLN 43-5)</p>
               </div>
               <div style="display:flex; gap:8px;">
                 <button class="theme-toggle-btn active" id="btn-brand-all" onclick="switchDeratingBrand('all')"
@@ -1762,13 +1769,20 @@
           </div>
 
           <!-- Derating Explanation Box -->
-          <div class="card" style="background:var(--surface-alt); border-left:4px solid var(--accent); margin-bottom:18px;">
+          <div class="card"
+            style="background:var(--surface-alt); border-left:4px solid var(--accent); margin-bottom:18px;">
             <div class="card-body" style="padding:14px 18px;">
-              <div style="font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-family:var(--mono);">
+              <div
+                style="font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:6px; font-family:var(--mono);">
                 💡 Apa itu Derating Factor?
               </div>
               <div style="font-size:13px; color:var(--text); line-height:1.5;">
-                <b>Derating Factor (Faktor Koreksi KHA)</b> adalah koefisien pengali penurunan kapasitas arus maksimum yang dapat dialirkan kabel secara aman tanpa merusak lapisan isolasi. Nilai KHA nominal pada datasheet pabrikan diuji pada kondisi standar laboratorium (Suhu Tanah 20°C / Udara 30°C, Kedalaman Tanam 0.8m, Resistivitas Termal 1.5 K·m/W). Apabila kondisi lingkungan riil di lapangan lebih panas, tertanam lebih dalam, atau kabel dipasang berdempetan dalam kelompok, KHA kabel harus dikoreksi: <b>KHA Terkoreksi = KHA Nominal × (Kt × Kd × Kg × Kr)</b>.
+                <b>Derating Factor (Faktor Koreksi KHA)</b> adalah koefisien pengali penurunan kapasitas arus maksimum
+                yang dapat dialirkan kabel secara aman tanpa merusak lapisan isolasi. Nilai KHA nominal pada datasheet
+                pabrikan diuji pada kondisi standar laboratorium (Suhu Tanah 20°C / Udara 30°C, Kedalaman Tanam 0.8m,
+                Resistivitas Termal 1.5 K·m/W). Apabila kondisi lingkungan riil di lapangan lebih panas, tertanam lebih
+                dalam, atau kabel dipasang berdempetan dalam kelompok, KHA kabel harus dikoreksi: <b>KHA Terkoreksi =
+                  KHA Nominal × (Kt × Kd × Kg × Kr)</b>.
               </div>
             </div>
           </div>
@@ -2811,12 +2825,12 @@ R_min (Terpasang)   = ${kFixed} × O.D. = ${kFixed} × ${od} mm = ${fmt(rFixed, 
 
       document.getElementById('br-alert').innerHTML = abox('info',
         `<div style="display:flex; flex-direction:column; gap:6px; width:100%;">` +
-          `<div style="font-weight:700; color:var(--info); font-size:13px; display:flex; align-items:center; gap:6px;">` +
-            `<span>💡</span> Rekomendasi Lapangan (OJT &amp; Diorama Timika)` +
-          `</div>` +
-          `<div style="color:var(--text); line-height:1.6; font-size:12.5px;">` +
-            `Saat penarikan kabel <strong>${coreName} ${armourName}</strong> (O.D. = ${od} mm), pastikan radius rol penarik (pulley) atau tekukan kabel di saluran trench/kubikel <strong>tidak lebih tajam dari ${fmt(rInstall / 10, 1)} cm</strong> (${kInstall} × O.D.), dan untuk posisi terpasang tetap tidak lebih tajam dari <strong>${fmt(rFixed / 10, 1)} cm</strong> (${kFixed} × O.D.) guna mencegah keretakan insulasi XLPE dan lapisan semikonduktif kabel.` +
-          `</div>` +
+        `<div style="font-weight:700; color:var(--info); font-size:13px; display:flex; align-items:center; gap:6px;">` +
+        `<span>💡</span> Rekomendasi Lapangan (OJT &amp; Diorama Timika)` +
+        `</div>` +
+        `<div style="color:var(--text); line-height:1.6; font-size:12.5px;">` +
+        `Saat penarikan kabel <strong>${coreName} ${armourName}</strong> (O.D. = ${od} mm), pastikan radius rol penarik (pulley) atau tekukan kabel di saluran trench/kubikel <strong>tidak lebih tajam dari ${fmt(rInstall / 10, 1)} cm</strong> (${kInstall} × O.D.), dan untuk posisi terpasang tetap tidak lebih tajam dari <strong>${fmt(rFixed / 10, 1)} cm</strong> (${kFixed} × O.D.) guna mencegah keretakan insulasi XLPE dan lapisan semikonduktif kabel.` +
+        `</div>` +
         `</div>`
       );
     }

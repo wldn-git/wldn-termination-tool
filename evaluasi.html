@@ -1,644 +1,891 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evaluasi &amp; OJT Checklist — Pelatihan Ketenagalistrikan MV 6 kV – 35 kV</title>
-<meta name="description" content="Kuis Evaluasi Pengetahuan 7 Bab & Checklist Kompetensi Praktik OJT Jointer TM 6 kV – 35 kV (DIS.KON.016/029)">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #090c10;
-    --panel: #11161d;
-    --panel2: #171e27;
-    --panel3: #1e2633;
-    --line: #263140;
-    --line-bright: #38475c;
-    --accent: #3ddc84;
-    --accent-glow: rgba(61, 220, 132, 0.15);
-    --accent-dim: #166534;
-    --cyan: #38bdf8;
-    --purple: #a855f7;
-    --orange: #ff8a3d;
-    --text: #e6edf3;
-    --text-dim: #8b949e;
-    --warn: #ffb547;
-    --danger: #ff5252;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Inter', -apple-system, sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluasi &amp; OJT Checklist — Pelatihan Ketenagalistrikan MV 6 kV – 35 kV</title>
+  <meta name="description"
+    content="Kuis Evaluasi Pengetahuan 7 Bab & Checklist Kompetensi Praktik OJT Jointer TM 6 kV – 35 kV (DIS.KON.016/029)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090c10;
+      --panel: #11161d;
+      --panel2: #171e27;
+      --panel3: #1e2633;
+      --line: #263140;
+      --line-bright: #38475c;
+      --accent: #3ddc84;
+      --accent-glow: rgba(61, 220, 132, 0.15);
+      --accent-dim: #166534;
+      --cyan: #38bdf8;
+      --purple: #a855f7;
+      --orange: #ff8a3d;
+      --text: #e6edf3;
+      --text-dim: #8b949e;
+      --warn: #ffb547;
+      --danger: #ff5252;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Inter', -apple-system, sans-serif;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    padding: 20px 24px;
-    line-height: 1.6;
-  }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      padding: 20px 24px;
+      line-height: 1.6;
+    }
 
-  .wrap { max-width: 1150px; margin: 0 auto; }
+    .wrap {
+      max-width: 1150px;
+      margin: 0 auto;
+    }
 
-  header {
-    margin-bottom: 20px;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
+    header {
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
-  .brand-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-glow);
-    border: 1px solid var(--accent-dim);
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-bottom: 8px;
-  }
-  .brand-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid var(--accent-dim);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
 
-  h1 { font-size: 24px; font-weight: 800; color: var(--text); }
-  .sub { color: var(--text-dim); font-size: 13.5px; margin-top: 4px; }
+    .brand-badge span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
 
-  .theme-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--sans);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: 20px;
-    border: 1px solid var(--line-bright);
-    background: var(--panel2);
-    color: var(--text);
-    cursor: pointer;
-    text-decoration: none;
-    transition: all .2s ease;
-  }
-  .theme-toggle-btn:hover { border-color: var(--accent); background: var(--panel3); }
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
 
-  /* Navigation Tabs */
-  .nav-tabs {
-    display: flex;
-    gap: 8px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 24px;
-    padding-bottom: 8px;
-    overflow-x: auto;
-  }
-  .tab-btn {
-    background: var(--panel2);
-    border: 1px solid var(--line);
-    color: var(--text-dim);
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all .2s ease;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .tab-btn:hover { border-color: var(--line-bright); color: var(--text); }
-  .tab-btn.active { background: var(--accent); color: #090c10; border-color: var(--accent); }
+    .sub {
+      color: var(--text-dim);
+      font-size: 13.5px;
+      margin-top: 4px;
+    }
 
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--line-bright);
+      background: var(--panel2);
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s ease;
+    }
 
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 24px;
-    margin-bottom: 20px;
-  }
+    .theme-toggle-btn:hover {
+      border-color: var(--accent);
+      background: var(--panel3);
+    }
 
-  .card-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+    /* Navigation Tabs */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
 
-  /* Quiz Styling */
-  .quiz-q-box {
-    background: var(--panel2);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-  .quiz-q-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--cyan);
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    margin-bottom: 6px;
-  }
-  .quiz-q-text { font-size: 14.5px; font-weight: 600; color: #fff; margin-bottom: 14px; }
-  .quiz-opts { display: flex; flex-direction: column; gap: 8px; }
-  .quiz-opt-btn {
-    background: var(--panel3);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 12px 16px;
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 13.5px;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .quiz-opt-btn:hover { border-color: var(--cyan); background: rgba(56, 189, 248, 0.08); }
-  .quiz-opt-btn.correct { background: rgba(61, 220, 132, 0.2); border-color: var(--ok); color: #fff; }
-  .quiz-opt-btn.wrong { background: rgba(255, 82, 82, 0.2); border-color: var(--danger); color: #fff; }
-  .quiz-explain {
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 6px;
-    font-size: 12.5px;
-    color: var(--text-dim);
-    display: none;
-  }
+    .tab-btn {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s ease;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  /* Score Box */
-  .score-box {
-    background: linear-gradient(135deg, rgba(61,220,132,0.1), rgba(56,189,248,0.1));
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    margin-top: 20px;
-    display: none;
-  }
-  .score-val { font-size: 36px; font-weight: 800; color: var(--accent); font-family: var(--mono); }
+    .tab-btn:hover {
+      border-color: var(--line-bright);
+      color: var(--text);
+    }
 
-  /* RCFA Diagnostic Grid */
-  .symptom-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 20px;
-  }
-  .symptom-card {
-    background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 16px; cursor: pointer; transition: all 0.2s ease;
-  }
-  .symptom-card:hover { border-color: var(--cyan); background: var(--panel3); }
-  .symptom-card.selected { border-color: var(--cyan); background: rgba(56, 189, 248, 0.12); box-shadow: 0 0 0 1px var(--cyan); }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #090c10;
+      border-color: var(--accent);
+    }
 
-  .diag-result {
-    background: linear-gradient(180deg, #111e2e, #0c1521); border: 1px solid var(--cyan); border-radius: 12px; padding: 22px; margin-top: 20px;
-  }
+    .tab-content {
+      display: none;
+    }
 
-  /* Tables */
-  .styled-table {
-    width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px;
-  }
-  .styled-table th {
-    background: var(--panel2); color: var(--text-dim); text-align: left; padding: 10px 12px;
-    font-family: var(--mono); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--line);
-  }
-  .styled-table td { padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--text); }
+    .tab-content.active {
+      display: block;
+    }
 
-  /* Form Controls */
-  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; }
-  .form-label { font-size: 12px; font-weight: 600; color: var(--text-dim); }
-  .form-input, .form-textarea {
-    background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px;
-    color: #fff; font-family: var(--sans); font-size: 13px;
-  }
-  .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
 
-  .btn {
-    font-family: var(--sans); font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px;
-    border: 1px solid var(--line); background: var(--panel2); color: var(--text); cursor: pointer; transition: .15s;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #090c10; }
-  .btn.primary:hover { filter: brightness(1.1); }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-  /* Printable Rules */
-  @media print {
-    body { background: #fff; color: #000; padding: 0; }
-    .wrap { max-width: 100%; }
-    header, .nav-tabs, .btn, .theme-toggle-btn { display: none !important; }
-    .card { border: none; padding: 0; background: #fff; color: #000; }
-    .form-input, .form-textarea { border: 1px solid #ccc; background: #fff; color: #000; }
-    .styled-table th { background: #eee; color: #000; }
-    .styled-table td { color: #000; border-bottom: 1px solid #ddd; }
-  }
-</style>
+    /* Quiz Styling */
+    .quiz-q-box {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .quiz-q-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 6px;
+    }
+
+    .quiz-q-text {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .quiz-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .quiz-opt-btn {
+      background: var(--panel3);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 13.5px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .quiz-opt-btn:hover {
+      border-color: var(--cyan);
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    .quiz-opt-btn.correct {
+      background: rgba(61, 220, 132, 0.2);
+      border-color: var(--ok);
+      color: #fff;
+    }
+
+    .quiz-opt-btn.wrong {
+      background: rgba(255, 82, 82, 0.2);
+      border-color: var(--danger);
+      color: #fff;
+    }
+
+    .quiz-explain {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 6px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      display: none;
+    }
+
+    /* Score Box */
+    .score-box {
+      background: linear-gradient(135deg, rgba(61, 220, 132, 0.1), rgba(56, 189, 248, 0.1));
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    .score-val {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    /* RCFA Diagnostic Grid */
+    .symptom-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .symptom-card {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .symptom-card:hover {
+      border-color: var(--cyan);
+      background: var(--panel3);
+    }
+
+    .symptom-card.selected {
+      border-color: var(--cyan);
+      background: rgba(56, 189, 248, 0.12);
+      box-shadow: 0 0 0 1px var(--cyan);
+    }
+
+    .diag-result {
+      background: linear-gradient(180deg, #111e2e, #0c1521);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      padding: 22px;
+      margin-top: 20px;
+    }
+
+    /* Tables */
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .styled-table th {
+      background: var(--panel2);
+      color: var(--text-dim);
+      text-align: left;
+      padding: 10px 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .styled-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+
+    .form-input,
+    .form-textarea {
+      background: var(--panel2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: var(--sans);
+      font-size: 13px;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .btn {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--panel2);
+      color: var(--text);
+      cursor: pointer;
+      transition: .15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #090c10;
+    }
+
+    .btn.primary:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Printable Rules */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        padding: 0;
+      }
+
+      .wrap {
+        max-width: 100%;
+      }
+
+      header,
+      .nav-tabs,
+      .btn,
+      .theme-toggle-btn {
+        display: none !important;
+      }
+
+      .card {
+        border: none;
+        padding: 0;
+        background: #fff;
+        color: #000;
+      }
+
+      .form-input,
+      .form-textarea {
+        border: 1px solid #ccc;
+        background: #fff;
+        color: #000;
+      }
+
+      .styled-table th {
+        background: #eee;
+        color: #000;
+      }
+
+      .styled-table td {
+        color: #000;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="wrap">
-  <header>
-    <div>
-      <div class="brand-badge"><span></span> Technical Suite · Evaluation Suite</div>
-      <h1>Evaluasi &amp; OJT Checklist Competency</h1>
-      <div class="sub">Kuis Evaluasi Pengetahuan, Checklist Kompetensi Praktik Jointer TM (DIS.KON.016/029), &amp; Laporan OJT</div>
-    </div>
-    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-      <a href="index.html" class="theme-toggle-btn">🏠 Portal Suite</a>
-      <button class="theme-toggle-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
-    </div>
-  </header>
-
-  <!-- Navigation Tabs -->
-  <nav class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('tab-quiz')">📝 Evaluation Quiz (Bab 1-7)</button>
-    <button class="tab-btn" onclick="switchTab('tab-checklist')">📋 Checklist Kompetensi OJT</button>
-    <button class="tab-btn" onclick="switchTab('tab-report')">🖨️ Form Laporan OJT (Printable)</button>
-    <button class="tab-btn" onclick="switchTab('tab-rcfa')">🔍 Simulator Diagnosa Gangguan (RCFA)</button>
-  </nav>
-
-  <!-- TAB 1: QUIZ EVALUATION -->
-  <div id="tab-quiz" class="tab-content active">
-    <div class="card">
-      <div class="card-title">📝 Kuis Evaluasi Pengetahuan Lapangan (12 Soal Berbobot)</div>
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px;">Uji pemahaman teori Bab 1–7 (Teknik Isolasi, SKTM, SOP Jointing/Terminasi, K3, Standar IEC/IEEE, dan Pengujian). Pilih jawaban terbaik untuk melihat umpan balik rasional secara langsung.</p>
-      
-      <div id="quizContainer"></div>
-
-      <div style="display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap;">
-        <button class="btn primary" onclick="calculateQuizScore()">Hitung Skor Evaluasi</button>
-        <button class="btn" onclick="resetQuiz()">🔄 Reset / Ulangi Kuis</button>
+  <div class="wrap">
+    <header>
+      <div>
+        <div class="brand-badge"><span></span> Technical Suite · Evaluation Suite</div>
+        <h1>Evaluasi &amp; OJT Checklist Competency</h1>
+        <div class="sub">Kuis Evaluasi Pengetahuan, Checklist Kompetensi Praktik Jointer TM (DIS.KON.016/029), &amp;
+          Laporan OJT</div>
       </div>
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <a href="index.html" class="theme-toggle-btn">🏠 Portal Suite</a>
+        <button class="theme-toggle-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span
+            id="themeLabel">Win11 Light</span></button>
+      </div>
+    </header>
 
-      <div id="scoreBox" class="score-box">
-        <div style="font-size:12px; text-transform:uppercase; color:var(--text-dim);">Hasil Evaluasi Akhir</div>
-        <div class="score-val" id="scoreVal">0 / 100</div>
-        <div id="scoreFeedback" style="font-size:13.5px; margin-top:6px; color:#fff;"></div>
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('tab-quiz')">📝 Evaluation Quiz (Bab 1-7)</button>
+      <button class="tab-btn" onclick="switchTab('tab-checklist')">📋 Checklist Kompetensi OJT</button>
+      <button class="tab-btn" onclick="switchTab('tab-report')">🖨️ Form Laporan OJT (Printable)</button>
+      <button class="tab-btn" onclick="switchTab('tab-rcfa')">🔍 Simulator Diagnosa Gangguan (RCFA)</button>
+    </nav>
+
+    <!-- TAB 1: QUIZ EVALUATION -->
+    <div id="tab-quiz" class="tab-content active">
+      <div class="card">
+        <div class="card-title">📝 Kuis Evaluasi Pengetahuan Lapangan (12 Soal Berbobot)</div>
+        <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px;">Uji pemahaman teori Bab 1–7 (Teknik
+          Isolasi, SKTM, SOP Jointing/Terminasi, K3, Standar IEC/IEEE, dan Pengujian). Pilih jawaban terbaik untuk
+          melihat umpan balik rasional secara langsung.</p>
+
+        <div id="quizContainer"></div>
+
+        <div style="display:flex; justify-content:center; gap:12px; margin-top:20px; flex-wrap:wrap;">
+          <button class="btn primary" onclick="calculateQuizScore()">Hitung Skor Evaluasi</button>
+          <button class="btn" onclick="resetQuiz()">🔄 Reset / Ulangi Kuis</button>
+        </div>
+
+        <div id="scoreBox" class="score-box">
+          <div style="font-size:12px; text-transform:uppercase; color:var(--text-dim);">Hasil Evaluasi Akhir</div>
+          <div class="score-val" id="scoreVal">0 / 100</div>
+          <div id="scoreFeedback" style="font-size:13.5px; margin-top:6px; color:#fff;"></div>
+        </div>
       </div>
     </div>
+
+    <!-- TAB 2: CHECKLIST KOMPETENSI OJT -->
+    <div id="tab-checklist" class="tab-content">
+      <div class="card">
+        <div class="card-title">📋 Checklist Kompetensi Praktik Jointer TM (SKKNI / PLN DIS.KON.016 &amp; 029)</div>
+        <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">Format penilaian unjuk kerja praktik
+          penyambungan dan terminasi kabel 20 kV yang diisi oleh fasilitator/instruktur saat mengamati sesi praktik Bab
+          5 &amp; 6.</p>
+
+        <div style="overflow-x:auto;">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th style="width:50px;">No</th>
+                <th>Unit Kegiatan / Tahapan Kerja</th>
+                <th>Kriteria Unjuk Kerja Standar (DIS.KON.016/029)</th>
+                <th style="width:120px;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><b>Persiapan K3 &amp; Safety</b></td>
+                <td>Memakai APD lengkap; memasang LOTO &amp; discharge rod/grounding sebelum bekerja; verifikasi kabel
+                  bebas tegangan 20kV.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><b>Identifikasi Kabel</b></td>
+                <td>Mampu membaca notasi spesifikasi kabel (IEC 60502 / N2XSEBY 12/20kV); menandai titik potong marking
+                  dengan benar.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><b>Pengupasan Sheath/Screen</b></td>
+                <td>Perhitungan Jacket Cutback Z presisi; mengupas outer sheath/armour/screen tanpa melukai insulasi
+                  XLPE utama.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><b>Manajemen Semiconductive</b></td>
+                <td>Pengupasan lapisan semi-con rapi tanpa takikan (score mark) dan tanpa meninggalkan residu karbon
+                  yang memicu tracking.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><b>Stress Control Placement</b></td>
+                <td>Pemasangan stress control tube / built-in stress cone presisi pada titik pemutusan screen (overlap
+                  sesuai IIS kit).</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><b>Pemasangan Skun/Lug</b></td>
+                <td>Kesesuaian material skun (Cu/Al/Bimetal), pengencangan baut torsi ($M8, M10, M12, M16$) atau
+                  crimping rapi.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><b>Shrink Execution</b></td>
+                <td>Pemasangan Heat Shrink (pemanasan merata tanpa gelembung) atau Cold Shrink (penarikan inti spiral
+                  sejajar).</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><b>Pengujian Pasca-Instalasi</b></td>
+                <td>Melakukan Megger Test (injeksi 2.5/5kV DC) dengan hasil tahanan isolasi ≥ 1 MΩ/kV (min 5 GΩ).</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><b>Kerapian &amp; Dokumentasi</b></td>
+                <td>Area kerja dibersihkan dari limbah bahan; hasil terminasi/jointing didokumentasikan dalam laporan
+                  OJT.</td>
+                <td><select class="form-input" style="padding:4px;">
+                    <option>Kompeten</option>
+                    <option>Belum</option>
+                  </select></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: FORM LAPORAN OJT (PRINTABLE) -->
+    <div id="tab-report" class="tab-content">
+      <div class="card">
+        <div class="card-title" style="justify-content:space-between;">
+          <span>🖨️ Form Laporan Kegiatan OJT 1 Halaman</span>
+          <button class="btn primary" onclick="window.print()">Print / Cetak PDF</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nama Peserta</label>
+            <input type="text" class="form-input" placeholder="Masukkan nama peserta">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nama Instruktur / Fasilitator</label>
+            <input type="text" class="form-input" value="Wildan Maradona, S.T. / Instruktur Competency">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tanggal Pelatihan</label>
+            <input type="date" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tipe Kabel &amp; Kit Digunakan</label>
+            <input type="text" class="form-input" placeholder="Misal: N2XSEBY 3x150 mm² + 3M QT-III">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Langkah Kerja Utama yang Dilakukan</label>
+          <textarea class="form-textarea" rows="3"
+            placeholder="Ringkasan urutan pengupasan, stress control, pemasangan skun, dan shrinking..."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Kendala Lapangan &amp; Cara Mengatasi</label>
+          <textarea class="form-textarea" rows="2"
+            placeholder="Catatan kendala teknis dan solusi yang diterapkan..."></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">Hasil Pengujian Akhir (Megger Test / Visual Check)</label>
+          <input type="text" class="form-input"
+            placeholder="Hasil Megger: Fasa R-G=... MΩ, S-G=... MΩ, T-G=... MΩ (Lulus)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Rekomendasi Kompetensi Fasilitator</label>
+          <select class="form-input">
+            <option>Direkomendasikan KOMPETEN (Sertifikasi Jointer TM 20kV)</option>
+            <option>Perlu Latihan Bimbingan Ulang</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: SIMULATOR DIAGNOSA GANGGUAN (RCFA) -->
+    <div id="tab-rcfa" class="tab-content">
+      <div class="card">
+        <div class="card-title">🔍 Simulator Diagnosa Gangguan &amp; Root Cause Failure Analysis (RCFA)</div>
+        <p style="font-size:13.5px; color:var(--text-dim); margin-bottom:18px;">
+          Pilih gejala kerusakan/gangguan fisik aksesoris kabel yang ditemukan di lapangan untuk mendeteksi akar
+          penyebab (Root Cause), standar teknik yang terlanggar, dan SOP perbaikan presisi:
+        </p>
+
+        <!-- Symptom Selector Grid -->
+        <div class="symptom-grid" id="symptomGrid">
+          <div class="symptom-card selected" onclick="selectSymptom('sym1', this)">
+            <div style="font-size:20px; margin-bottom:4px;">💥</div>
+            <b style="font-size:13.5px; color:#fff;">Breakdown di Potongan Semi-con</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Tembus isolasi tepat di
+              batas pengupasan lapisan semikonduktif.</span>
+          </div>
+
+          <div class="symptom-card" onclick="selectSymptom('sym2', this)">
+            <div style="font-size:20px; margin-bottom:4px;">🔥</div>
+            <b style="font-size:13.5px; color:#fff;">Overheating / Lug Meleleh</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Panas berlebih dan
+              diskolorasi pada terminal pad busbar kubikel.</span>
+          </div>
+
+          <div class="symptom-card" onclick="selectSymptom('sym3', this)">
+            <div style="font-size:20px; margin-bottom:4px;">⚡</div>
+            <b style="font-size:13.5px; color:#fff;">Tracking / Arus Bocor Kebiruan</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Jejak perambatan arus di
+              permukaan skirt silikon outdoor.</span>
+          </div>
+
+          <div class="symptom-card" onclick="selectSymptom('sym4', this)">
+            <div style="font-size:20px; margin-bottom:4px;">💧</div>
+            <b style="font-size:13.5px; color:#fff;">Penetrasi Lembap pada Joint Box</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Kabel tanah mengalami
+              korosi &amp; breakdown akibat masuknya air.</span>
+          </div>
+
+          <div class="symptom-card" onclick="selectSymptom('sym5', this)">
+            <div style="font-size:20px; margin-bottom:4px;">📉</div>
+            <b style="font-size:13.5px; color:#fff;">Tahanan Isolasi Megger Drop</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Hasil uji Megger 2.5kV
+              DC &lt; 5 GΩ saat komisioning awal.</span>
+          </div>
+
+          <div class="symptom-card" onclick="selectSymptom('sym6', this)">
+            <div style="font-size:20px; margin-bottom:4px;">⚡</div>
+            <b style="font-size:13.5px; color:#fff;">Partial Discharge (PD) &gt; 3 pC</b>
+            <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Peluahan parsial tinggi
+              terdeteksi oleh VLF PD analyzer.</span>
+          </div>
+        </div>
+
+        <!-- Diagnostic Result Output Box -->
+        <div class="diag-result" id="diagResultBox">
+          <!-- Dynamic Content injected via JS -->
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <!-- TAB 2: CHECKLIST KOMPETENSI OJT -->
-  <div id="tab-checklist" class="tab-content">
-    <div class="card">
-      <div class="card-title">📋 Checklist Kompetensi Praktik Jointer TM (SKKNI / PLN DIS.KON.016 &amp; 029)</div>
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">Format penilaian unjuk kerja praktik penyambungan dan terminasi kabel 20 kV yang diisi oleh fasilitator/instruktur saat mengamati sesi praktik Bab 5 &amp; 6.</p>
-
-      <div style="overflow-x:auto;">
-        <table class="styled-table">
-          <thead>
-            <tr>
-              <th style="width:50px;">No</th>
-              <th>Unit Kegiatan / Tahapan Kerja</th>
-              <th>Kriteria Unjuk Kerja Standar (DIS.KON.016/029)</th>
-              <th style="width:120px;">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td><b>Persiapan K3 &amp; Safety</b></td>
-              <td>Memakai APD lengkap; memasang LOTO &amp; discharge rod/grounding sebelum bekerja; verifikasi kabel bebas tegangan 20kV.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td><b>Identifikasi Kabel</b></td>
-              <td>Mampu membaca notasi spesifikasi kabel (IEC 60502 / N2XSEBY 12/20kV); menandai titik potong marking dengan benar.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td><b>Pengupasan Sheath/Screen</b></td>
-              <td>Perhitungan Jacket Cutback Z presisi; mengupas outer sheath/armour/screen tanpa melukai insulasi XLPE utama.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td><b>Manajemen Semiconductive</b></td>
-              <td>Pengupasan lapisan semi-con rapi tanpa takikan (score mark) dan tanpa meninggalkan residu karbon yang memicu tracking.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td><b>Stress Control Placement</b></td>
-              <td>Pemasangan stress control tube / built-in stress cone presisi pada titik pemutusan screen (overlap sesuai IIS kit).</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>6</td>
-              <td><b>Pemasangan Skun/Lug</b></td>
-              <td>Kesesuaian material skun (Cu/Al/Bimetal), pengencangan baut torsi ($M8, M10, M12, M16$) atau crimping rapi.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>7</td>
-              <td><b>Shrink Execution</b></td>
-              <td>Pemasangan Heat Shrink (pemanasan merata tanpa gelembung) atau Cold Shrink (penarikan inti spiral sejajar).</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>8</td>
-              <td><b>Pengujian Pasca-Instalasi</b></td>
-              <td>Melakukan Megger Test (injeksi 2.5/5kV DC) dengan hasil tahanan isolasi ≥ 1 MΩ/kV (min 5 GΩ).</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-            <tr>
-              <td>9</td>
-              <td><b>Kerapian &amp; Dokumentasi</b></td>
-              <td>Area kerja dibersihkan dari limbah bahan; hasil terminasi/jointing didokumentasikan dalam laporan OJT.</td>
-              <td><select class="form-input" style="padding:4px;"><option>Kompeten</option><option>Belum</option></select></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 3: FORM LAPORAN OJT (PRINTABLE) -->
-  <div id="tab-report" class="tab-content">
-    <div class="card">
-      <div class="card-title" style="justify-content:space-between;">
-        <span>🖨️ Form Laporan Kegiatan OJT 1 Halaman</span>
-        <button class="btn primary" onclick="window.print()">Print / Cetak PDF</button>
-      </div>
-
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Nama Peserta</label>
-          <input type="text" class="form-input" placeholder="Masukkan nama peserta">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Nama Instruktur / Fasilitator</label>
-          <input type="text" class="form-input" value="Wildan Maradona, S.T. / Instruktur Competency">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tanggal Pelatihan</label>
-          <input type="date" class="form-input">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tipe Kabel &amp; Kit Digunakan</label>
-          <input type="text" class="form-input" placeholder="Misal: N2XSEBY 3x150 mm² + 3M QT-III">
-        </div>
-      </div>
-
-      <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label">Langkah Kerja Utama yang Dilakukan</label>
-        <textarea class="form-textarea" rows="3" placeholder="Ringkasan urutan pengupasan, stress control, pemasangan skun, dan shrinking..."></textarea>
-      </div>
-
-      <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label">Kendala Lapangan &amp; Cara Mengatasi</label>
-        <textarea class="form-textarea" rows="2" placeholder="Catatan kendala teknis dan solusi yang diterapkan..."></textarea>
-      </div>
-
-      <div class="form-group" style="margin-bottom:14px;">
-        <label class="form-label">Hasil Pengujian Akhir (Megger Test / Visual Check)</label>
-        <input type="text" class="form-input" placeholder="Hasil Megger: Fasa R-G=... MΩ, S-G=... MΩ, T-G=... MΩ (Lulus)">
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">Rekomendasi Kompetensi Fasilitator</label>
-        <select class="form-input">
-          <option>Direkomendasikan KOMPETEN (Sertifikasi Jointer TM 20kV)</option>
-          <option>Perlu Latihan Bimbingan Ulang</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 4: SIMULATOR DIAGNOSA GANGGUAN (RCFA) -->
-  <div id="tab-rcfa" class="tab-content">
-    <div class="card">
-      <div class="card-title">🔍 Simulator Diagnosa Gangguan &amp; Root Cause Failure Analysis (RCFA)</div>
-      <p style="font-size:13.5px; color:var(--text-dim); margin-bottom:18px;">
-        Pilih gejala kerusakan/gangguan fisik aksesoris kabel yang ditemukan di lapangan untuk mendeteksi akar penyebab (Root Cause), standar teknik yang terlanggar, dan SOP perbaikan presisi:
-      </p>
-
-      <!-- Symptom Selector Grid -->
-      <div class="symptom-grid" id="symptomGrid">
-        <div class="symptom-card selected" onclick="selectSymptom('sym1', this)">
-          <div style="font-size:20px; margin-bottom:4px;">💥</div>
-          <b style="font-size:13.5px; color:#fff;">Breakdown di Potongan Semi-con</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Tembus isolasi tepat di batas pengupasan lapisan semikonduktif.</span>
-        </div>
-
-        <div class="symptom-card" onclick="selectSymptom('sym2', this)">
-          <div style="font-size:20px; margin-bottom:4px;">🔥</div>
-          <b style="font-size:13.5px; color:#fff;">Overheating / Lug Meleleh</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Panas berlebih dan diskolorasi pada terminal pad busbar kubikel.</span>
-        </div>
-
-        <div class="symptom-card" onclick="selectSymptom('sym3', this)">
-          <div style="font-size:20px; margin-bottom:4px;">⚡</div>
-          <b style="font-size:13.5px; color:#fff;">Tracking / Arus Bocor Kebiruan</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Jejak perambatan arus di permukaan skirt silikon outdoor.</span>
-        </div>
-
-        <div class="symptom-card" onclick="selectSymptom('sym4', this)">
-          <div style="font-size:20px; margin-bottom:4px;">💧</div>
-          <b style="font-size:13.5px; color:#fff;">Penetrasi Lembap pada Joint Box</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Kabel tanah mengalami korosi &amp; breakdown akibat masuknya air.</span>
-        </div>
-
-        <div class="symptom-card" onclick="selectSymptom('sym5', this)">
-          <div style="font-size:20px; margin-bottom:4px;">📉</div>
-          <b style="font-size:13.5px; color:#fff;">Tahanan Isolasi Megger Drop</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Hasil uji Megger 2.5kV DC &lt; 5 GΩ saat komisioning awal.</span>
-        </div>
-
-        <div class="symptom-card" onclick="selectSymptom('sym6', this)">
-          <div style="font-size:20px; margin-bottom:4px;">⚡</div>
-          <b style="font-size:13.5px; color:#fff;">Partial Discharge (PD) &gt; 3 pC</b>
-          <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Peluahan parsial tinggi terdeteksi oleh VLF PD analyzer.</span>
-        </div>
-      </div>
-
-      <!-- Diagnostic Result Output Box -->
-      <div class="diag-result" id="diagResultBox">
-        <!-- Dynamic Content injected via JS -->
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<script>
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    document.getElementById(tabId).classList.add('active');
-  }
-
-  function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'light') {
-      document.documentElement.removeAttribute('data-theme');
-      document.getElementById('themeIcon').innerText = '☀️';
-      document.getElementById('themeLabel').innerText = 'Win11 Light';
-    } else {
-      document.documentElement.setAttribute('data-theme', 'light');
-      document.getElementById('themeIcon').innerText = '🌙';
-      document.getElementById('themeLabel').innerText = 'Dark Mode';
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById(tabId).classList.add('active');
     }
-  }
 
-  // Quiz Questions Data (12 Questions covering Bab 1-7 & Standards)
-  const quizData = [
-    {
-      q: "1. Mengapa kabel TM 20 kV modern menggunakan isolasi XLPE dibandingkan PVC?",
-      opts: [
-        "A. XLPE lebih murah harganya dibanding PVC",
-        "B. XLPE memiliki suhu kerja kontinu 90°C sehingga Kuat Hantar Arus (KHA) lebih tinggi 18–22%",
-        "C. XLPE lebih mudah dibengkokkan dengan bending radius sangat kecil",
-        "D. PVC menghasilkan lonjakan tegangan impuls yang berbahaya"
-      ],
-      ans: 1,
-      exp: "XLPE memiliki batas suhu kerja 90°C (vs PVC 70°C) dan dielectric loss sangat rendah, sehingga KHA kabel XLPE 18–22% lebih tinggi pada ukuran penampang yang sama."
-    },
-    {
-      q: "2. Dimanakah letak konsentrasi medan listrik tertinggi (E_max) pada kabel silinder berpenebalan isolasi?",
-      opts: [
-        "A. Pada permukaan luar outer sheath",
-        "B. Di tengah-tengah tebal insulasi XLPE",
-        "C. Pada permukaan konduktor yang dikelilingi semiconductive screen",
-        "D. Di atas perisai pita baja (DSTA)"
-      ],
-      ans: 2,
-      exp: "Berdasarkan rumus E_max = V / (r * ln(R/r)), medan listrik selalu memuncak pada radius terkecil (permukaan konduktor)."
-    },
-    {
-      q: "3. Fenomena Water Treeing pada kabel XLPE dipicu oleh kombinasi dari faktor apa?",
-      opts: [
-        "A. Panas berlebih dan tarikan mekanis kabel",
-        "B. Stress listrik tinggi dan keberadaan kelembapan/air yang terdorong ke molekul XLPE",
-        "C. Kebocoran minyak pelumas dan hubung singkat",
-        "D. Paparan sinar ultraviolet pada konduktor tembaga"
-      ],
-      ans: 1,
-      exp: "Water Treeing terjadi akibat penetrasi air di bawah stress listrik tinggi, membentuk kanal kelembapan electro-chemical treeing."
-    },
-    {
-      q: "4. Apakah fungsi utama Stress Control Tube / Stress Cone pada titik terminasi kabel TM?",
-      opts: [
-        "A. Mempercantik penampilan fisik kabel",
-        "B. Menurunkan suhu kerja konduktor tembaga",
-        "C. Memperbesar radius geometri untuk meratakan (grading) konsentrasi medan listrik di titik pemutusan screen",
-        "D. Mengencangkan skun agar baut tidak kendor"
-      ],
-      ans: 2,
-      exp: "Stress cone menurunkan gradien medan listrik ekstrim di ujung terputusnya metallic screen untuk mencegah tembus isolasi (flashover)."
-    },
-    {
-      q: "5. Berapakah tegangan injeksi Megger standar yang digunakan untuk Uji Tahanan Isolasi kabel TM 20 kV (15 kV class) sesuai NETA MTS-2023 §7.3.3?",
-      opts: [
-        "A. 500 V DC",
-        "B. 2.500 V DC",
-        "C. 10.000 V AC",
-        "D. 50.000 V AC"
-      ],
-      ans: 1,
-      exp: "NETA MTS-2023 §7.3.3 menetapkan 2.500 V DC untuk kabel ≤25 kV class dan 5.000 V DC untuk >25 kV class."
-    },
-    {
-      q: "6. Berdasarkan PLN Buku 5 & PUIL, berapakah kedalaman galian tanah standar untuk penggelaran SKTM tanam langsung?",
-      opts: [
-        "A. 30 cm – 40 cm",
-        "B. 70 cm – 80 cm",
-        "C. 150 cm – 200 cm",
-        "D. Minimal 3 meter"
-      ],
-      ans: 1,
-      exp: "Kedalaman galian tanah standar PLN untuk SKTM 20kV tanam langsung adalah 70 cm hingga 80 cm."
-    },
-    {
-      q: "7. Berapakah jarak aman (clearance) minimal persilangan antara SKTM 20kV dengan kabel telekomunikasi?",
-      opts: [
-        "A. Minimal 10 cm",
-        "B. Minimal 30 cm (SKTM diletakkan di bawah kabel Telkom dan dilindungi pipa beton belah 6 cm)",
-        "C. Tidak perlu jarak aman selama ada isolasi PVC",
-        "D. Minimal 5 meter"
-      ],
-      ans: 1,
-      exp: "Berdasarkan SNI 04-0225-2000, jarak aman persilangan minimal 30 cm dengan kabel SKTM di posisi bawah Telkom."
-    },
-    {
-      q: "8. Berapakah Bending Radius (radius lengkung) minimal yang diijinkan saat penggelaran kabel XLPE TM?",
-      opts: [
-        "A. Minimal 3x Outer Diameter (O.D.) Kabel",
-        "B. Minimal 6x Outer Diameter (O.D.) Kabel",
-        "C. Minimal 12x Outer Diameter (O.D.) Kabel",
-        "D. Minimal 30x Outer Diameter (O.D.) Kabel"
-      ],
-      ans: 2,
-      exp: "Spesifikasi vendor (Jembo/Kabelindo) mensyaratkan Bending Radius minimal 12 kali Diameter Luar (O.D.) Kabel."
-    },
-    {
-      q: "9. Jenis skun/lug apakah yang WAJIB digunakan saat menyambungkan konduktor Aluminium (Al) ke terminal Tembaga (Cu)?",
-      opts: [
-        "A. Lug Tembaga murni (Full Copper)",
-        "B. Lug Aluminium murni (Full Aluminium)",
-        "C. Lug BIMETAL (Barrel Al + Pad Cu) untuk mencegah korosi galvanik",
-        "D. Bebas menggunakan lug apa saja"
-      ],
-      ans: 2,
-      exp: "Sambungan Al ke Cu wajib memakai skun Bimetal untuk mencegah reaksi elektrokimia yang memicu korosi galvanik dan overheating."
-    },
-    {
-      q: "10. Apakah keunggulan utama teknologi Cold Shrink (3M QT-III) dibandingkan Heat Shrink (Raychem HVT-Z)?",
-      opts: [
-        "A. Cold Shrink menggunakan torch pemanas gas elpiji",
-        "B. Cold Shrink dipasang tanpa open flame/torch, tinggal menarik inti spiral plastik sehingga lebih aman di area rawan kebakaran",
-        "C. Cold Shrink harganya jauh lebih murah",
-        "D. Heat Shrink tidak membutuhkan kabel grounding"
-      ],
-      ans: 1,
-      exp: "Cold Shrink tidak memerlukan torch pemanas terbuka (open flame) sehingga sangat aman di instalasi tambang, kimia, dan area terbatas."
-    },
-    {
-      q: "11. Standar IEEE manakah yang secara spesifik mengatur metode pengujian Type Test & Requirement untuk sambungan kabel (Cable Joints / Splices)?",
-      opts: [
-        "A. IEEE Std 48",
-        "B. IEEE Std 404",
-        "C. IEEE Std 43",
-        "D. IEEE Std 100"
-      ],
-      ans: 1,
-      exp: "IEEE Std 48 mengatur Terminasi kabel, sedangkan IEEE Std 404 mengatur Sambungan kabel (Joints / Splices)."
-    },
-    {
-      q: "12. Berdasarkan statistik studi kasus, apakah penyebab terbesar (50%) kegagalan sambungan kabel TM di lapangan?",
-      opts: [
-        "A. Kualitas material pabrik bermasalah",
-        "B. Bencana alam dan gempa bumi",
-        "C. Sumber Daya Manusia (Jointer) tidak kompeten atau salah dalam menjalankan SOP pengupasan/cutback",
-        "D. Tegangan PLN terlalu tinggi"
-      ],
-      ans: 2,
-      exp: "50% kegagalan disebabkan jointer tidak kompeten atau salah SOP, 22% salah pilih material, dan 28% kualitas material."
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      if (currentTheme === 'light') {
+        document.documentElement.removeAttribute('data-theme');
+        document.getElementById('themeIcon').innerText = '☀️';
+        document.getElementById('themeLabel').innerText = 'Win11 Light';
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeIcon').innerText = '🌙';
+        document.getElementById('themeLabel').innerText = 'Dark Mode';
+      }
     }
-  ];
 
-  function renderQuiz() {
-    const container = document.getElementById('quizContainer');
-    container.innerHTML = quizData.map((q, idx) => `
+    // Quiz Questions Data (12 Questions covering Bab 1-7 & Standards)
+    const quizData = [
+      {
+        q: "1. Mengapa kabel TM 20 kV modern menggunakan isolasi XLPE dibandingkan PVC?",
+        opts: [
+          "A. XLPE lebih murah harganya dibanding PVC",
+          "B. XLPE memiliki suhu kerja kontinu 90°C sehingga Kuat Hantar Arus (KHA) lebih tinggi 18–22%",
+          "C. XLPE lebih mudah dibengkokkan dengan bending radius sangat kecil",
+          "D. PVC menghasilkan lonjakan tegangan impuls yang berbahaya"
+        ],
+        ans: 1,
+        exp: "XLPE memiliki batas suhu kerja 90°C (vs PVC 70°C) dan dielectric loss sangat rendah, sehingga KHA kabel XLPE 18–22% lebih tinggi pada ukuran penampang yang sama."
+      },
+      {
+        q: "2. Dimanakah letak konsentrasi medan listrik tertinggi (E_max) pada kabel silinder berpenebalan isolasi?",
+        opts: [
+          "A. Pada permukaan luar outer sheath",
+          "B. Di tengah-tengah tebal insulasi XLPE",
+          "C. Pada permukaan konduktor yang dikelilingi semiconductive screen",
+          "D. Di atas perisai pita baja (DSTA)"
+        ],
+        ans: 2,
+        exp: "Berdasarkan rumus E_max = V / (r * ln(R/r)), medan listrik selalu memuncak pada radius terkecil (permukaan konduktor)."
+      },
+      {
+        q: "3. Fenomena Water Treeing pada kabel XLPE dipicu oleh kombinasi dari faktor apa?",
+        opts: [
+          "A. Panas berlebih dan tarikan mekanis kabel",
+          "B. Stress listrik tinggi dan keberadaan kelembapan/air yang terdorong ke molekul XLPE",
+          "C. Kebocoran minyak pelumas dan hubung singkat",
+          "D. Paparan sinar ultraviolet pada konduktor tembaga"
+        ],
+        ans: 1,
+        exp: "Water Treeing terjadi akibat penetrasi air di bawah stress listrik tinggi, membentuk kanal kelembapan electro-chemical treeing."
+      },
+      {
+        q: "4. Apakah fungsi utama Stress Control Tube / Stress Cone pada titik terminasi kabel TM?",
+        opts: [
+          "A. Mempercantik penampilan fisik kabel",
+          "B. Menurunkan suhu kerja konduktor tembaga",
+          "C. Memperbesar radius geometri untuk meratakan (grading) konsentrasi medan listrik di titik pemutusan screen",
+          "D. Mengencangkan skun agar baut tidak kendor"
+        ],
+        ans: 2,
+        exp: "Stress cone menurunkan gradien medan listrik ekstrim di ujung terputusnya metallic screen untuk mencegah tembus isolasi (flashover)."
+      },
+      {
+        q: "5. Berapakah tegangan injeksi Megger standar yang digunakan untuk Uji Tahanan Isolasi kabel TM 20 kV (15 kV class) sesuai NETA MTS-2023 §7.3.3?",
+        opts: [
+          "A. 500 V DC",
+          "B. 2.500 V DC",
+          "C. 10.000 V AC",
+          "D. 50.000 V AC"
+        ],
+        ans: 1,
+        exp: "NETA MTS-2023 §7.3.3 menetapkan 2.500 V DC untuk kabel ≤25 kV class dan 5.000 V DC untuk >25 kV class."
+      },
+      {
+        q: "6. Berdasarkan PLN Buku 5 & PUIL, berapakah kedalaman galian tanah standar untuk penggelaran SKTM tanam langsung?",
+        opts: [
+          "A. 30 cm – 40 cm",
+          "B. 70 cm – 80 cm",
+          "C. 150 cm – 200 cm",
+          "D. Minimal 3 meter"
+        ],
+        ans: 1,
+        exp: "Kedalaman galian tanah standar PLN untuk SKTM 20kV tanam langsung adalah 70 cm hingga 80 cm."
+      },
+      {
+        q: "7. Berapakah jarak aman (clearance) minimal persilangan antara SKTM 20kV dengan kabel telekomunikasi?",
+        opts: [
+          "A. Minimal 10 cm",
+          "B. Minimal 30 cm (SKTM diletakkan di bawah kabel Telkom dan dilindungi pipa beton belah 6 cm)",
+          "C. Tidak perlu jarak aman selama ada isolasi PVC",
+          "D. Minimal 5 meter"
+        ],
+        ans: 1,
+        exp: "Berdasarkan SNI 04-0225-2000, jarak aman persilangan minimal 30 cm dengan kabel SKTM di posisi bawah Telkom."
+      },
+      {
+        q: "8. Berapakah Bending Radius (radius lengkung) minimal yang diijinkan saat penggelaran kabel XLPE TM?",
+        opts: [
+          "A. Minimal 3x Outer Diameter (O.D.) Kabel",
+          "B. Minimal 6x Outer Diameter (O.D.) Kabel",
+          "C. Minimal 12x Outer Diameter (O.D.) Kabel",
+          "D. Minimal 30x Outer Diameter (O.D.) Kabel"
+        ],
+        ans: 2,
+        exp: "Spesifikasi vendor (Jembo/Kabelindo) mensyaratkan Bending Radius minimal 12 kali Diameter Luar (O.D.) Kabel."
+      },
+      {
+        q: "9. Jenis skun/lug apakah yang WAJIB digunakan saat menyambungkan konduktor Aluminium (Al) ke terminal Tembaga (Cu)?",
+        opts: [
+          "A. Lug Tembaga murni (Full Copper)",
+          "B. Lug Aluminium murni (Full Aluminium)",
+          "C. Lug BIMETAL (Barrel Al + Pad Cu) untuk mencegah korosi galvanik",
+          "D. Bebas menggunakan lug apa saja"
+        ],
+        ans: 2,
+        exp: "Sambungan Al ke Cu wajib memakai skun Bimetal untuk mencegah reaksi elektrokimia yang memicu korosi galvanik dan overheating."
+      },
+      {
+        q: "10. Apakah keunggulan utama teknologi Cold Shrink (3M QT-III) dibandingkan Heat Shrink (Raychem HVT-Z)?",
+        opts: [
+          "A. Cold Shrink menggunakan torch pemanas gas elpiji",
+          "B. Cold Shrink dipasang tanpa open flame/torch, tinggal menarik inti spiral plastik sehingga lebih aman di area rawan kebakaran",
+          "C. Cold Shrink harganya jauh lebih murah",
+          "D. Heat Shrink tidak membutuhkan kabel grounding"
+        ],
+        ans: 1,
+        exp: "Cold Shrink tidak memerlukan torch pemanas terbuka (open flame) sehingga sangat aman di instalasi tambang, kimia, dan area terbatas."
+      },
+      {
+        q: "11. Standar IEEE manakah yang secara spesifik mengatur metode pengujian Type Test & Requirement untuk sambungan kabel (Cable Joints / Splices)?",
+        opts: [
+          "A. IEEE Std 48",
+          "B. IEEE Std 404",
+          "C. IEEE Std 43",
+          "D. IEEE Std 100"
+        ],
+        ans: 1,
+        exp: "IEEE Std 48 mengatur Terminasi kabel, sedangkan IEEE Std 404 mengatur Sambungan kabel (Joints / Splices)."
+      },
+      {
+        q: "12. Berdasarkan statistik studi kasus, apakah penyebab terbesar (50%) kegagalan sambungan kabel TM di lapangan?",
+        opts: [
+          "A. Kualitas material pabrik bermasalah",
+          "B. Bencana alam dan gempa bumi",
+          "C. Sumber Daya Manusia (Jointer) tidak kompeten atau salah dalam menjalankan SOP pengupasan/cutback",
+          "D. Tegangan PLN terlalu tinggi"
+        ],
+        ans: 2,
+        exp: "50% kegagalan disebabkan jointer tidak kompeten atau salah SOP, 22% salah pilih material, dan 28% kualitas material."
+      }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('quizContainer');
+      container.innerHTML = quizData.map((q, idx) => `
       <div class="quiz-q-box" id="qbox-${idx}">
         <div class="quiz-q-num">Soal ${idx + 1} dari ${quizData.length}</div>
         <div class="quiz-q-text">${q.q}</div>
@@ -650,123 +897,123 @@
         <div class="quiz-explain" id="exp-${idx}">💡 <b>Penjelasan:</b> ${q.exp}</div>
       </div>
     `).join('');
-  }
+    }
 
-  const userAnswers = {};
+    const userAnswers = {};
 
-  function checkAnswer(qIdx, optIdx) {
-    userAnswers[qIdx] = optIdx;
-    const qBox = document.getElementById(`qbox-${qIdx}`);
-    const btns = qBox.querySelectorAll('.quiz-opt-btn');
-    btns.forEach((b, i) => {
-      b.classList.remove('correct', 'wrong');
-      if (i === quizData[qIdx].ans) {
-        b.classList.add('correct');
-      } else if (i === optIdx) {
-        b.classList.add('wrong');
+    function checkAnswer(qIdx, optIdx) {
+      userAnswers[qIdx] = optIdx;
+      const qBox = document.getElementById(`qbox-${qIdx}`);
+      const btns = qBox.querySelectorAll('.quiz-opt-btn');
+      btns.forEach((b, i) => {
+        b.classList.remove('correct', 'wrong');
+        if (i === quizData[qIdx].ans) {
+          b.classList.add('correct');
+        } else if (i === optIdx) {
+          b.classList.add('wrong');
+        }
+      });
+      document.getElementById(`exp-${qIdx}`).style.display = 'block';
+    }
+
+    function calculateQuizScore() {
+      let correct = 0;
+      quizData.forEach((q, idx) => {
+        if (userAnswers[idx] === q.ans) correct++;
+      });
+      const score = Math.round((correct / quizData.length) * 100);
+      document.getElementById('scoreVal').innerText = `${score} / 100 (${correct} Soal Benar)`;
+      document.getElementById('scoreBox').style.display = 'block';
+
+      const feedback = document.getElementById('scoreFeedback');
+      if (score >= 80) {
+        feedback.innerText = "🎉 Sangat Baik! Pemahaman Teori & SOP Ketenagalistrikan Sesuai Standar Kompetensi Jointer TM.";
+      } else {
+        feedback.innerText = "⚠️ Masih Perlu Pendalaman. Pelajari Kembali Modul Teori Bab 1-4 Sebelum Praktik Lapangan.";
       }
-    });
-    document.getElementById(`exp-${qIdx}`).style.display = 'block';
-  }
 
-  function calculateQuizScore() {
-    let correct = 0;
-    quizData.forEach((q, idx) => {
-      if (userAnswers[idx] === q.ans) correct++;
-    });
-    const score = Math.round((correct / quizData.length) * 100);
-    document.getElementById('scoreVal').innerText = `${score} / 100 (${correct} Soal Benar)`;
-    document.getElementById('scoreBox').style.display = 'block';
-    
-    const feedback = document.getElementById('scoreFeedback');
-    if (score >= 80) {
-      feedback.innerText = "🎉 Sangat Baik! Pemahaman Teori & SOP Ketenagalistrikan Sesuai Standar Kompetensi Jointer TM.";
-    } else {
-      feedback.innerText = "⚠️ Masih Perlu Pendalaman. Pelajari Kembali Modul Teori Bab 1-4 Sebelum Praktik Lapangan.";
+      // Clear pilihan jawaban & sorotan tombol setelah skor dihitung
+      for (let key in userAnswers) {
+        delete userAnswers[key];
+      }
+      document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
+        btn.classList.remove('correct', 'wrong');
+      });
+      document.querySelectorAll('.quiz-explain').forEach(exp => {
+        exp.style.display = 'none';
+      });
     }
 
-    // Clear pilihan jawaban & sorotan tombol setelah skor dihitung
-    for (let key in userAnswers) {
-      delete userAnswers[key];
+    function resetQuiz() {
+      for (let key in userAnswers) {
+        delete userAnswers[key];
+      }
+      renderQuiz();
+      document.getElementById('scoreBox').style.display = 'none';
     }
-    document.querySelectorAll('.quiz-opt-btn').forEach(btn => {
-      btn.classList.remove('correct', 'wrong');
-    });
-    document.querySelectorAll('.quiz-explain').forEach(exp => {
-      exp.style.display = 'none';
-    });
-  }
 
-  function resetQuiz() {
-    for (let key in userAnswers) {
-      delete userAnswers[key];
+    // RCFA Symptom Database
+    const rcfaDatabase = {
+      sym1: {
+        title: "💥 Breakdown pada Batas Potongan Semi-con",
+        category: "50% Kesalahan Jointer (SDM)",
+        badgeClass: "danger",
+        rootCause: "Terjadi takikan pisau (score mark) pada insulasi XLPE saat mengupas semi-con, atau ada residu jejak karbon/bintik konduktif yang belum dibersihkan dengan 180-grit abrasive cloth.",
+        standard: "IEEE Std 48 §6.2 & 3M QT-III Installation Guide",
+        sopFix: "Gunakan alat peeler khusus semi-con, ampelas melingkar dengan 180-grit abrasive cloth hingga insulasi XLPE murni tanpa takikan, bersihkan dengan solvent pad CC series, dan lapisi SRM Mastic presisi."
+      },
+      sym2: {
+        title: "🔥 Overheating & Diskolorasi pada Skun/Lug",
+        category: "50% Kesalahan Jointer / 22% Salah Material",
+        badgeClass: "warn",
+        rootCause: "Torsi pengencangan baut busbar di bawah standar (kurang dari nilai N·m terkalibrasi) atau menyambungkan Konduktor Al ke Terminal Cu tanpa Lug Bimetal sehingga terjadi korosi galvanis.",
+        standard: "NETA MTS-2023 §7.3.3 & Standar Torsi M8-M16",
+        sopFix: "Ganti skun dengan Lug Bimetal (Al-Cu), gunakan Kunci Torsi (Torque Wrench) sesuai spesifikasi (M10: 45–50 N·m, M12: 75–85 N·m), atau gunakan Shear-bolt Mechanical Lug."
+      },
+      sym3: {
+        title: "⚡ Tracking / Arus Bocor Kebiruan di Skirt Silikon",
+        category: "22% Kesalahan Pemilihan Material",
+        badgeClass: "warn",
+        rootCause: "Memasang kit Indoor di area Outdoor terbuka (jarak creepage kurang), kontaminasi polusi/minyak berat pada permukaan silikon, atau jumlah skirt/weathershed kurang.",
+        standard: "IEC 60071-1 & 3M Pollution Level Guide",
+        sopFix: "Pastikan terminasi outdoor memakai weathershed/skirt tambahan (min 4-8 skirt untuk polusi berat), bersihkan permukaan dengan solvent pad non-abrasif."
+      },
+      sym4: {
+        title: "💧 Penetrasi Air / Lembap pada Jointing Box Tanam",
+        category: "28% Kualitas Material / 50% Kesalahan Sealing",
+        badgeClass: "cyan",
+        rootCause: "Sealing mastic pada outer jacket tidak overlap sempurna, penimbunan pasir urug tanpa batu peringatan sehingga jacket terkelupas batu tajam, atau expired mastic tape.",
+        standard: "PLN Buku 5 & IEC 60502-2",
+        sopFix: "Lapisi jacket sealing mastic minimal 50mm overlap, gunakan pasir urug 20cm di bawah/atas kabel, dan pasang pelat beton peringatan sebelum penimbunan tanah."
+      },
+      sym5: {
+        title: "📉 Nilai Tahanan Isolasi (Megger) Anjlok (< 5 GΩ)",
+        category: "50% Kesalahan Preparation / Kontaminasi",
+        badgeClass: "danger",
+        rootCause: "Kelembapan terperangkap di dalam tubing isolasi saat dipasang, adanya residu partikel logam dari pemotongan armour, atau kabel basah belum didrying.",
+        standard: "NETA MTS-2023 Table 100.1 & IEEE 400",
+        sopFix: "Uji Megger kabel mentah sebelum terminasi dipasang. Bersihkan permukaan insulasi dengan solvent pad sampai kering sempurna sebelum shrinking."
+      },
+      sym6: {
+        title: "⚡ Partial Discharge (PD) > 3 pC saat Test",
+        category: "50% Kesalahan Jointer / Void Udara",
+        badgeClass: "danger",
+        rootCause: "Terdapat void (rongga udara terperangkap) di antara insulasi XLPE dan stress control tube akibat pengisian mastic SRM yang tidak rata.",
+        standard: "IEEE Std 48 & IEEE Std 404 Extinction Test",
+        sopFix: "Isi celah step semiconductive dengan SRM Mastic hingga rata tanpa rongga (tapered step), lalu tarik cold shrink core sejajar."
+      }
+    };
+
+    function selectSymptom(symId, cardEl) {
+      document.querySelectorAll('.symptom-card').forEach(c => c.classList.remove('selected'));
+      cardEl.classList.add('selected');
+      renderDiagResult(symId);
     }
-    renderQuiz();
-    document.getElementById('scoreBox').style.display = 'none';
-  }
 
-  // RCFA Symptom Database
-  const rcfaDatabase = {
-    sym1: {
-      title: "💥 Breakdown pada Batas Potongan Semi-con",
-      category: "50% Kesalahan Jointer (SDM)",
-      badgeClass: "danger",
-      rootCause: "Terjadi takikan pisau (score mark) pada insulasi XLPE saat mengupas semi-con, atau ada residu jejak karbon/bintik konduktif yang belum dibersihkan dengan 180-grit abrasive cloth.",
-      standard: "IEEE Std 48 §6.2 & 3M QT-III Installation Guide",
-      sopFix: "Gunakan alat peeler khusus semi-con, ampelas melingkar dengan 180-grit abrasive cloth hingga insulasi XLPE murni tanpa takikan, bersihkan dengan solvent pad CC series, dan lapisi SRM Mastic presisi."
-    },
-    sym2: {
-      title: "🔥 Overheating & Diskolorasi pada Skun/Lug",
-      category: "50% Kesalahan Jointer / 22% Salah Material",
-      badgeClass: "warn",
-      rootCause: "Torsi pengencangan baut busbar di bawah standar (kurang dari nilai N·m terkalibrasi) atau menyambungkan Konduktor Al ke Terminal Cu tanpa Lug Bimetal sehingga terjadi korosi galvanis.",
-      standard: "NETA MTS-2023 §7.3.3 & Standar Torsi M8-M16",
-      sopFix: "Ganti skun dengan Lug Bimetal (Al-Cu), gunakan Kunci Torsi (Torque Wrench) sesuai spesifikasi (M10: 45–50 N·m, M12: 75–85 N·m), atau gunakan Shear-bolt Mechanical Lug."
-    },
-    sym3: {
-      title: "⚡ Tracking / Arus Bocor Kebiruan di Skirt Silikon",
-      category: "22% Kesalahan Pemilihan Material",
-      badgeClass: "warn",
-      rootCause: "Memasang kit Indoor di area Outdoor terbuka (jarak creepage kurang), kontaminasi polusi/minyak berat pada permukaan silikon, atau jumlah skirt/weathershed kurang.",
-      standard: "IEC 60071-1 & 3M Pollution Level Guide",
-      sopFix: "Pastikan terminasi outdoor memakai weathershed/skirt tambahan (min 4-8 skirt untuk polusi berat), bersihkan permukaan dengan solvent pad non-abrasif."
-    },
-    sym4: {
-      title: "💧 Penetrasi Air / Lembap pada Jointing Box Tanam",
-      category: "28% Kualitas Material / 50% Kesalahan Sealing",
-      badgeClass: "cyan",
-      rootCause: "Sealing mastic pada outer jacket tidak overlap sempurna, penimbunan pasir urug tanpa batu peringatan sehingga jacket terkelupas batu tajam, atau expired mastic tape.",
-      standard: "PLN Buku 5 & IEC 60502-2",
-      sopFix: "Lapisi jacket sealing mastic minimal 50mm overlap, gunakan pasir urug 20cm di bawah/atas kabel, dan pasang pelat beton peringatan sebelum penimbunan tanah."
-    },
-    sym5: {
-      title: "📉 Nilai Tahanan Isolasi (Megger) Anjlok (< 5 GΩ)",
-      category: "50% Kesalahan Preparation / Kontaminasi",
-      badgeClass: "danger",
-      rootCause: "Kelembapan terperangkap di dalam tubing isolasi saat dipasang, adanya residu partikel logam dari pemotongan armour, atau kabel basah belum didrying.",
-      standard: "NETA MTS-2023 Table 100.1 & IEEE 400",
-      sopFix: "Uji Megger kabel mentah sebelum terminasi dipasang. Bersihkan permukaan insulasi dengan solvent pad sampai kering sempurna sebelum shrinking."
-    },
-    sym6: {
-      title: "⚡ Partial Discharge (PD) > 3 pC saat Test",
-      category: "50% Kesalahan Jointer / Void Udara",
-      badgeClass: "danger",
-      rootCause: "Terdapat void (rongga udara terperangkap) di antara insulasi XLPE dan stress control tube akibat pengisian mastic SRM yang tidak rata.",
-      standard: "IEEE Std 48 & IEEE Std 404 Extinction Test",
-      sopFix: "Isi celah step semiconductive dengan SRM Mastic hingga rata tanpa rongga (tapered step), lalu tarik cold shrink core sejajar."
-    }
-  };
-
-  function selectSymptom(symId, cardEl) {
-    document.querySelectorAll('.symptom-card').forEach(c => c.classList.remove('selected'));
-    cardEl.classList.add('selected');
-    renderDiagResult(symId);
-  }
-
-  function renderDiagResult(symId) {
-    const data = rcfaDatabase[symId];
-    const resBox = document.getElementById('diagResultBox');
-    resBox.innerHTML = `
+    function renderDiagResult(symId) {
+      const data = rcfaDatabase[symId];
+      const resBox = document.getElementById('diagResultBox');
+      resBox.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
         <h3 style="font-size:18px; color:#fff;">${data.title}</h3>
         <span class="badge ${data.badgeClass}" style="font-size:11px; padding:4px 10px;">Faktor: ${data.category}</span>
@@ -789,10 +1036,11 @@
         <div style="font-size:12.5px; color:#e2e8f0; line-height:1.6;">${data.sopFix}</div>
       </div>
     `;
-  }
+    }
 
-  renderQuiz();
-  renderDiagResult('sym1');
-</script>
+    renderQuiz();
+    renderDiagResult('sym1');
+  </script>
 </body>
+
 </html>
