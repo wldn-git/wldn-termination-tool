@@ -1053,19 +1053,19 @@
 
           <!-- Bending Radius Calculator Card -->
           <div class="card" style="margin-top:16px">
-            <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center">
+            <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
               <div style="display:flex;align-items:center;gap:8px">
                 <span class="card-title">⭕ Bending Radius Kabel (Radius Lengkung Minimum)</span>
-                <span class="card-pill">Standar XLPE TM / IEC 60502-2</span>
+                <span class="card-pill">Standar XLPE TM / IEC 60502-2 / IEEE</span>
               </div>
-              <span class="form-note" style="margin:0">Acuan Jembo · Kabelindo · PLN</span>
+              <span class="form-note" style="margin:0">Acuan Jembo · Kabelindo · SPLN · IEC</span>
             </div>
             <div class="card-body">
               <div class="form-grid" style="margin-bottom:14px">
                 <div class="form-group">
                   <label class="form-label">Outer Diameter (O.D.) Kabel</label>
                   <div class="igrp">
-                    <input type="number" id="br-od" value="48" min="1" step="0.5" oninput="calcBendingRadius()">
+                    <input type="number" id="br-od" value="50" min="1" step="0.5" oninput="calcBendingRadius()">
                     <span class="iunit">mm</span>
                   </div>
                   <span class="form-note">Diameter luar total jacket kabel</span>
@@ -1073,15 +1073,23 @@
                 <div class="form-group">
                   <label class="form-label">Konstruksi Kabel</label>
                   <select class="form-control" id="br-core" onchange="calcBendingRadius()">
-                    <option value="single" selected>Single-Core (1 Inti) — e.g. N2XSY</option>
-                    <option value="three">Three-Core (3 Inti) — e.g. N2XSEBY</option>
+                    <option value="single" selected>Single-Core (1 Inti) — e.g. N2XSY, NA2XSY</option>
+                    <option value="three">Three-Core (3 Inti) — e.g. N2XSEBY 3x</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Acuan Spesifikasi</label>
+                  <label class="form-label">Pelindung Mekanis (Armour)</label>
+                  <select class="form-control" id="br-armour" onchange="calcBendingRadius()">
+                    <option value="unarmoured" selected>Tanpa Armor (Unarmoured / Tape Screen / PVC-PE)</option>
+                    <option value="armoured">Berpelindung Armor (Armoured — SWA / STA / Wire)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Acuan Spesifikasi / Standar</label>
                   <select class="form-control" id="br-spec" onchange="calcBendingRadius()">
-                    <option value="vendor" selected>Spesifikasi Vendor (Jembo/Kabelindo — ≥ 12× O.D.)</option>
-                    <option value="iec">IEC 60502-2 (12× - 15× O.D.)</option>
+                    <option value="vendor" selected>Spesifikasi Vendor (Jembo / Kabelindo / SPLN)</option>
+                    <option value="iec">Standar Internasional IEC 60502-2</option>
+                    <option value="ieee">Standar IEEE 575 / NEC</option>
                   </select>
                 </div>
               </div>
@@ -2185,7 +2193,7 @@
       return `<div class="prog-wrap"><div class="prog-head"><span>${lbl}</span><span>${fmt(pct, 1)}%</span></div><div class="prog-bg"><div class="prog-fill ${cls}" style="width:${w}%"></div></div></div>`;
     }
 
-    function abox(type, msg) { return `<div class="alert ${type}">${msg}</div>`; }
+    function abox(type, msg) { return `<div class="alert ${type}"><div style="flex:1; width:100%;">${msg}</div></div>`; }
 
     function showPanel(name, btn) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -2694,6 +2702,7 @@ R_AC = R_DC × (1 + y_s) = ${fmt(Rtot * 1000, 4)} × (1 + ${fmt(ys, 6)}) = ${fmt
     function calcBendingRadius() {
       const od = parseFloat(document.getElementById('br-od').value) || 0;
       const core = document.getElementById('br-core').value;
+      const armour = document.getElementById('br-armour').value;
       const spec = document.getElementById('br-spec').value;
 
       if (od <= 0) {
@@ -2705,13 +2714,80 @@ R_AC = R_DC × (1 + y_s) = ${fmt(Rtot * 1000, 4)} × (1 + ${fmt(ys, 6)}) = ${fmt
 
       let kInstall = 12;
       let kFixed = 10;
+      let refText = '';
 
-      if (spec === 'iec') {
-        kInstall = core === 'single' ? 15 : 12;
-        kFixed = core === 'single' ? 12 : 10;
-      } else {
-        kInstall = 12; // Standar Jembo / Kabelindo
-        kFixed = 10;
+      if (spec === 'vendor') {
+        // Vendor Standard (Jembo / Kabelindo / SPLN / SNI)
+        if (core === 'single') {
+          if (armour === 'armoured') {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'Vendor (Jembo/Kabelindo) Single-Core Armoured (15× Tarik / 12× Terpasang)';
+          } else {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'Vendor (Jembo/Kabelindo) Single-Core Unarmoured (15× Tarik / 12× Terpasang)';
+          }
+        } else {
+          // Three-Core
+          if (armour === 'armoured') {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'Vendor (Jembo/Kabelindo) Three-Core Armoured (15× Tarik / 12× Terpasang)';
+          } else {
+            kInstall = 12;
+            kFixed = 10;
+            refText = 'Vendor (Jembo/Kabelindo) Three-Core Unarmoured (12× Tarik / 10× Terpasang)';
+          }
+        }
+      } else if (spec === 'iec') {
+        // IEC 60502-2 Standard
+        if (core === 'single') {
+          if (armour === 'armoured') {
+            kInstall = 18;
+            kFixed = 15;
+            refText = 'IEC 60502-2 Single-Core Armoured (18× Tarik / 15× Terpasang)';
+          } else {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'IEC 60502-2 Single-Core Unarmoured (15× Tarik / 12× Terpasang)';
+          }
+        } else {
+          // Three-Core
+          if (armour === 'armoured') {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'IEC 60502-2 Three-Core Armoured (15× Tarik / 12× Terpasang)';
+          } else {
+            kInstall = 12;
+            kFixed = 10;
+            refText = 'IEC 60502-2 Three-Core Unarmoured (12× Tarik / 10× Terpasang)';
+          }
+        }
+      } else if (spec === 'ieee') {
+        // IEEE 575 / NEC Standard
+        if (core === 'single') {
+          if (armour === 'armoured') {
+            kInstall = 15;
+            kFixed = 12;
+            refText = 'IEEE 575 / NEC Single-Core Armoured (15× Tarik / 12× Terpasang)';
+          } else {
+            kInstall = 12;
+            kFixed = 12;
+            refText = 'IEEE 575 / NEC Single-Core Shielded (12× Tarik / 12× Terpasang)';
+          }
+        } else {
+          // Three-Core
+          if (armour === 'armoured') {
+            kInstall = 12;
+            kFixed = 7;
+            refText = 'IEEE 575 / NEC Three-Core Armoured (12× Tarik / 7× Terpasang)';
+          } else {
+            kInstall = 12;
+            kFixed = 10;
+            refText = 'IEEE 575 / NEC Three-Core Unarmoured (12× Tarik / 10× Terpasang)';
+          }
+        }
       }
 
       const rInstall = kInstall * od;
@@ -2726,13 +2802,22 @@ R_AC = R_DC × (1 + y_s) = ${fmt(Rtot * 1000, 4)} × (1 + ${fmt(ys, 6)}) = ${fmt
         ri('Min. Diameter Belokan (Fixed)', fmt(dFixed, 1), 'mm', '', `${fmt(dFixed / 10, 1)} cm (Ruang Kubikel/Tray)`);
 
       document.getElementById('br-fml').textContent =
-        `R_min (Penggelaran) = ${kInstall} × O.D. = ${kInstall} × ${od} mm = ${fmt(rInstall, 1)} mm (${fmt(rInstall / 10, 1)} cm)
+        `Faktor Pengali (k) : ${refText}
+R_min (Penggelaran) = ${kInstall} × O.D. = ${kInstall} × ${od} mm = ${fmt(rInstall, 1)} mm (${fmt(rInstall / 10, 1)} cm)
 R_min (Terpasang)   = ${kFixed} × O.D. = ${kFixed} × ${od} mm = ${fmt(rFixed, 1)} mm (${fmt(rFixed / 10, 1)} cm)`;
 
+      const coreName = core === 'single' ? 'Single-Core (1 Inti)' : 'Three-Core (3 Inti)';
+      const armourName = armour === 'armoured' ? 'Armoured (Berpelindung Armor)' : 'Unarmoured (Tanpa Armor)';
+
       document.getElementById('br-alert').innerHTML = abox('info',
-        `ℹ️ <strong>Rekomendasi Lapangan (OJT &amp; Diorama Timika):</strong><br>` +
-        `Saat penarikan kabel XLPE TM 35kV, pastikan radius rol penarik (pulley) atau tekukan kabel di saluran trench/kubikel <strong>tidak lebih tajam dari ${fmt(rInstall / 10, 1)} cm</strong> ` +
-        `untuk mencegah keretakan insulasi XLPE dan lapisan semikonduktif kabel.`
+        `<div style="display:flex; flex-direction:column; gap:6px; width:100%;">` +
+          `<div style="font-weight:700; color:var(--info); font-size:13px; display:flex; align-items:center; gap:6px;">` +
+            `<span>💡</span> Rekomendasi Lapangan (OJT &amp; Diorama Timika)` +
+          `</div>` +
+          `<div style="color:var(--text); line-height:1.6; font-size:12.5px;">` +
+            `Saat penarikan kabel <strong>${coreName} ${armourName}</strong> (O.D. = ${od} mm), pastikan radius rol penarik (pulley) atau tekukan kabel di saluran trench/kubikel <strong>tidak lebih tajam dari ${fmt(rInstall / 10, 1)} cm</strong> (${kInstall} × O.D.), dan untuk posisi terpasang tetap tidak lebih tajam dari <strong>${fmt(rFixed / 10, 1)} cm</strong> (${kFixed} × O.D.) guna mencegah keretakan insulasi XLPE dan lapisan semikonduktif kabel.` +
+          `</div>` +
+        `</div>`
       );
     }
 
