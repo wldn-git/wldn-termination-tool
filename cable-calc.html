@@ -972,8 +972,7 @@
         <div id="panel-geom" class="panel active">
           <div class="page-header">
             <h1 class="page-title">📐 Geometri Penampang</h1>
-            <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, dan ukuran standar IEC
-              terdekat</p>
+            <p class="page-sub">Konversi diameter kabel ke luas penampang (mm²), padanan AWG, ukuran standar IEC, serta Kalkulator Bending Radius kabel TM</p>
           </div>
           <div class="two-col">
             <div>
@@ -1049,6 +1048,47 @@
             <div class="card-body">
               <div class="result-grid" id="geom-res"></div>
               <div class="formula-box" id="geom-fml"></div>
+            </div>
+          </div>
+
+          <!-- Bending Radius Calculator Card -->
+          <div class="card" style="margin-top:16px">
+            <div class="card-hd" style="display:flex;justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="card-title">⭕ Bending Radius Kabel (Radius Lengkung Minimum)</span>
+                <span class="card-pill">Standar XLPE TM / IEC 60502-2</span>
+              </div>
+              <span class="form-note" style="margin:0">Acuan Jembo · Kabelindo · PLN</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid" style="margin-bottom:14px">
+                <div class="form-group">
+                  <label class="form-label">Outer Diameter (O.D.) Kabel</label>
+                  <div class="igrp">
+                    <input type="number" id="br-od" value="48" min="1" step="0.5" oninput="calcBendingRadius()">
+                    <span class="iunit">mm</span>
+                  </div>
+                  <span class="form-note">Diameter luar total jacket kabel</span>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Konstruksi Kabel</label>
+                  <select class="form-control" id="br-core" onchange="calcBendingRadius()">
+                    <option value="single" selected>Single-Core (1 Inti) — e.g. N2XSY</option>
+                    <option value="three">Three-Core (3 Inti) — e.g. N2XSEBY</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Acuan Spesifikasi</label>
+                  <select class="form-control" id="br-spec" onchange="calcBendingRadius()">
+                    <option value="vendor" selected>Spesifikasi Vendor (Jembo/Kabelindo — ≥ 12× O.D.)</option>
+                    <option value="iec">IEC 60502-2 (12× - 15× O.D.)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="result-grid" id="br-res"></div>
+              <div class="formula-box" id="br-fml"></div>
+              <div id="br-alert"></div>
             </div>
           </div>
         </div>
@@ -2651,11 +2691,57 @@ R_AC = R_DC × (1 + y_s) = ${fmt(Rtot * 1000, 4)} × (1 + ${fmt(ys, 6)}) = ${fmt
       }
     }
 
+    function calcBendingRadius() {
+      const od = parseFloat(document.getElementById('br-od').value) || 0;
+      const core = document.getElementById('br-core').value;
+      const spec = document.getElementById('br-spec').value;
+
+      if (od <= 0) {
+        document.getElementById('br-res').innerHTML = abox('warning', 'Masukkan Outer Diameter (O.D.) kabel yang valid.');
+        document.getElementById('br-fml').textContent = '';
+        document.getElementById('br-alert').innerHTML = '';
+        return;
+      }
+
+      let kInstall = 12;
+      let kFixed = 10;
+
+      if (spec === 'iec') {
+        kInstall = core === 'single' ? 15 : 12;
+        kFixed = core === 'single' ? 12 : 10;
+      } else {
+        kInstall = 12; // Standar Jembo / Kabelindo
+        kFixed = 10;
+      }
+
+      const rInstall = kInstall * od;
+      const rFixed = kFixed * od;
+      const dInstall = 2 * rInstall;
+      const dFixed = 2 * rFixed;
+
+      document.getElementById('br-res').innerHTML =
+        ri('R_min Penggelaran', fmt(rInstall, 1), 'mm', 'accent', `${fmt(rInstall / 10, 1)} cm (${kInstall} × O.D.)`) +
+        ri('R_min Terpasang', fmt(rFixed, 1), 'mm', 'success', `${fmt(rFixed / 10, 1)} cm (${kFixed} × O.D.)`) +
+        ri('Min. Diameter Belokan (Tarik)', fmt(dInstall, 1), 'mm', '', `${fmt(dInstall / 10, 1)} cm (Saat penggelaran)`) +
+        ri('Min. Diameter Belokan (Fixed)', fmt(dFixed, 1), 'mm', '', `${fmt(dFixed / 10, 1)} cm (Ruang Kubikel/Tray)`);
+
+      document.getElementById('br-fml').textContent =
+        `R_min (Penggelaran) = ${kInstall} × O.D. = ${kInstall} × ${od} mm = ${fmt(rInstall, 1)} mm (${fmt(rInstall / 10, 1)} cm)
+R_min (Terpasang)   = ${kFixed} × O.D. = ${kFixed} × ${od} mm = ${fmt(rFixed, 1)} mm (${fmt(rFixed / 10, 1)} cm)`;
+
+      document.getElementById('br-alert').innerHTML = abox('info',
+        `ℹ️ <strong>Rekomendasi Lapangan (OJT &amp; Diorama Timika):</strong><br>` +
+        `Saat penarikan kabel XLPE TM 35kV, pastikan radius rol penarik (pulley) atau tekukan kabel di saluran trench/kubikel <strong>tidak lebih tajam dari ${fmt(rInstall / 10, 1)} cm</strong> ` +
+        `untuk mencegah keretakan insulasi XLPE dan lapisan semikonduktif kabel.`
+      );
+    }
+
     (function () {
       initGeomDrop();
       initAmpDrop();
       buildAWG();
       calcGeom();
+      calcBendingRadius();
       calcResist();
       calcVdrop();
       calcAmp();
