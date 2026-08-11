@@ -881,13 +881,139 @@
       background: var(--panel2);
     }
 
-    [data-theme="light"] .btn.ghost:hover {
-      background: var(--panel3);
+    /* Universal Top Titlebar & Shortcuts Header */
+    .top-titlebar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      background: rgba(11, 15, 23, 0.85);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 999;
+      user-select: none;
+      font-family: 'Segoe UI Variable Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
+
+    [data-theme="light"] .top-titlebar { background: rgba(243, 243, 243, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+
+    .top-titlebar-inner {
+      max-width: 1300px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .top-titlebar-inner::-webkit-scrollbar { display: none; }
+
+    .top-brand {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #F1F5F9;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-brand { color: #1A1A1A; }
+    .top-brand-icon { width: 18px; height: 18px; color: #38BDF8; }
+
+    .top-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.15);
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-divider { background: rgba(0, 0, 0, 0.12); }
+    .top-shortcuts { display: flex; align-items: center; gap: 4px; }
+
+    .top-link {
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: #94A3B8;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    [data-theme="light"] .top-link { color: #5C5C5C; }
+    .top-link:hover { color: #38BDF8; background: rgba(56, 189, 248, 0.1); }
+    .top-link.active { color: #38BDF8; font-weight: 600; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); }
+
+    .top-spacer { flex: 1; }
+
+    .top-portal-btn {
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #38BDF8;
+      background: rgba(56, 189, 248, 0.1);
+      padding: 4px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .top-portal-btn:hover { background: rgba(56, 189, 248, 0.2); }
+
+    .top-badge {
+      font-size: 10.5px;
+      color: #64748B;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-badge { color: #64748B; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
   </style>
 </head>
 
 <body>
+
+  <div class="top-titlebar">
+    <div class="top-titlebar-inner">
+      <a href="index.html" class="top-brand">
+        <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
+          <line x1="3" y1="12" x2="6" y2="12" />
+          <line x1="18" y1="12" x2="21" y2="12" />
+          <line x1="12" y1="3" x2="12" y2="6" />
+          <line x1="12" y1="18" x2="12" y2="21" />
+        </svg>
+        <span class="top-brand-name">MV Termination Selector</span>
+      </a>
+      <div class="top-divider"></div>
+      <nav class="top-shortcuts">
+        <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
+        <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
+        <a href="termination-jointing-selector.html" class="top-link active">⚡ Kit Selector</a>
+        <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
+      </nav>
+      <div class="top-spacer"></div>
+      <a href="index.html" class="top-portal-btn">🏠 Portal Suite</a>
+      <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
+    </div>
+  </div>
   <div class="wrap">
     <header>
       <div class="header-wrap">
