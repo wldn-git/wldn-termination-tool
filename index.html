@@ -131,6 +131,30 @@
 
     .top-spacer { flex: 1; }
 
+    .top-theme-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F1F5F9;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-theme-btn {
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      color: #1E293B;
+    }
+
+    .top-theme-btn:hover { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8; }
+
     .top-portal-btn {
       text-decoration: none;
       font-size: 11.5px;
@@ -159,6 +183,8 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    [data-theme="light"] .top-badge { color: #64748B; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
 
     body {
       background: var(--bg);
@@ -475,79 +501,6 @@
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
   </script>
   <script defer src="/_vercel/insights/script.js"></script>
-</head>
-
-<body>
-
-  <div class="top-titlebar">
-    <div class="top-titlebar-inner">
-      <a href="index.html" class="top-brand">
-        <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
-          <line x1="3" y1="12" x2="6" y2="12" />
-          <line x1="18" y1="12" x2="21" y2="12" />
-          <line x1="12" y1="3" x2="12" y2="6" />
-          <line x1="12" y1="18" x2="12" y2="21" />
-        </svg>
-        <span class="top-brand-name">WLDN Technical Suite</span>
-      </a>
-      <div class="top-divider"></div>
-    .top-theme-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #F1F5F9;
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    [data-theme="light"] .top-theme-btn {
-      background: rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      color: #1E293B;
-    }
-
-    .top-theme-btn:hover { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8; }
-
-    .top-portal-btn {
-      text-decoration: none;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #38BDF8;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
-    .top-portal-btn:hover { background: rgba(56, 189, 248, 0.2); }
-
-    .top-badge {
-      font-size: 10.5px;
-      color: #64748B;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 3px 8px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    [data-theme="light"] .top-badge { color: #64748B; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
-  </style>
 </head>
 
 <body>
