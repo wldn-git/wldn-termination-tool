@@ -231,7 +231,7 @@
     .quiz-q-text {
       font-size: 14.5px;
       font-weight: 600;
-      color: #fff;
+      color: var(--text);
       margin-bottom: 14px;
     }
 
@@ -386,7 +386,7 @@
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 10px 14px;
-      color: #fff;
+      color: var(--text);
       font-family: var(--sans);
       font-size: 13px;
     }
@@ -756,7 +756,7 @@
         <div id="scoreBox" class="score-box">
           <div style="font-size:12px; text-transform:uppercase; color:var(--text-dim);">Hasil Evaluasi Akhir</div>
           <div class="score-val" id="scoreVal">0 / 100</div>
-          <div id="scoreFeedback" style="font-size:13.5px; margin-top:6px; color:#fff;"></div>
+          <div id="scoreFeedback" style="font-size:13.5px; margin-top:6px; color:var(--text);"></div>
         </div>
       </div>
     </div>
@@ -888,42 +888,42 @@
         <div class="symptom-grid" id="symptomGrid">
           <div class="symptom-card selected" onclick="selectSymptom('sym1', this)">
             <div style="font-size:20px; margin-bottom:4px;">💥</div>
-            <b style="font-size:13.5px; color:#fff;">Breakdown di Potongan Semi-con</b>
+            <b style="font-size:13.5px; color:var(--text);">Breakdown di Potongan Semi-con</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Tembus isolasi tepat di
               batas pengupasan lapisan semikonduktif.</span>
           </div>
 
           <div class="symptom-card" onclick="selectSymptom('sym2', this)">
             <div style="font-size:20px; margin-bottom:4px;">🔥</div>
-            <b style="font-size:13.5px; color:#fff;">Overheating / Lug Meleleh</b>
+            <b style="font-size:13.5px; color:var(--text);">Overheating / Lug Meleleh</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Panas berlebih dan
               diskolorasi pada terminal pad busbar kubikel.</span>
           </div>
 
           <div class="symptom-card" onclick="selectSymptom('sym3', this)">
             <div style="font-size:20px; margin-bottom:4px;">⚡</div>
-            <b style="font-size:13.5px; color:#fff;">Tracking / Arus Bocor Kebiruan</b>
+            <b style="font-size:13.5px; color:var(--text);">Tracking / Arus Bocor Kebiruan</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Jejak perambatan arus di
               permukaan skirt silikon outdoor.</span>
           </div>
 
           <div class="symptom-card" onclick="selectSymptom('sym4', this)">
             <div style="font-size:20px; margin-bottom:4px;">💧</div>
-            <b style="font-size:13.5px; color:#fff;">Penetrasi Lembap pada Joint Box</b>
+            <b style="font-size:13.5px; color:var(--text);">Penetrasi Lembap pada Joint Box</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Kabel tanah mengalami
               korosi &amp; breakdown akibat masuknya air.</span>
           </div>
 
           <div class="symptom-card" onclick="selectSymptom('sym5', this)">
             <div style="font-size:20px; margin-bottom:4px;">📉</div>
-            <b style="font-size:13.5px; color:#fff;">Tahanan Isolasi Megger Drop</b>
+            <b style="font-size:13.5px; color:var(--text);">Tahanan Isolasi Megger Drop</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Hasil uji Megger 2.5kV
               DC &lt; 5 GΩ saat komisioning awal.</span>
           </div>
 
           <div class="symptom-card" onclick="selectSymptom('sym6', this)">
             <div style="font-size:20px; margin-bottom:4px;">⚡</div>
-            <b style="font-size:13.5px; color:#fff;">Partial Discharge (PD) &gt; 3 pC</b>
+            <b style="font-size:13.5px; color:var(--text);">Partial Discharge (PD) &gt; 3 pC</b>
             <span style="font-size:11px; color:var(--text-dim); display:block; margin-top:2px;">Peluahan parsial tinggi
               terdeteksi oleh VLF PD analyzer.</span>
           </div>
@@ -1268,7 +1268,7 @@
       const resBox = document.getElementById('diagResultBox');
       resBox.innerHTML = `
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-        <h3 style="font-size:18px; color:#fff;">${data.title}</h3>
+        <h3 style="font-size:18px; color:var(--text);">${data.title}</h3>
         <span class="badge ${data.badgeClass}" style="font-size:11px; padding:4px 10px;">Faktor: ${data.category}</span>
       </div>
 
