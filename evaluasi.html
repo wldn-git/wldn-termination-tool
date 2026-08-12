@@ -12,6 +12,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
     rel="stylesheet">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('app-theme');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #090c10;
@@ -32,6 +40,21 @@
       --danger: #ff5252;
       --mono: 'JetBrains Mono', monospace;
       --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    /* Windows 11 Light Mode Theme Tokens */
+    [data-theme="light"] {
+      --bg: #F3F4F6;
+      --panel: #FFFFFF;
+      --panel2: #F8F9FA;
+      --panel3: #EDF0F5;
+      --line: #E2E8F0;
+      --line-bright: #CBD5E1;
+      --text: #0F172A;
+      --text-dim: #64748B;
+      --accent: #0284C7;
+      --accent-glow: rgba(2, 132, 199, 0.12);
+      --accent-dim: #93C5FD;
     }
 
     * {
@@ -517,6 +540,30 @@
 
     .top-spacer { flex: 1; }
 
+    .top-theme-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F1F5F9;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-theme-btn {
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      color: #1E293B;
+    }
+
+    .top-theme-btn:hover { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8; }
+
     .top-portal-btn {
       text-decoration: none;
       font-size: 11.5px;
@@ -568,11 +615,15 @@
       <div class="top-divider"></div>
       <nav class="top-shortcuts">
         <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
+        <div class="top-divider"></div>
         <a href="evaluasi.html" class="top-link active">📝 Evaluasi &amp; OJT</a>
+        <div class="top-divider"></div>
         <a href="termination-jointing-selector.html" class="top-link">⚡ Kit Selector</a>
+        <div class="top-divider"></div>
         <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
       </nav>
       <div class="top-spacer"></div>
+      <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
       <a href="index.html" class="top-portal-btn">🏠 Portal Suite</a>
       <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
     </div>
@@ -583,12 +634,7 @@
       <div>
         <div class="brand-badge"><span></span> Technical Suite · Evaluation Suite</div>
         <h1>Evaluasi &amp; OJT Checklist Competency</h1>
-        <div class="sub">Kuis Evaluasi Pengetahuan, Checklist Kompetensi Praktik Jointer TM (DIS.KON.016/029), &amp;
-          Laporan OJT</div>
-      </div>
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <button class="theme-toggle-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span
-            id="themeLabel">Win11 Light</span></button>
+        <div class="sub">Kuis Evaluasi Pengetahuan, Checklist Kompetensi Praktik Jointer TM (DIS.KON.016/029), &amp; Simulator Diagnosa Gangguan</div>
       </div>
     </header>
 
@@ -596,7 +642,6 @@
     <nav class="nav-tabs">
       <button class="tab-btn active" onclick="switchTab('tab-quiz')">📝 Evaluation Quiz (Bab 1-7)</button>
       <button class="tab-btn" onclick="switchTab('tab-checklist')">📋 Checklist Kompetensi OJT</button>
-      <button class="tab-btn" onclick="switchTab('tab-report')">🖨️ Form Laporan OJT (Printable)</button>
       <button class="tab-btn" onclick="switchTab('tab-rcfa')">🔍 Simulator Diagnosa Gangguan (RCFA)</button>
     </nav>
 
@@ -737,62 +782,7 @@
       </div>
     </div>
 
-    <!-- TAB 3: FORM LAPORAN OJT (PRINTABLE) -->
-    <div id="tab-report" class="tab-content">
-      <div class="card">
-        <div class="card-title" style="justify-content:space-between;">
-          <span>🖨️ Form Laporan Kegiatan OJT 1 Halaman</span>
-          <button class="btn primary" onclick="window.print()">Print / Cetak PDF</button>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">Nama Peserta</label>
-            <input type="text" class="form-input" placeholder="Masukkan nama peserta">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Nama Instruktur / Fasilitator</label>
-            <input type="text" class="form-input" value="Wildan Maradona, S.T. / Instruktur Competency">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tanggal Pelatihan</label>
-            <input type="date" class="form-input">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tipe Kabel &amp; Kit Digunakan</label>
-            <input type="text" class="form-input" placeholder="Misal: N2XSEBY 3x150 mm² + 3M QT-III">
-          </div>
-        </div>
-
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label">Langkah Kerja Utama yang Dilakukan</label>
-          <textarea class="form-textarea" rows="3"
-            placeholder="Ringkasan urutan pengupasan, stress control, pemasangan skun, dan shrinking..."></textarea>
-        </div>
-
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label">Kendala Lapangan &amp; Cara Mengatasi</label>
-          <textarea class="form-textarea" rows="2"
-            placeholder="Catatan kendala teknis dan solusi yang diterapkan..."></textarea>
-        </div>
-
-        <div class="form-group" style="margin-bottom:14px;">
-          <label class="form-label">Hasil Pengujian Akhir (Megger Test / Visual Check)</label>
-          <input type="text" class="form-input"
-            placeholder="Hasil Megger: Fasa R-G=... MΩ, S-G=... MΩ, T-G=... MΩ (Lulus)">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Rekomendasi Kompetensi Fasilitator</label>
-          <select class="form-input">
-            <option>Direkomendasikan KOMPETEN (Sertifikasi Jointer TM 20kV)</option>
-            <option>Perlu Latihan Bimbingan Ulang</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: SIMULATOR DIAGNOSA GANGGUAN (RCFA) -->
+    <!-- TAB 3: SIMULATOR DIAGNOSA GANGGUAN (RCFA) -->
     <div id="tab-rcfa" class="tab-content">
       <div class="card">
         <div class="card-title">🔍 Simulator Diagnosa Gangguan &amp; Root Cause Failure Analysis (RCFA)</div>
@@ -892,17 +882,26 @@
     }
 
     function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      if (currentTheme === 'light') {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
         document.documentElement.removeAttribute('data-theme');
-        document.getElementById('themeIcon').innerText = '☀️';
-        document.getElementById('themeLabel').innerText = 'Win11 Light';
+        localStorage.setItem('app-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
-        document.getElementById('themeIcon').innerText = '🌙';
-        document.getElementById('themeLabel').innerText = 'Dark Mode';
+        localStorage.setItem('app-theme', 'light');
       }
+      updateThemeUI();
     }
+
+    function updateThemeUI() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.innerText = isLight ? '🌙' : '☀️';
+      if (label) label.innerText = isLight ? 'Dark Mode' : 'Win11 Light';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateThemeUI);
 
     // Quiz Questions Data (12 Questions covering Bab 1-7 & Standards)
     const quizData = [

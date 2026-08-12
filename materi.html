@@ -12,6 +12,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
     rel="stylesheet">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('app-theme');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #090c10;
@@ -20,19 +28,32 @@
       --panel3: #1e2633;
       --line: #263140;
       --line-bright: #38475c;
-      --accent: #a855f7;
-      --accent-glow: rgba(168, 85, 247, 0.15);
-      --accent-dim: #581c87;
-      --cyan: #38bdf8;
-      --cyan-glow: rgba(56, 189, 248, 0.15);
-      --orange: #ff8a3d;
-      --text: #e6edf3;
-      --text-dim: #8b949e;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --accent-dim: #0284c7;
       --ok: #3ddc84;
       --warn: #ffb547;
       --danger: #ff5252;
+      --cyan: #38bdf8;
+      --text: #e6edf3;
+      --text-dim: #8b949e;
       --mono: 'JetBrains Mono', monospace;
       --sans: 'Inter', -apple-system, sans-serif;
+    }
+
+    /* Windows 11 Light Mode Theme Tokens */
+    [data-theme="light"] {
+      --bg: #F3F4F6;
+      --panel: #FFFFFF;
+      --panel2: #F8F9FA;
+      --panel3: #EDF0F5;
+      --line: #E2E8F0;
+      --line-bright: #CBD5E1;
+      --text: #0F172A;
+      --text-dim: #64748B;
+      --accent: #0284C7;
+      --accent-glow: rgba(2, 132, 199, 0.12);
+      --accent-dim: #93C5FD;
     }
 
     * {
@@ -534,6 +555,30 @@
 
     .top-spacer { flex: 1; }
 
+    .top-theme-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F1F5F9;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    [data-theme="light"] .top-theme-btn {
+      background: rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      color: #1E293B;
+    }
+
+    .top-theme-btn:hover { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8; }
+
     .top-portal-btn {
       text-decoration: none;
       font-size: 11.5px;
@@ -585,11 +630,15 @@
       <div class="top-divider"></div>
       <nav class="top-shortcuts">
         <a href="materi.html" class="top-link active">📚 Materi (7 Bab)</a>
+        <div class="top-divider"></div>
         <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
+        <div class="top-divider"></div>
         <a href="termination-jointing-selector.html" class="top-link">⚡ Kit Selector</a>
+        <div class="top-divider"></div>
         <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
       </nav>
       <div class="top-spacer"></div>
+      <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
       <a href="index.html" class="top-portal-btn">🏠 Portal Suite</a>
       <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
     </div>
@@ -1500,17 +1549,26 @@
 
   <script>
     function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      if (currentTheme === 'light') {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
         document.documentElement.removeAttribute('data-theme');
-        document.getElementById('themeIcon').innerText = '☀️';
-        document.getElementById('themeLabel').innerText = 'Win11 Light';
+        localStorage.setItem('app-theme', 'dark');
       } else {
         document.documentElement.setAttribute('data-theme', 'light');
-        document.getElementById('themeIcon').innerText = '🌙';
-        document.getElementById('themeLabel').innerText = 'Dark Mode';
+        localStorage.setItem('app-theme', 'light');
       }
+      updateThemeUI();
     }
+
+    function updateThemeUI() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.innerText = isLight ? '🌙' : '☀️';
+      if (label) label.innerText = isLight ? 'Dark Mode' : 'Win11 Light';
+    }
+
+    document.addEventListener('DOMContentLoaded', updateThemeUI);
 
     // Smooth scroll active state for TOC
     const sections = document.querySelectorAll('.chapter-card');

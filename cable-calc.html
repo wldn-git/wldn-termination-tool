@@ -7,6 +7,14 @@
   <title>Cable Calculator — Kalkulator Teknik Kabel Listrik</title>
   <meta name="description"
     content="Kalkulator luas penampang kabel, resistansi DC/AC, voltage drop, ampacity KHA, dan sizing advisor. Standar SNI/IEC/NEC.">
+  <script>
+    (function() {
+      const saved = localStorage.getItem('app-theme');
+      if (saved === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     /* ============================================================
    WINDOWS 11 FLUENT DESIGN SYSTEM
@@ -15,16 +23,54 @@
     *::before,
     *::after {
       box-sizing: border-box;
-    }
-
-    html,
-    body {
       margin: 0;
       padding: 0;
-      height: 100%;
     }
 
     :root {
+      --bg: #0B0F17;
+      --bg-alt: #111622;
+      --surface: #161C28;
+      --surface-alt: #1C2433;
+      --surface-hover: #222B3D;
+      --nav-bg: rgba(11, 15, 23, 0.78);
+      --titlebar-bg: rgba(11, 15, 23, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-mid: rgba(255, 255, 255, 0.15);
+      --border-ctrl: rgba(255, 255, 255, 0.2);
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+      --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.5);
+      --accent: #38BDF8;
+      --accent-dark: #0284C7;
+      --accent-hover: #7DD3FC;
+      --accent-light: rgba(56, 189, 248, 0.12);
+      --accent-ring: rgba(56, 189, 248, 0.35);
+      --text: #F1F5F9;
+      --text-2: #94A3B8;
+      --text-3: #64748B;
+      --text-placeholder: #475569;
+      --success: #34D399;
+      --success-bg: rgba(52, 211, 153, 0.12);
+      --success-bdr: rgba(52, 211, 153, 0.3);
+      --warning: #FBBF24;
+      --warning-bg: rgba(251, 191, 36, 0.12);
+      --warning-bdr: rgba(251, 191, 36, 0.3);
+      --danger: #F87171;
+      --danger-bg: rgba(248, 113, 113, 0.12);
+      --danger-bdr: rgba(248, 113, 113, 0.3);
+      --info: #38BDF8;
+      --info-bg: rgba(56, 189, 248, 0.12);
+      --info-bdr: rgba(56, 189, 248, 0.3);
+      --nav-w: 232px;
+      --titlebar-h: 44px;
+      --radius-xs: 3px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    [data-theme="light"] {
       --bg: #F3F3F3;
       --bg-alt: #EBEBEB;
       --surface: #FFFFFF;
@@ -59,12 +105,6 @@
       --info: #004578;
       --info-bg: #EFF6FF;
       --info-bdr: #B3D4F7;
-      --nav-w: 232px;
-      --titlebar-h: 44px;
-      --radius-xs: 3px;
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
     }
 
     body {
@@ -940,6 +980,7 @@
     <div class="titlebar-div"></div>
     <a href="cable-calc.html" style="text-decoration:none; font-size:12px; color:var(--accent); font-weight:600; background:var(--accent-light); padding:2px 8px; border-radius:6px; border:1px solid var(--accent-ring);">🧮 Cable Calc</a>
     <div class="titlebar-spacer"></div>
+    <button onclick="toggleTheme()" style="background:var(--accent-light); border:1px solid var(--accent-ring); color:var(--text); font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:12px; cursor:pointer; display:flex; align-items:center; gap:4px; margin-right:6px;"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
     <a href="index.html"
       style="text-decoration:none; font-size:11.5px; font-weight:600; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:12px; border:1px solid var(--accent-ring); display:flex; align-items:center; gap:4px; margin-right:8px;">
       🏠 Portal Suite
@@ -2838,6 +2879,26 @@ R_min (Terpasang)   = ${kFixed} × O.D. = ${kFixed} × ${od} mm = ${fmt(rFixed, 
       );
     }
 
+    function toggleTheme() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('app-theme', 'dark');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('app-theme', 'light');
+      }
+      updateThemeUI();
+    }
+
+    function updateThemeUI() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const icon = document.getElementById('themeIcon');
+      const label = document.getElementById('themeLabel');
+      if (icon) icon.innerText = isLight ? '🌙' : '☀️';
+      if (label) label.innerText = isLight ? 'Dark Mode' : 'Win11 Light';
+    }
+
     (function () {
       initGeomDrop();
       initAmpDrop();
@@ -2848,6 +2909,7 @@ R_min (Terpasang)   = ${kFixed} × O.D. = ${kFixed} × ${od} mm = ${fmt(rFixed, 
       calcVdrop();
       calcAmp();
       calcAdvisor();
+      updateThemeUI();
     })();
   </script>
 </body>
