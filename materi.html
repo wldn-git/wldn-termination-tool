@@ -1314,6 +1314,108 @@
             <p><b>Kesimpulan:</b> Lebih dari 72% kegagalan di lapangan disebabkan oleh *human error* dan ketidakpahaman
               jointer. Pelatihan berstandar kompetensi ini dirancang untuk menghapus risiko tersebut.</p>
           </div>
+
+          <div class="section-block">
+            <h3 class="section-h3">7.2 Prinsip &amp; Hirarki Pengujian Komisioning Kabel TM (Megger, Hipot, VLF, &amp; Partial Discharge)</h3>
+            <p>Pengujian komisioning kabel Tegangan Menengah (6 kV hingga 35 kV) dilakukan secara <b>bertahap dari uji terkecil hingga uji paling sensitif</b>, guna mendeteksi kecacatan instalasi tanpa merusak jaringan kabel yang sehat.</p>
+
+            <!-- Tabel Hirarki Pengujian -->
+            <div style="overflow-x:auto; margin:16px 0;">
+              <table class="styled-table">
+                <thead>
+                  <tr>
+                    <th>Urutan</th>
+                    <th>Metode Uji</th>
+                    <th>Sifat Pengujian</th>
+                    <th>Kriteria Lulus</th>
+                    <th>Tujuan Utama &amp; Efisiensi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>1</b></td>
+                    <td><b>Megger Test</b><br><small style="color:var(--cyan)">Insulation Resistance</small></td>
+                    <td><span class="badge ok">Non-Destruktif</span></td>
+                    <td><code>≥ 1 MΩ / kV</code><br><small style="color:var(--text-dim)">(Sistem 20kV min. 20 MΩ)</small></td>
+                    <td>Uji dasar paling cepat &amp; murah. Menyaring kesalahan fatal seperti <i>sealing</i> buruk atau kontaminasi air.</td>
+                  </tr>
+                  <tr>
+                    <td><b>2</b></td>
+                    <td><b>Hipot Test</b><br><small style="color:var(--warn)">DC/AC Withstand</small></td>
+                    <td><span class="badge warn">Destruktif Potensial</span></td>
+                    <td><code>Memenuhi V_uji (1–15 mnt)</code><br><small style="color:var(--text-dim)">(e.g. 42kV pada 20kV system)</small></td>
+                    <td>Menguji ketahanan terhadap stress tegangan berlebih. Memastikan margin keselamatan sebelum dialiri tegangan kerja.</td>
+                  </tr>
+                  <tr>
+                    <td><b>3</b></td>
+                    <td><b>VLF Test</b><br><small style="color:var(--cyan)">Very Low Frequency 0.1Hz</small></td>
+                    <td><span class="badge ok">Non-Destruktif</span></td>
+                    <td><code>Tan δ ≤ 1.2 × 10⁻³</code><br><small style="color:var(--text-dim)">(Khusus Kabel XLPE)</small></td>
+                    <td>Mendeteksi cacat <i>Water Treeing</i> yang tidak terlihat di Megger biasa tanpa membutuhkan alat uji raksasa.</td>
+                  </tr>
+                  <tr>
+                    <td><b>4</b></td>
+                    <td><b>Partial Discharge (PD)</b><br><small style="color:var(--accent)">Percikan Mikro Void</small></td>
+                    <td><span class="badge ok">Paling Sensitif</span></td>
+                    <td><code>≤ 10 pC</code><br><small style="color:var(--text-dim)">(Picocoulomb)</small></td>
+                    <td>Mendeteksi percikan mikro pada rongga udara (<i>void</i>) hasil pemasangan <i>heat shrink/cold shrink</i> sebelum tembus total.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Detail 4 Metode Pengujian Cards Grid -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin:16px 0;">
+              
+              <!-- Card 1: Megger -->
+              <div style="background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px;">
+                <div style="font-weight:700; color:#38bdf8; font-size:14px; margin-bottom:8px;">1. Megger Test (Insulation Resistance)</div>
+                <div style="font-size:12.5px; color:var(--text); line-height:1.6;">
+                  <b>Prinsip Kerja:</b> Megger adalah ohm-meter dengan sumber tegangan tinggi internal (5.000 V – 10.000 V DC untuk TM) agar terjadi arus bocor mikro yang terukur presisi pada tahanan isolasi tinggi (MΩ–GΩ).<br><br>
+                  <b>Yang Diukur:</b> Seberapa baik isolasi mencegah arus loncat dari konduktor ke <i>screen/ground</i>. Mengidentifikasi kelembapan, kontaminasi, &amp; cacat pengupasan.<br><br>
+                  <b>Alasan Pertama:</b> Murah, cepat, non-destruktif, dan langsung mendeteksi kesalahan instalasi paling umum.
+                </div>
+              </div>
+
+              <!-- Card 2: Hipot -->
+              <div style="background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px;">
+                <div style="font-weight:700; color:#ff8a3d; font-size:14px; margin-bottom:8px;">2. Hipot Test (DC/AC Withstand Test)</div>
+                <div style="font-size:12.5px; color:var(--text); line-height:1.6;">
+                  <b>Prinsip Kerja:</b> Membebankan tegangan uji ekstra tinggi (misal 42 kV untuk sistem 20kV) selama 1–15 menit untuk menguji margin ketahanan isolasi.<br><br>
+                  <b>Mengapa Perlu:</b> Megger hanya mendeteksi cacat besar. Cacat kecil (<i>micro-void</i>) baru terdeteksi saat isolasi menerima <i>stress test</i> tinggi mendekati batasnya.<br><br>
+                  <b>Trade-Off:</b> Berisiko mempercepat penuaan isolasi jika dilakukan berulang kali, sehingga level tegangan &amp; durasi dibakukan ketat.
+                </div>
+              </div>
+
+              <!-- Card 3: VLF -->
+              <div style="background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px;">
+                <div style="font-weight:700; color:#34d399; font-size:14px; margin-bottom:8px;">3. VLF Test (Very Low Frequency 0.1 Hz)</div>
+                <div style="font-size:12.5px; color:var(--text); line-height:1.6;">
+                  <b>Khusus Kabel XLPE:</b> Menguji kabel panjang dengan AC 50Hz butuh daya reaktif besar. Frekuensi 0.1Hz menurunkan arus pengisian kapasitif sehingga peralatan portable dibawa ke lapangan.<br><br>
+                  <b>Deteksi Water Treeing:</b> Cacat <i>water treeing</i> (Bab 1) tumbuh perlahan tanpa memicu bocor Megger statis. Frekuensi 0.1Hz memberi waktu bagi <i>stress</i> listrik menembus jalur <i>treeing</i> tanpa merusak isolasi sehat.
+                </div>
+              </div>
+
+              <!-- Card 4: PD -->
+              <div style="background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px;">
+                <div style="font-weight:700; color:#a855f7; font-size:14px; margin-bottom:8px;">4. Partial Discharge (PD) Test</div>
+                <div style="font-size:12.5px; color:var(--text); line-height:1.6;">
+                  <b>Prinsip Kerja:</b> Mendeteksi sinyal elektromagnetik/akustik percikan mikro pada rongga udara (<i>void</i>) internal isolasi sebelum terjadi tembus total.<br><br>
+                  <b>Kriteria Presisi:</b> Kriteria lolos ≤ 10 pC (Picocoulomb — muatan sangat kecil).<br><br>
+                  <b>Indikator Dini:</b> Cacat akibat pemasangan <i>heat shrink/cold shrink</i> tidak sempurna (Bab 4-5) terdeteksi bertahun-tahun sebelum kegagalan total.
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Sequence Rule Box -->
+            <div class="teach-box" style="margin-top:14px;">
+              <b>⚡ Logika Urutan Pengujian Komisioning (Bab 3):</b>
+              <br>• Mulai dari yang <i>paling murah, cepat, dan aman</i>, baru naik ke pengujian lebih detail/mahal. Jika Megger saja sudah gagal, <b>TIDAK PERLU LANJUT KE HIPOT</b> — pembongkaran ulang wajib dilakukan.
+              <br>• <b>Sekuens Baku Lapangan (Bab 3):</b> <code>Megger Test (Insulation Resistance)</code> ➔ <code>DC Withstand / Hipot</code> ➔ <code>Megger Ulang</code> ➔ <code>Power Frequency AC / VLF Test</code> ➔ <code>Megger Ulang</code> ➔ <code>Energize</code>.
+              <br>• Pola <i>"cek isolasi sebelum &amp; sesudah setiap pengujian berat"</i> memastikan setiap tahap pengujian tidak merusak isolasi kabel yang tadinya sehat.
+            </div>
+          </div>
         </section>
 
         <!-- REFERENSI STANDAR RESMI -->
