@@ -504,7 +504,7 @@
       border: 1px solid var(--warn);
     }
 
-    /* Light Theme */
+    /* Win11 Light Theme Variable Overrides */
     [data-theme="light"] {
       --bg: #F3F3F5;
       --panel: #FFFFFF;
@@ -513,9 +513,16 @@
       --line: #E2E8F0;
       --line-bright: #CBD5E1;
       --accent: #0067C0;
+      --accent-glow: rgba(0, 103, 192, 0.12);
+      --accent-dim: #003E92;
       --cyan: #0284C7;
+      --cyan-glow: rgba(2, 132, 199, 0.12);
       --text: #1E293B;
       --text-dim: #64748B;
+      --ok: #107C10;
+      --ok-glow: rgba(16, 124, 16, 0.12);
+      --warn: #D97706;
+      --danger: #DC2626;
     }
 
     [data-theme="light"] .result-card {
@@ -529,6 +536,15 @@
 
     [data-theme="light"] .styled-table td {
       color: #1e293b;
+    }
+
+    [data-theme="light"] .styled-table tr:hover td {
+      background: rgba(0, 103, 192, 0.04);
+    }
+
+    [data-theme="light"] .brand-badge {
+      background: rgba(0, 103, 192, 0.08);
+      border-color: rgba(0, 103, 192, 0.25);
     }
 
     /* Universal Top Titlebar & Shortcuts Header (100% Full-Width Edge-to-Edge like Cable Calc) */
