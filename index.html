@@ -67,7 +67,7 @@
       padding: 0;
     }
 
-    /* Universal Top Titlebar & Shortcuts Header */
+    /* Universal Top Titlebar & Shortcuts Header (100% Full-Width Edge-to-Edge like Cable Calc) */
     .top-titlebar {
       position: sticky;
       top: 0;
@@ -81,21 +81,17 @@
       z-index: 999;
       user-select: none;
       font-family: 'Segoe UI Variable Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
-
-    .top-titlebar-inner {
-      max-width: 1300px;
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 16px;
       display: flex;
       align-items: center;
+      padding: 0 16px;
       gap: 10px;
       overflow-x: auto;
       white-space: nowrap;
+      width: 100%;
     }
 
-    .top-titlebar-inner::-webkit-scrollbar { display: none; }
+    .top-titlebar::-webkit-scrollbar { display: none; }
+    [data-theme="light"] .top-titlebar { background: rgba(243, 244, 246, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
 
     .top-brand {
       text-decoration: none;
@@ -557,33 +553,31 @@
 <body>
 
   <div class="top-titlebar">
-    <div class="top-titlebar-inner">
-      <a href="index.html" class="top-brand">
-        <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
-          <line x1="3" y1="12" x2="6" y2="12" />
-          <line x1="18" y1="12" x2="21" y2="12" />
-          <line x1="12" y1="3" x2="12" y2="6" />
-          <line x1="12" y1="18" x2="12" y2="21" />
-        </svg>
-        <span class="top-brand-name">WLDN Technical Suite</span>
-      </a>
+    <a href="index.html" class="top-brand">
+      <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
+        <line x1="3" y1="12" x2="6" y2="12" />
+        <line x1="18" y1="12" x2="21" y2="12" />
+        <line x1="12" y1="3" x2="12" y2="6" />
+        <line x1="12" y1="18" x2="12" y2="21" />
+      </svg>
+      <span class="top-brand-name">WLDN Technical Suite</span>
+    </a>
+    <div class="top-divider"></div>
+    <nav class="top-shortcuts">
+      <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
       <div class="top-divider"></div>
-      <nav class="top-shortcuts">
-        <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
-        <div class="top-divider"></div>
-        <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
-        <div class="top-divider"></div>
-        <a href="termination-jointing-selector.html" class="top-link">⚡ Kit Selector</a>
-        <div class="top-divider"></div>
-        <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
-      </nav>
-      <div class="top-spacer"></div>
-      <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
-      <a href="index.html" class="top-portal-btn active">🏠 Portal Suite</a>
-      <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
-    </div>
+      <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
+      <div class="top-divider"></div>
+      <a href="termination-jointing-selector.html" class="top-link">⚡ Kit Selector</a>
+      <div class="top-divider"></div>
+      <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
+    <a href="index.html" class="top-portal-btn active">🏠 Portal Suite</a>
+    <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
   </div>
 
   <div class="container" style="padding-top:1.5rem">

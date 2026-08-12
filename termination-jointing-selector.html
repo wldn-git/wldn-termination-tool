@@ -531,7 +531,7 @@
       color: #1e293b;
     }
 
-    /* Universal Top Titlebar & Shortcuts Header */
+    /* Universal Top Titlebar & Shortcuts Header (100% Full-Width Edge-to-Edge like Cable Calc) */
     .top-titlebar {
       position: sticky;
       top: 0;
@@ -545,23 +545,17 @@
       z-index: 999;
       user-select: none;
       font-family: 'Segoe UI Variable Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
-
-    [data-theme="light"] .top-titlebar { background: rgba(243, 243, 243, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
-
-    .top-titlebar-inner {
-      max-width: 1300px;
-      height: 100%;
-      margin: 0 auto;
-      padding: 0 16px;
       display: flex;
       align-items: center;
+      padding: 0 16px;
       gap: 10px;
       overflow-x: auto;
       white-space: nowrap;
+      width: 100%;
     }
 
-    .top-titlebar-inner::-webkit-scrollbar { display: none; }
+    .top-titlebar::-webkit-scrollbar { display: none; }
+    [data-theme="light"] .top-titlebar { background: rgba(243, 244, 246, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
 
     .top-brand {
       text-decoration: none;
@@ -644,22 +638,6 @@
 
     .top-theme-btn:hover { background: rgba(56, 189, 248, 0.18); border-color: rgba(56, 189, 248, 0.4); color: #38BDF8; }
 
-    .top-portal-btn {
-      text-decoration: none;
-      font-size: 11.5px;
-      font-weight: 600;
-      color: #38BDF8;
-      background: rgba(56, 189, 248, 0.1);
-      padding: 4px 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: all 0.15s ease;
-      flex-shrink: 0;
-    }
-
     .top-portal-btn:hover { background: rgba(56, 189, 248, 0.2); }
 
     .top-badge {
@@ -680,33 +658,31 @@
 <body>
 
   <div class="top-titlebar">
-    <div class="top-titlebar-inner">
-      <a href="index.html" class="top-brand">
-        <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="12" cy="12" r="4" />
-          <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
-          <line x1="3" y1="12" x2="6" y2="12" />
-          <line x1="18" y1="12" x2="21" y2="12" />
-          <line x1="12" y1="3" x2="12" y2="6" />
-          <line x1="12" y1="18" x2="12" y2="21" />
-        </svg>
-        <span class="top-brand-name">MV Kit Selector</span>
-      </a>
+    <a href="index.html" class="top-brand">
+      <svg class="top-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="12" cy="12" r="9" stroke-dasharray="3 3" />
+        <line x1="3" y1="12" x2="6" y2="12" />
+        <line x1="18" y1="12" x2="21" y2="12" />
+        <line x1="12" y1="3" x2="12" y2="6" />
+        <line x1="12" y1="18" x2="12" y2="21" />
+      </svg>
+      <span class="top-brand-name">MV Kit Selector</span>
+    </a>
+    <div class="top-divider"></div>
+    <nav class="top-shortcuts">
+      <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
       <div class="top-divider"></div>
-      <nav class="top-shortcuts">
-        <a href="materi.html" class="top-link">📚 Materi (7 Bab)</a>
-        <div class="top-divider"></div>
-        <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
-        <div class="top-divider"></div>
-        <a href="termination-jointing-selector.html" class="top-link active">⚡ Kit Selector</a>
-        <div class="top-divider"></div>
-        <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
-      </nav>
-      <div class="top-spacer"></div>
-      <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
-      <a href="index.html" class="top-portal-btn">🏠 Portal Suite</a>
-      <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
-    </div>
+      <a href="evaluasi.html" class="top-link">📝 Evaluasi &amp; OJT</a>
+      <div class="top-divider"></div>
+      <a href="termination-jointing-selector.html" class="top-link active">⚡ Kit Selector</a>
+      <div class="top-divider"></div>
+      <a href="cable-calc.html" class="top-link">🧮 Cable Calc</a>
+    </nav>
+    <div class="top-spacer"></div>
+    <button class="top-theme-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span id="themeLabel">Win11 Light</span></button>
+    <a href="index.html" class="top-portal-btn">🏠 Portal Suite</a>
+    <span class="top-badge">Jembo · Kabelindo · IEC · SNI</span>
   </div>
 
   <div class="wrap">
@@ -716,10 +692,6 @@
         <h1>MV Cable Termination &amp; Jointing Kit Selector</h1>
         <div class="sub">Pemilih Kit Terminasi &amp; Sambungan Kabel TM Presisi Sesuai Katalog Resmi 3M
           (3G/3W/RJS/INV/TI/HSG), Raychem &amp; Prysmian</div>
-      </div>
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <button class="theme-toggle-btn" onclick="toggleTheme()"><span id="themeIcon">☀️</span> <span
-            id="themeLabel">Win11 Light</span></button>
       </div>
     </header>
 
