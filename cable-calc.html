@@ -949,6 +949,34 @@
     [data-tip]:hover::after {
       opacity: 1;
     }
+  
+    /* High-Contrast Light Mode Overrides for Cable Calc */
+    [data-theme="light"] {
+      --text: #0F172A;
+      --text-2: #334155;
+      --text-3: #475569;
+    }
+
+    [data-theme="light"] body {
+      color: #0F172A;
+    }
+
+    [data-theme="light"] .form-label {
+      color: #334155;
+    }
+
+    [data-theme="light"] .page-sub,
+    [data-theme="light"] .card-sub,
+    [data-theme="light"] .rlabel,
+    [data-theme="light"] .runit,
+    [data-theme="light"] .rnote {
+      color: #334155;
+    }
+
+    [data-theme="light"] .rval {
+      color: #0F172A;
+    }
+
   </style>
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };

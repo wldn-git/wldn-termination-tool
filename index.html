@@ -497,7 +497,7 @@
       }
     }
   
-    /* Win11 Light Theme Overrides for Index / Portal Suite */
+    
     [data-theme="light"] {
       --bg: #F3F4F6;
       --bg-gradient: radial-gradient(circle at 50% 0%, #E2E8F0 0%, #F3F4F6 75%);
@@ -539,6 +539,50 @@
     [data-theme="light"] .top-link { color: #5C5C5C; }
     [data-theme="light"] .top-theme-btn { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.15); color: #1E293B; }
     [data-theme="light"] .top-badge { color: #64748B; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
+
+  
+    /* High-Contrast Light Mode Overrides for Index / Portal Suite */
+    [data-theme="light"] {
+      --bg: #F3F4F6;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #E2E8F0 0%, #F3F4F6 75%);
+      --card-bg: #FFFFFF;
+      --card-border: #CBD5E1;
+      --text-main: #0F172A;
+      --text-muted: #334155;
+      --accent: #0067C0;
+    }
+
+    [data-theme="light"] body {
+      background-color: #F3F4F6;
+      color: #0F172A;
+    }
+
+    [data-theme="light"] .suite-card {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      color: #1E293B;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    [data-theme="light"] .suite-card:hover {
+      border-color: #0067C0;
+      box-shadow: 0 8px 24px rgba(0,103,192,0.12);
+    }
+
+    [data-theme="light"] .hero-title {
+      color: #0F172A;
+    }
+
+    [data-theme="light"] .hero-desc {
+      color: #334155;
+    }
+
+    [data-theme="light"] .top-titlebar { background: rgba(243, 244, 246, 0.85); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+    [data-theme="light"] .top-brand { color: #1A1A1A; }
+    [data-theme="light"] .top-divider { background: rgba(0, 0, 0, 0.12); }
+    [data-theme="light"] .top-link { color: #334155; }
+    [data-theme="light"] .top-theme-btn { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.15); color: #1E293B; }
+    [data-theme="light"] .top-badge { color: #475569; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
 
   </style>
   <script>
