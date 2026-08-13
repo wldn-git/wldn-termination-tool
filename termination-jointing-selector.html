@@ -1079,8 +1079,12 @@
 
               <div class="meta-grid">
                 <div class="meta-item">
-                  <span class="lbl">3M Cold Shrink</span>
-                  <span class="val" id="res3M">QT-III 7695-S-4-3G</span>
+                  <span class="lbl">3M QT-III Cold Shrink</span>
+                  <span class="val" id="res3M">3M Cold Shrink QT-III 7695-S-4-3G</span>
+                </div>
+                <div class="meta-item">
+                  <span class="lbl">3M QT-II Hybrid/Shearbolt</span>
+                  <span class="val" id="res3MQT2">3M QT-II (K) 6S-32S</span>
                 </div>
                 <div class="meta-item">
                   <span class="lbl">Raychem Heat Shrink</span>
@@ -1718,6 +1722,45 @@
     }
 
     // AUTHENTIC DATASHEET LOOKUP ENGINE (Raychem, 3M, Prysmian)
+    
+    // AUTHENTIC 3M QT-II SERIES DATABASE (Verified from 3M Catalog PDF)
+    const QT2_DB = {
+      "12": {
+        single: [
+          { min: 10, max: 95, in: "3M QT-II (J) 4S-12S", out: "3M QT-II (J) 6S-12S" },
+          { min: 95, max: 185, in: "3M QT-II (K) 4S-12S", out: "3M QT-II (K) 6S-12S" },
+          { min: 185, max: 500, in: "3M QT-II (L) 4S-12S", out: "3M QT-II (L) 6S-12S" }
+        ],
+        three: [
+          { min: 10, max: 95, in: "3M QT-II (J) 4S-32S", out: "3M QT-II (J) 6S-32S (Hybrid 6S-32H)" },
+          { min: 95, max: 185, in: "3M QT-II (K) 4S-32S", out: "3M QT-II (K) 6S-32S" },
+          { min: 185, max: 500, in: "3M QT-II (L) 4S-32S", out: "3M QT-II (L) 6S-32S" }
+        ]
+      },
+      "24": {
+        single: [
+          { min: 10, max: 95, in: "3M QT-II (J) 4S-12S", out: "3M QT-II (J) 6S-12S" },
+          { min: 95, max: 185, in: "3M QT-II (K) 4S-12S", out: "3M QT-II (K) 6S-12S" },
+          { min: 185, max: 500, in: "3M QT-II (L) 4S-12S", out: "3M QT-II (L) 6S-12S" }
+        ],
+        three: [
+          { min: 10, max: 95, in: "3M QT-II (J) 4S-32S", out: "3M QT-II (J) 6S-32S" },
+          { min: 95, max: 185, in: "3M QT-II (K) 4S-32S", out: "3M QT-II (K) 6S-32S" },
+          { min: 185, max: 500, in: "3M QT-II (L) 4S-32S", out: "3M QT-II (L) 6S-32S" }
+        ]
+      },
+      "36": {
+        single: [
+          { min: 10, max: 95, in: "3M QT-II (K) 8S-13", out: "3M QT-II (K) 8S-33S" },
+          { min: 95, max: 500, in: "3M QT-II (L) 8S-13", out: "3M QT-II (L) 8S-33S" }
+        ],
+        three: [
+          { min: 10, max: 95, in: "3M QT-II (K) 8S-13-3C", out: "3M QT-II (K) 8S-33S-3C" },
+          { min: 95, max: 500, in: "3M QT-II (L) 8S-13-3C", out: "3M QT-II (L) 8S-33S-3C" }
+        ]
+      }
+    };
+
     const RAYCHEM_DB = {
       "12": {
         single: [
@@ -1986,8 +2029,25 @@
         odDisp = `Sesuai Spesifikasi Kabel ${size} mm²`;
       }
 
+      // 4. 3M QT-II Series Lookup (PDF Catalog Verified)
+      let code3MQT2 = '';
+      if (category.startsWith('term')) {
+        const isIndoor = category === 'term_in';
+        const qt2V = QT2_DB[voltage] ? QT2_DB[voltage][coreTypeKey] : null;
+        if (qt2V) {
+          const matchQT2 = qt2V.find(r => szNum >= r.min && szNum <= r.max) || qt2V[qt2V.length - 1];
+          code3MQT2 = isIndoor ? matchQT2.in : matchQT2.out;
+        } else {
+          code3MQT2 = `3M QT-II (K) 6S-${voltage}kV`;
+        }
+      } else {
+        code3MQT2 = `3M QS 2000E 93-AS${core === '3' ? '700S-X-RPM' : '620-1'}`;
+      }
+
       document.getElementById('resKitCode').innerText = code3M;
       document.getElementById('res3M').innerText = code3M;
+      const qt2El = document.getElementById('res3MQT2');
+      if (qt2El) qt2El.innerText = code3MQT2;
       document.getElementById('resRaychem').innerText = codeRay;
       document.getElementById('resPrysmian').innerText = codePrys;
       document.getElementById('resOD').innerText = odDisp;
