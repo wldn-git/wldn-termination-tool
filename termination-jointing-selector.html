@@ -1755,26 +1755,90 @@
         cutback = `${szNum > 120 ? '550' : '480'} mm`;
         tech = 'Integrated Stress Control Tube + Cold Shrink Silicone';
       } else {
-        // JOINTING (SPLICING) LOOKUP
+        // JOINTING (SPLICING) LOOKUP ENGINE - Cross-Checked with 3M Excel Catalogs
         const isStraight = category === 'joint_straight';
 
         if (isStraight) {
-          if (core === '1') {
-            code3M = `3M Cold Shrink QS-III ${szNum > 150 ? '5468A' : '5467A'}`;
-            codeRay = `Raychem MXSU-5131 (${size} mm² Inline)`;
-            codePrys = `Prysmian Elaspeed Joint EJ-1C-${voltage}`;
+          if (voltage === '12') {
+            if (core === '1') {
+              if (szNum <= 95) {
+                code3M = "3M Cold Shrink QS-III 5513A (12/15 kV)";
+                odDisp = "17.8–27.4 mm";
+              } else if (szNum <= 300) {
+                code3M = "3M Cold Shrink QS 2000E 93-AS620-1 (12/15 kV)";
+                odDisp = "19.1–36.8 mm";
+              } else {
+                code3M = "3M Cold Shrink QS 2000E 93-AS630-1 (12/15 kV)";
+                odDisp = "33.4–67.6 mm";
+              }
+              codeRay = `Raychem MXSU-3131 (${size} mm² Inline 12kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-1C-12`;
+            } else {
+              if (szNum <= 300) {
+                code3M = "3M Cold Shrink QS 2000E 93-AS700S-X-RPM (3-Core 12kV)";
+                odDisp = "19.0–38.0 mm (Outer Dia: 60–91 mm)";
+              } else {
+                code3M = "3M Cold Shrink QS 2000E 93-AS630S-1 (3-Core 12kV)";
+                odDisp = "33.4–67.6 mm";
+              }
+              codeRay = `Raychem MXSU-3331 (${size} mm² 3-Core 12kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-3C-12`;
+            }
+          } else if (voltage === '24') {
+            if (core === '1') {
+              if (szNum <= 300) {
+                code3M = "3M Cold Shrink QS 2000E 93-AS620-1 (24 kV)";
+                odDisp = "19.1–36.8 mm";
+              } else {
+                code3M = "3M Cold Shrink QS 2000E 93-AS630-1 (24 kV)";
+                odDisp = "33.4–67.6 mm";
+              }
+              codeRay = `Raychem MXSU-5131 (${size} mm² Inline 24kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-1C-24`;
+            } else {
+              if (szNum <= 300) {
+                code3M = "3M Cold Shrink QS 2000E 93-AS700S-X-RPM / 93-AS620S-1 (24 kV)";
+                odDisp = "19.0–38.0 mm (Outer Dia: 60–91 mm)";
+              } else {
+                code3M = "3M Cold Shrink QS 2000E 93-AS630S-1 (24 kV)";
+                odDisp = "33.4–67.6 mm";
+              }
+              codeRay = `Raychem MXSU-5331 (${size} mm² 3-Core 24kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-3C-24`;
+            }
           } else {
-            code3M = `3M Cold Shrink QS-III ${szNum > 120 ? '5468-3C' : '5467-3C'}`;
-            codeRay = `Raychem MXSU-5331 (${size} mm² Inline)`;
-            codePrys = `Prysmian Elaspeed Joint EJ-3B-${voltage}`;
+            // 36 kV Class
+            if (core === '1') {
+              if (szNum <= 185) {
+                code3M = "3M Cold Shrink QS-III 5467A (35 kV / 250 kV BIL)";
+                odDisp = "27.2–43.2 mm (1.07–1.70 in)";
+              } else {
+                code3M = "3M Cold Shrink QS-III 5468A (35 kV / 250 kV BIL)";
+                odDisp = "33.4–53.8 mm (1.31–2.12 in)";
+              }
+              codeRay = `Raychem MXSU-6141 (${size} mm² Inline 36kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-1C-36`;
+            } else {
+              code3M = `3M Cold Shrink QS-III 5467A-3C (35 kV 3-Core)`;
+              codeRay = `Raychem MXSU-6341 (${size} mm² 3-Core 36kV)`;
+              codePrys = `Prysmian Elaspeed Joint EJ-3C-36`;
+              odDisp = "27.2–43.2 mm per Core";
+            }
           }
-          tech = 'Cold Shrink / Heat Shrink Splice Body + Mechanical Shear Bolt';
+          tech = 'Integrated Cold Shrink Splice Body (Silicon 3-Layer) + Mechanical Shear Bolt / Crimp Connector';
         } else {
           // Transition Joint XLPE-PILC
-          code3M = `3M Cold Shrink QS-III 5520-3C-TR (Transition Splice)`;
-          codeRay = `Raychem RVS-3-${szNum > 150 ? '5341' : '5331'} (XLPE to PILC)`;
-          codePrys = `Prysmian Elaspeed Transition Splice TJ-3B-${voltage}`;
-          tech = 'Oil-Resistant Mastic Barrier + Transition Sleeve';
+          if (core === '1') {
+            code3M = "3M Cold Shrink QS 2000E 94-FC630-1-SP (Transition Splice Single Core)";
+            codeRay = `Raychem RVS-1-${szNum > 150 ? '5141' : '5131'} (XLPE to PILC)`;
+            codePrys = `Prysmian Elaspeed Transition Splice TJ-1C-${voltage}`;
+          } else {
+            code3M = "3M Cold Shrink QS 2000E 94-FV635-3-SP / 5520-3C-TR (Transition 3-Core)";
+            codeRay = `Raychem RVS-3-${szNum > 150 ? '5341' : '5331'} (XLPE to PILC)`;
+            codePrys = `Prysmian Elaspeed Transition Splice TJ-3C-${voltage}`;
+          }
+          tech = 'Oil-Resistant Mastic Barrier + Cold Shrink Transition Sleeve + Resin Outer Protection';
+          odDisp = `Sesuai Spesifikasi Kabel XLPE/PILC ${size} mm²`;
         }
         cutback = `${szNum > 120 ? '750' : '650'} mm`;
         odDisp = `Sesuai Spesifikasi Kabel ${size} mm²`;
