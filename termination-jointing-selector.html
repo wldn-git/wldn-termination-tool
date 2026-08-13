@@ -852,6 +852,32 @@
     [data-theme="light"] .top-theme-btn { background: rgba(0, 0, 0, 0.06); border: 1px solid rgba(0, 0, 0, 0.15); color: #1E293B; }
     [data-theme="light"] .top-badge { color: #475569; background: rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.08); }
 
+  
+    /* Frozen / Disabled Option Styles */
+    .opt.disabled {
+      opacity: 0.35 !important;
+      pointer-events: none !important;
+      cursor: not-allowed !important;
+      filter: grayscale(85%) !important;
+      background: rgba(0, 0, 0, 0.04) !important;
+      border-color: var(--line) !important;
+      box-shadow: none !important;
+      color: var(--text-dim) !important;
+    }
+    .opt.disabled * {
+      color: var(--text-dim) !important;
+    }
+    .step-na-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: inline-block;
+    }
+
   </style>
 </head>
 
@@ -918,19 +944,19 @@
                 Langkah 1: Jenis Aksesoris Kabel</div>
               <div class="grid-opts" id="optCategory"
                 style="grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));">
-                <div class="opt selected" onclick="selectOpt('category', 'term_out', this)">
+                <div class="opt selected" onclick="selectOpt('category', 'term_out', this)" data-val="term_out">
                   <b>Terminasi Outdoor</b>
                   <span class="opt-desc">Gardu tiang / switchyard</span>
                 </div>
-                <div class="opt" onclick="selectOpt('category', 'term_in', this)">
+                <div class="opt" onclick="selectOpt('category', 'term_in', this)" data-val="term_in">
                   <b>Terminasi Indoor</b>
                   <span class="opt-desc">Kubikel GIS/AIS</span>
                 </div>
-                <div class="opt" onclick="selectOpt('category', 'joint_straight', this)">
+                <div class="opt" onclick="selectOpt('category', 'joint_straight', this)" data-val="joint_straight">
                   <b>Straight Joint</b>
                   <span class="opt-desc">Sambungan XLPE-XLPE</span>
                 </div>
-                <div class="opt" onclick="selectOpt('category', 'joint_trans', this)">
+                <div class="opt" onclick="selectOpt('category', 'joint_trans', this)" data-val="joint_trans">
                   <b>Transition Joint</b>
                   <span class="opt-desc">Sambungan XLPE-PILC</span>
                 </div>
@@ -958,9 +984,9 @@
                 Langkah 3: Jumlah Core</div>
               <div class="grid-opts" id="optCores"
                 style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));">
-                <div class="opt selected" onclick="selectOpt('core', '3', this)"><b>3-Core Cable</b><span
+                <div class="opt selected" onclick="selectOpt('core', '3', this)" data-val="3"><b>3-Core Cable</b><span
                     class="opt-desc">N2XSEBY / DSTA</span></div>
-                <div class="opt" onclick="selectOpt('core', '1', this)"><b>1-Core Cable</b><span class="opt-desc">N2XSY
+                <div class="opt" onclick="selectOpt('core', '1', this)" data-val="1"><b>1-Core Cable</b><span class="opt-desc">N2XSY
                     / NA2XSY</span></div>
               </div>
             </div>
@@ -971,23 +997,23 @@
                 style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">
                 Langkah 4: Penampang Konduktor (mm²)</div>
               <div class="grid-opts" id="optSize" style="grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));">
-                <div class="opt" onclick="selectOpt('size', '35', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '35', this)" data-val="35" style="padding:6px; text-align:center;">
                   <b>35</b></div>
-                <div class="opt" onclick="selectOpt('size', '50', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '50', this)" data-val="50" style="padding:6px; text-align:center;">
                   <b>50</b></div>
-                <div class="opt" onclick="selectOpt('size', '70', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '70', this)" data-val="70" style="padding:6px; text-align:center;">
                   <b>70</b></div>
-                <div class="opt" onclick="selectOpt('size', '95', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '95', this)" data-val="95" style="padding:6px; text-align:center;">
                   <b>95</b></div>
-                <div class="opt" onclick="selectOpt('size', '120', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '120', this)" data-val="120" style="padding:6px; text-align:center;">
                   <b>120</b></div>
-                <div class="opt selected" onclick="selectOpt('size', '150', this)"
+                <div class="opt selected" onclick="selectOpt('size', '150', this)" data-val="150"
                   style="padding:6px; text-align:center;"><b>150</b></div>
-                <div class="opt" onclick="selectOpt('size', '185', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '185', this)" data-val="185" style="padding:6px; text-align:center;">
                   <b>185</b></div>
-                <div class="opt" onclick="selectOpt('size', '240', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '240', this)" data-val="240" style="padding:6px; text-align:center;">
                   <b>240</b></div>
-                <div class="opt" onclick="selectOpt('size', '300', this)" style="padding:6px; text-align:center;">
+                <div class="opt" onclick="selectOpt('size', '300', this)" data-val="300" style="padding:6px; text-align:center;">
                   <b>300</b></div>
               </div>
             </div>
@@ -996,14 +1022,14 @@
             <div style="margin-bottom:12px;" id="pollutionContainer">
               <div
                 style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px;">
-                Langkah 5: Tingkat Polusi (Outdoor Only)</div>
+                Langkah 5: Tingkat Polusi (Outdoor Only) <span class="step-na-badge" id="polNABadge" style="display:none; margin-left:6px;">N/A — Khusus Outdoor</span></div>
               <div class="grid-opts" id="optPollution"
                 style="grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));">
-                <div class="opt selected" onclick="selectOpt('pollution', 'light', this)"><b>Light</b><span
+                <div class="opt selected" onclick="selectOpt('pollution', 'light', this)" data-val="light"><b>Light</b><span
                     class="opt-desc">2 Skirt (7620)</span></div>
-                <div class="opt" onclick="selectOpt('pollution', 'medium', this)"><b>Medium</b><span class="opt-desc">4
+                <div class="opt" onclick="selectOpt('pollution', 'medium', this)" data-val="medium"><b>Medium</b><span class="opt-desc">4
                     Skirt (7692)</span></div>
-                <div class="opt" onclick="selectOpt('pollution', 'heavy', this)"><b>Heavy</b><span class="opt-desc">8
+                <div class="opt" onclick="selectOpt('pollution', 'heavy', this)" data-val="heavy"><b>Heavy</b><span class="opt-desc">8
                     Skirt (7683)</span></div>
               </div>
             </div>
@@ -1012,30 +1038,30 @@
             <div>
               <div
                 style="font-size:11px; font-weight:700; color:var(--cyan); text-transform:uppercase; margin-bottom:6px;">
-                Langkah 6: Varian Khusus 3M Cold Shrink</div>
+                Langkah 6: Varian Khusus 3M Cold Shrink <span class="step-na-badge" id="m3NABadge" style="display:none; margin-left:6px;">Opsi Disesuaikan</span></div>
               <div class="grid-opts" id="optM3Variant"
                 style="grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));">
-                <div class="opt selected" onclick="selectOpt('m3variant', '3g', this)">
+                <div class="opt selected" onclick="selectOpt('m3variant', '3g', this)" data-val="3g">
                   <b>3G (w/ Ground)</b>
                   <span class="opt-desc">Standar 3-core</span>
                 </div>
-                <div class="opt" onclick="selectOpt('m3variant', '3w', this)">
+                <div class="opt" onclick="selectOpt('m3variant', '3w', this)" data-val="3w">
                   <b>3W (no Ground)</b>
                   <span class="opt-desc">Kubikel rapat</span>
                 </div>
-                <div class="opt" onclick="selectOpt('m3variant', 'rjs', this)">
+                <div class="opt" onclick="selectOpt('m3variant', 'rjs', this)" data-val="rjs">
                   <b>RJS (Cabinet)</b>
                   <span class="opt-desc">Re-jacketing</span>
                 </div>
-                <div class="opt" onclick="selectOpt('m3variant', 'inv', this)">
+                <div class="opt" onclick="selectOpt('m3variant', 'inv', this)" data-val="inv">
                   <b>INV (Inverted)</b>
                   <span class="opt-desc">Kabel menggantung</span>
                 </div>
-                <div class="opt" onclick="selectOpt('m3variant', 'ti', this)">
+                <div class="opt" onclick="selectOpt('m3variant', 'ti', this)" data-val="ti">
                   <b>TI (Top Insulator)</b>
                   <span class="opt-desc">Pelindung tupai</span>
                 </div>
-                <div class="opt" onclick="selectOpt('m3variant', 'hsg', this)">
+                <div class="opt" onclick="selectOpt('m3variant', 'hsg', this)" data-val="hsg">
                   <b>HSG (High Fault)</b>
                   <span class="opt-desc">Grounding tinggi</span>
                 </div>
@@ -1568,7 +1594,122 @@
       m3variant: '3g'
     };
 
+    
+    function updateStepAvailability() {
+      const { category, voltage, core, size, pollution, m3variant } = selectionState;
+      const isOutdoor = category === 'term_out';
+      const isIndoor = category === 'term_in';
+      const isJointing = category.startsWith('joint');
+      const is3Core = core === '3';
+      const is1Core = core === '1';
+
+      // 1. LANGKAH 5: TINGKAT POLUSI (OUTDOOR ONLY)
+      const polOpts = document.querySelectorAll('#optPollution .opt');
+      const polBadge = document.getElementById('polNABadge');
+
+      if (!isOutdoor) {
+        polOpts.forEach(opt => opt.classList.add('disabled'));
+        if (polBadge) polBadge.style.display = 'inline-block';
+      } else {
+        polOpts.forEach(opt => opt.classList.remove('disabled'));
+        if (polBadge) polBadge.style.display = 'none';
+      }
+
+      // 2. LANGKAH 6: VARIAN KHUSUS 3M COLD SHRINK
+      const m3Opts = document.querySelectorAll('#optM3Variant .opt');
+      const m3Badge = document.getElementById('m3NABadge');
+      let validVariants = [];
+      let anyM3Disabled = false;
+
+      m3Opts.forEach(opt => {
+        const val = opt.getAttribute('data-val');
+        let isValid = true;
+
+        if (val === '3g' || val === '3w') {
+          // 3G (w/ Ground) and 3W (no Ground) are ONLY valid for 3-Core cables!
+          if (!is3Core) isValid = false;
+        }
+
+        if (val === 'inv' || val === 'ti') {
+          // INV (Inverted) and TI (Top Insulator) are ONLY valid for Outdoor Terminations!
+          if (!isOutdoor) isValid = false;
+        }
+
+        if (val === 'rjs') {
+          // RJS Re-jacketing is for 3-Core or Armored Cables / Cabinet
+          if (is1Core && isIndoor) isValid = true;
+        }
+
+        if (val === 'hsg') {
+          // HSG (High Fault Grounding) is for high-fault grounding outdoor/indoor
+          isValid = true;
+        }
+
+        if (!isValid) {
+          opt.classList.add('disabled');
+          opt.classList.remove('selected');
+          anyM3Disabled = true;
+        } else {
+          opt.classList.remove('disabled');
+          validVariants.push(val);
+        }
+      });
+
+      if (m3Badge) {
+        m3Badge.style.display = anyM3Disabled ? 'inline-block' : 'none';
+      }
+
+      // Auto-switch to first valid variant if currently selected variant gets disabled/frozen
+      const currentM3El = document.querySelector(`#optM3Variant .opt[data-val="${m3variant}"]`);
+      if (currentM3El && currentM3El.classList.contains('disabled')) {
+        const fallbackM3 = validVariants.includes('hsg') ? 'hsg' : (validVariants[0] || 'rjs');
+        selectionState.m3variant = fallbackM3;
+        document.querySelectorAll('#optM3Variant .opt').forEach(opt => {
+          if (opt.getAttribute('data-val') === fallbackM3) {
+            opt.classList.add('selected');
+          } else {
+            opt.classList.remove('selected');
+          }
+        });
+      }
+
+      // 3. LANGKAH 4: PENAMPANG KONDUKTOR (MM²) AVAILABILITY FILTER
+      const sizeOpts = document.querySelectorAll('#optSize .opt');
+      let validSizes = [];
+
+      sizeOpts.forEach(opt => {
+        const szVal = parseInt(opt.getAttribute('data-val') || opt.innerText.trim());
+        let isValid = true;
+
+        if (voltage === '36' && szVal < 35) isValid = false;
+        if (voltage === '24' && is3Core && szVal < 25) isValid = false;
+
+        if (!isValid) {
+          opt.classList.add('disabled');
+          opt.classList.remove('selected');
+        } else {
+          opt.classList.remove('disabled');
+          validSizes.push(szVal.toString());
+        }
+      });
+
+      // Auto-switch to first valid size if current size is disabled
+      const currentSizeEl = document.querySelector(`#optSize .opt[data-val="${size}"]`);
+      if (currentSizeEl && currentSizeEl.classList.contains('disabled')) {
+        const fallbackSize = validSizes[0] || '150';
+        selectionState.size = fallbackSize;
+        document.querySelectorAll('#optSize .opt').forEach(opt => {
+          if (opt.getAttribute('data-val') === fallbackSize) {
+            opt.classList.add('selected');
+          } else {
+            opt.classList.remove('selected');
+          }
+        });
+      }
+    }
+
     function selectOpt(group, val, el) {
+      if (el.classList.contains('disabled')) return;
       selectionState[group] = val;
       const parent = el.parentElement;
       parent.querySelectorAll('.opt').forEach(opt => opt.classList.remove('selected'));
@@ -1696,6 +1837,7 @@
     };
 
     function updateKitResult() {
+      updateStepAvailability();
       const { category, voltage, core, size, pollution, m3variant } = selectionState;
       const szNum = parseInt(size);
       const coreTypeKey = core === '1' ? 'single' : 'three';
