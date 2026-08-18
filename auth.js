@@ -465,6 +465,38 @@
       .wldn-user-badge-logout:hover {
         background: rgba(239, 68, 68, 0.1);
       }
+
+      /* Sidebar Specific User Badge (For Cable Calc & Sidebar Layouts) */
+      .wldn-sidebar-user-badge {
+        margin-top: auto !important;
+        margin-bottom: 0.5rem;
+        width: calc(100% - 4px) !important;
+        box-sizing: border-box;
+        border-radius: 12px;
+        padding: 0.55rem 0.65rem;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      [data-theme="light"] .wldn-sidebar-user-badge {
+        background: rgba(255, 255, 255, 0.95);
+        border-color: rgba(203, 213, 225, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+
+      @media (max-width: 768px) {
+        .nav .wldn-sidebar-user-badge {
+          margin-top: 0 !important;
+          margin-left: auto !important;
+          width: auto !important;
+          flex-shrink: 0;
+        }
+      }
     `;
     document.head.appendChild(style);
   }
@@ -764,36 +796,61 @@
 
     const badge = document.createElement('div');
     badge.id = 'wldn-user-badge';
-    badge.className = 'wldn-user-badge';
 
     const initials = (session.nama || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-
-    // Calculate days remaining
     const daysLeft = Math.max(1, Math.ceil((session.expiresAt - Date.now()) / (1000 * 60 * 60 * 24)));
 
-    badge.innerHTML = `
-      <div class="wldn-user-badge-icon">${initials}</div>
-      <div class="wldn-user-badge-info">
-        <span class="wldn-user-badge-name">${escapeHtml(session.nama)}</span>
-        <span class="wldn-user-badge-company">${escapeHtml(session.perusahaan)} • Sesi ${daysLeft} Hari</span>
-      </div>
-      <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()">
-        🚪 Keluar
-      </button>
-    `;
+    // Check if sidebar navigation exists (e.g., Cable Calc sidebar)
+    const sidebarNav = document.querySelector('nav.nav') || document.querySelector('.sidebar');
+    const landingBar = document.querySelector('.landing-bar');
+    const headerEl = document.querySelector('header');
+    const navContainer = document.querySelector('.nav-container');
 
-    // Try inserting into landing-bar or top navbar if available
-    const targetNav = document.querySelector('.landing-bar') ||
-                      document.querySelector('header') ||
-                      document.querySelector('.nav-container') ||
-                      document.querySelector('.top-bar');
-
-    if (targetNav) {
+    if (sidebarNav) {
+      // Specifically place in Sidebar Bottom for Cable Calc
+      badge.className = 'wldn-user-badge wldn-sidebar-user-badge';
+      badge.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; overflow: hidden;">
+          <div class="wldn-user-badge-icon" style="flex-shrink:0;">${initials}</div>
+          <div class="wldn-user-badge-info" style="overflow: hidden;">
+            <span class="wldn-user-badge-name" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 90px; display: block; font-size: 0.8rem;">${escapeHtml(session.nama)}</span>
+            <span class="wldn-user-badge-company" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 90px; display: block; font-size: 0.68rem;">${escapeHtml(session.perusahaan)}</span>
+          </div>
+        </div>
+        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()" style="flex-shrink:0; background: rgba(239, 68, 68, 0.12); padding: 0.35rem 0.55rem; border-radius: 8px; font-size: 0.72rem;">
+          🚪 Keluar
+        </button>
+      `;
+      sidebarNav.appendChild(badge);
+    } else if (landingBar || headerEl || navContainer) {
+      const targetNav = landingBar || headerEl || navContainer;
+      badge.className = 'wldn-user-badge';
+      badge.innerHTML = `
+        <div class="wldn-user-badge-icon">${initials}</div>
+        <div class="wldn-user-badge-info">
+          <span class="wldn-user-badge-name">${escapeHtml(session.nama)}</span>
+          <span class="wldn-user-badge-company">${escapeHtml(session.perusahaan)} • Sesi ${daysLeft} Hari</span>
+        </div>
+        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()">
+          🚪 Keluar
+        </button>
+      `;
       targetNav.appendChild(badge);
     } else {
       // Floating fallback position
+      badge.className = 'wldn-user-badge';
+      badge.innerHTML = `
+        <div class="wldn-user-badge-icon">${initials}</div>
+        <div class="wldn-user-badge-info">
+          <span class="wldn-user-badge-name">${escapeHtml(session.nama)}</span>
+          <span class="wldn-user-badge-company">${escapeHtml(session.perusahaan)} • Sesi ${daysLeft} Hari</span>
+        </div>
+        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()">
+          🚪 Keluar
+        </button>
+      `;
       badge.style.position = 'fixed';
-      badge.style.top = '1rem';
+      badge.style.bottom = '1rem';
       badge.style.right = '1rem';
       badge.style.zIndex = '9999';
       document.body.appendChild(badge);
