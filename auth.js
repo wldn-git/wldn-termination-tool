@@ -497,6 +497,64 @@
           flex-shrink: 0;
         }
       }
+
+      /* Topbar In-line User Badge (Replaces Jembo/Kabelindo badge) */
+      .wldn-topbar-user-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 3px 10px !important;
+        border-radius: 999px !important;
+        font-size: 0.75rem !important;
+        background: rgba(2, 132, 199, 0.15) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        color: var(--text, #f8fafc) !important;
+        box-shadow: none !important;
+        margin-left: 6px !important;
+        white-space: nowrap !important;
+      }
+
+      [data-theme="light"] .wldn-topbar-user-badge {
+        background: rgba(2, 132, 199, 0.1) !important;
+        border-color: rgba(2, 132, 199, 0.3) !important;
+        color: #0f172a !important;
+      }
+
+      .wldn-topbar-user-badge .wldn-user-badge-icon {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 0.65rem !important;
+        flex-shrink: 0 !important;
+      }
+
+      .wldn-topbar-user-badge .wldn-user-badge-name {
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
+      }
+
+      .wldn-topbar-user-badge .wldn-user-badge-company {
+        font-size: 0.65rem !important;
+        opacity: 0.8 !important;
+        line-height: 1.1 !important;
+      }
+
+      .wldn-topbar-user-badge .wldn-user-badge-logout {
+        padding: 3px 7px !important;
+        font-size: 0.7rem !important;
+        background: rgba(239, 68, 68, 0.15) !important;
+        border-radius: 8px !important;
+        margin-left: 4px !important;
+        cursor: pointer !important;
+        color: #ef4444 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        transition: background 0.2s ease !important;
+      }
+
+      .wldn-topbar-user-badge .wldn-user-badge-logout:hover {
+        background: rgba(239, 68, 68, 0.25) !important;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -800,13 +858,31 @@
     const initials = (session.nama || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const daysLeft = Math.max(1, Math.ceil((session.expiresAt - Date.now()) / (1000 * 60 * 60 * 24)));
 
-    // Check if sidebar navigation exists (e.g., Cable Calc sidebar)
+    // 1. Check if top-badge exists in header (Materi, Evaluasi, Kit Selector)
+    const topBadge = document.querySelector('.top-badge');
+    
+    // 2. Check if sidebar navigation exists (Cable Calc)
     const sidebarNav = document.querySelector('nav.nav') || document.querySelector('.sidebar');
     const landingBar = document.querySelector('.landing-bar');
     const headerEl = document.querySelector('header');
     const navContainer = document.querySelector('.nav-container');
 
-    if (sidebarNav) {
+    if (topBadge) {
+      // Replace top-badge directly on top bar (far right position)
+      badge.className = 'wldn-user-badge wldn-topbar-user-badge';
+      badge.innerHTML = `
+        <div class="wldn-user-badge-icon">${initials}</div>
+        <div class="wldn-user-badge-info" style="display:inline-flex; align-items:center; gap:0.35rem;">
+          <span class="wldn-user-badge-name">${escapeHtml(session.nama)}</span>
+          <span style="opacity:0.5">•</span>
+          <span class="wldn-user-badge-company">${escapeHtml(session.perusahaan)}</span>
+        </div>
+        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()">
+          🚪 Keluar
+        </button>
+      `;
+      topBadge.parentNode.replaceChild(badge, topBadge);
+    } else if (sidebarNav) {
       // Specifically place in Sidebar Bottom for Cable Calc
       badge.className = 'wldn-user-badge wldn-sidebar-user-badge';
       badge.innerHTML = `
