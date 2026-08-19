@@ -498,62 +498,94 @@
         }
       }
 
-      /* Topbar In-line User Badge (Replaces Jembo/Kabelindo badge) */
+      /* Topbar In-line Single-Line User Badge (Replaces Jembo/Kabelindo badge) */
       .wldn-topbar-user-badge {
         display: inline-flex !important;
         align-items: center !important;
-        gap: 0.5rem !important;
-        padding: 3px 10px !important;
+        flex-direction: row !important;
+        gap: 5px !important;
+        height: 26px !important;
+        max-height: 26px !important;
+        padding: 0 8px 0 3px !important;
         border-radius: 999px !important;
-        font-size: 0.75rem !important;
+        font-size: 11.5px !important;
         background: rgba(2, 132, 199, 0.15) !important;
         border: 1px solid rgba(56, 189, 248, 0.35) !important;
         color: var(--text, #f8fafc) !important;
         box-shadow: none !important;
         margin-left: 6px !important;
         white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        line-height: 1 !important;
+        box-sizing: border-box !important;
+        max-width: 320px !important;
+        overflow: hidden !important;
+        vertical-align: middle !important;
       }
 
       [data-theme="light"] .wldn-topbar-user-badge {
-        background: rgba(2, 132, 199, 0.1) !important;
-        border-color: rgba(2, 132, 199, 0.3) !important;
+        background: rgba(2, 132, 199, 0.08) !important;
+        border-color: rgba(2, 132, 199, 0.25) !important;
         color: #0f172a !important;
       }
 
       .wldn-topbar-user-badge .wldn-user-badge-icon {
-        width: 20px !important;
-        height: 20px !important;
-        font-size: 0.65rem !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+        color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
         flex-shrink: 0 !important;
+        line-height: 1 !important;
+        margin: 0 !important;
       }
 
-      .wldn-topbar-user-badge .wldn-user-badge-name {
-        font-size: 0.75rem !important;
+      .wldn-topbar-user-badge .wldn-user-badge-text {
         font-weight: 700 !important;
-        line-height: 1.1 !important;
+        font-size: 11.5px !important;
+        color: inherit !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        line-height: 1 !important;
+        display: inline-block !important;
       }
 
-      .wldn-topbar-user-badge .wldn-user-badge-company {
-        font-size: 0.65rem !important;
-        opacity: 0.8 !important;
-        line-height: 1.1 !important;
+      .wldn-topbar-user-badge .wldn-user-badge-sub {
+        font-weight: 500 !important;
+        opacity: 0.75 !important;
+        font-size: 10.5px !important;
+        margin-left: 2px !important;
       }
 
       .wldn-topbar-user-badge .wldn-user-badge-logout {
-        padding: 3px 7px !important;
-        font-size: 0.7rem !important;
-        background: rgba(239, 68, 68, 0.15) !important;
-        border-radius: 8px !important;
-        margin-left: 4px !important;
-        cursor: pointer !important;
-        color: #ef4444 !important;
-        border: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        padding: 0 6px !important;
+        font-size: 10px !important;
         font-weight: 700 !important;
-        transition: background 0.2s ease !important;
+        color: #ef4444 !important;
+        background: rgba(239, 68, 68, 0.12) !important;
+        border: 1px solid rgba(239, 68, 68, 0.25) !important;
+        border-radius: 10px !important;
+        cursor: pointer !important;
+        margin-left: 3px !important;
+        transition: all 0.15s ease !important;
+        line-height: 1 !important;
+        height: 18px !important;
+        flex-shrink: 0 !important;
       }
 
       .wldn-topbar-user-badge .wldn-user-badge-logout:hover {
         background: rgba(239, 68, 68, 0.25) !important;
+        border-color: rgba(239, 68, 68, 0.4) !important;
       }
     `;
     document.head.appendChild(style);
@@ -868,16 +900,12 @@
     const navContainer = document.querySelector('.nav-container');
 
     if (topBadge) {
-      // Replace top-badge directly on top bar (far right position)
-      badge.className = 'wldn-user-badge wldn-topbar-user-badge';
+      // Replace top-badge directly on top bar (far right position, neat 1-line badge)
+      badge.className = 'wldn-topbar-user-badge';
       badge.innerHTML = `
         <div class="wldn-user-badge-icon">${initials}</div>
-        <div class="wldn-user-badge-info" style="display:inline-flex; align-items:center; gap:0.35rem;">
-          <span class="wldn-user-badge-name">${escapeHtml(session.nama)}</span>
-          <span style="opacity:0.5">•</span>
-          <span class="wldn-user-badge-company">${escapeHtml(session.perusahaan)}</span>
-        </div>
-        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi" onclick="window.WLDNAuth.logout()">
+        <span class="wldn-user-badge-text">${escapeHtml(session.nama)} <span class="wldn-user-badge-sub">(${escapeHtml(session.perusahaan)})</span></span>
+        <button type="button" class="wldn-user-badge-logout" title="Keluar dari sesi (Aktif ${daysLeft} hari)" onclick="window.WLDNAuth.logout()">
           🚪 Keluar
         </button>
       `;
